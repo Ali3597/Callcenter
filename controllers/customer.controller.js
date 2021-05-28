@@ -1,5 +1,5 @@
 
-const {createCustomer,findLimitedCustomers,countCustomers} = require ("../queries/customers.queries")
+const {createCustomer,findLimitedCustomers,countCustomers,findCustomerByName} = require ("../queries/customers.queries")
 const {pageCalculator,range} = require ("./functions.controller")
 
 const customerTableFormat= ["avatar","Nom" ,"Numero" ,"email","action"]
@@ -33,6 +33,13 @@ res.render('customers/formCustomers', {
     number:req.cookies.callerNumber,
     title:"Clients",
 } )
+}
+
+
+exports.customerProfile= async (req, res, next) => { 
+   const  customerName=  req.params.customerName;
+   const customer = await findCustomerByName(customerName)
+res.render('customers/profileCustomer',{customer} )
 }
 
 

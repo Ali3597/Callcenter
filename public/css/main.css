@@ -720,3 +720,7 @@ table th {
   justify-content: center;
   width: 100%;
 }
+
+#customerNameProfile {
+  cursor: pointer;
+}

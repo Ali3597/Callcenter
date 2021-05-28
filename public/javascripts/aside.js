@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', ()=>{
     tabsCenter()
-    setTimeout(getCall(), 1000)
+    // setTimeout(getCall(), 1000)
   
   
 
@@ -36,7 +36,11 @@ function tabsCenter() {
             axios.get('/dashboard/' +tabTitleElement ,)
             .then( response => {
             tabRemoveAddBlue(tabsAside,tabAside)
+            console.log("tab")
             content.innerHTML=response.data
+            if (tabTitleElement=="customers"){
+              linkCustomerProfile(content) 
+            }
             showForm(tabTitleElement)
 
             
@@ -57,7 +61,6 @@ function newClient() {
   tabsAside= document.querySelectorAll(".aside-bottom li")
   tabRemoveAddBlue(tabsAside,customerstab)
   axioxForm("customers",content)
-  
 }
 
 
@@ -145,7 +148,7 @@ function showForm(tabTitleElement) {
 function axioxForm(tabTitleElement,content) {
 axios.get('/dashboard/' +tabTitleElement +'/form' )
     .then( response => {
-      content.innerHTML= response.data
+      content.innerHTML= response.datas
       sendFormInfo(tabTitleElement)
     })
     .catch( err => {
@@ -281,3 +284,27 @@ function setCounter() {
 
 
 
+function linkCustomerProfile(content) {
+  links = document.querySelectorAll("#customerNameProfile")
+  console.log(links)
+  links.forEach(link=>{
+    console.log(link)
+    link.addEventListener("click",()=>{
+      axios.get('/dashboard/customers/' +link.innerHTML ,)
+            .then( response => {
+              content.innerHTML=response.data
+
+            // tabRemoveAddBlue(tabsAside,tabAside)
+            // content.innerHTML=response.data
+            // showForm(tabTitleElement)
+
+            
+
+            })
+            .catch( err => {
+              console.log(err);
+            })   
+    })
+
+})
+}

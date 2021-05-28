@@ -29,5 +29,10 @@ exports.doWeKnowThisNumber= (customerNumber)=> {
   return   Customer.findOne({number:customerNumber}).exec();
 }
 
+exports.findCustomerByName= (customerName)=> {
+
+  return   Customer.findOne({name:customerName}).exec();
+}
+
 
 
