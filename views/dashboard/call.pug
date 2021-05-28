@@ -1,0 +1,25 @@
+audio(id="telephoneRing" src="mp3/telephone.mp3" preload="auto" )
+.Cards
+    .Card.js-card.shaking
+      .Card-image
+        .Card-imageCallEffect
+        .Card-imageCallEffect
+        .Card-imageCallEffect
+        .Card-imageContent
+          img(src='/images/téléchargement.jfif')
+      .Card-content
+        h3.js-callDetail Call
+        h2=customerName
+        h3=customerNumber
+        p
+          span.js-callInfo Waiting
+      .Card-actions
+        .Card-action.js-decline
+          .Card-actionButton.Card-actionButton--decline
+            i.material-icons 
+          p Raccrocher 
+        .Card-action.js-accept
+          .Card-actionButton.Card-actionButton--accept
+            i.material-icons 
+          p Repondre 
+      p(class="timer")

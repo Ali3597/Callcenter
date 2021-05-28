@@ -4,6 +4,7 @@ require ("./database");
 const app = express();
 exports.app = app;
 const morgan = require('morgan')
+var cookies = require("cookie-parser");
 const index =require('./routes');
 // variable des ports 
 const port = process.env.PORT || 3000;
@@ -14,6 +15,7 @@ require('./config/session.config');
 require('./config/passport.config');
 //middleware
 app.use(morgan('short'))
+app.use(cookies());
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: true  }));

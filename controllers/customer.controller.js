@@ -27,8 +27,11 @@ res.render('customers/tableCustomers', {
 
 
 exports.formNewCustomer= async (req, res, next) => { 
+    console.log(req.cookies.callerNumber)
 res.render('customers/formCustomers', {
-    customerFormFormat
+    customerFormFormat,
+    number:req.cookies.callerNumber,
+    title:"Clients",
 } )
 }
 
@@ -38,7 +41,7 @@ res.render('customers/formCustomers', {
 exports.newCustomers=  async (req, res, next) => {
     console.log("on est laaaaaaaaaaa")
     try {
-        customerArray =req.body.arrayValue
+    customerArray =req.body.arrayValue
     await createCustomer(customerArray)
     res.send()
     } catch (e) {

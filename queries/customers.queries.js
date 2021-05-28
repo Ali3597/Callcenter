@@ -23,3 +23,11 @@ exports.countCustomers= (array)=> {
 
   return   Customer.find({}).count().exec();
 }
+
+exports.doWeKnowThisNumber= (customerNumber)=> {
+
+  return   Customer.findOne({number:customerNumber}).exec();
+}
+
+
+

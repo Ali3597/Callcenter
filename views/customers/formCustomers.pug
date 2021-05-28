@@ -1,10 +1,17 @@
 h1 Créer un nouveau #{title}
 div.form-style-7
      ul  
-        each tab in customerFormFormat
-            li
-                label(for="#{tab}") #{tab}
-                input(type='text' name='#{tab}' )
+        li
+            label(for="name") Name
+            input(type='text' name='name' )  
+        li
+            label(for="Number") Number
+            input(type='text' name='number' value=number)  
+        li
+            label(for="email") email
+            input(type='email' name='email' )
+        
+
 
         input( id="sendNew" type='submit' value='Send This')
 p(class="formError")
