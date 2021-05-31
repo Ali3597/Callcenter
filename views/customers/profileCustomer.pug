@@ -1,2 +1,14 @@
-h1 profile meccc
-    h2=customer.name
+div(class="profileCustomer")
+h1 Profil
+div(class="titreprofileCustomer")
+    img(src=customer.avatar class="imgAvatar" )
+    div(class="detailprofileCustomer")
+        i(class="fas fa-phone-square-alt")
+        h2=customer.number
+        h2=customer.name
+        h2=customer.email
+div(class="contentprofileCustomer")
+    div(class="requestprofileCustomer")
+        h1 Ses dernieres Requetes 
+    div(class="reportprofileCustomer")
+        h1 Ses dernieres Rapports 

@@ -28,6 +28,7 @@ res.render('customers/tableCustomers', {
 
 exports.formNewCustomer= async (req, res, next) => { 
     console.log(req.cookies.callerNumber)
+    console.log("la"),
 res.render('customers/formCustomers', {
     customerFormFormat,
     number:req.cookies.callerNumber,

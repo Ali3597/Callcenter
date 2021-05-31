@@ -1,4 +1,22 @@
+const {findLimitedRequests,countRequests} = require ("../queries/requests.queries")
+const {pageCalculator,range,urgencyColor,subMessage,properStringDate} = require ("./functions.controller")
+const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
 
-exports.requestsDashboard = (req, res, next) => {
-    res.render('includes/center', {isAuthenticated: req.isAuthenticated(),currentUser:req.user,title:"Requetes"} )
+    exports.requestsDashboard= async (req, res, next) => { 
+        const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
+        pageNumber= pageCalculator(requestsNumbers,5)
+        // theSubMessage= subMessage(20,requests.message)
+    res.render('requests/tableRequests', {
+        isAuthenticated: req.isAuthenticated(),
+        currentUser:req.user,
+        requests,
+        title:"Requetes",
+        requestTableFormat,
+        pageNumber,
+        subMessage,
+        range,
+        properStringDate,
+        urgencyColor
+    } )
     }
+    

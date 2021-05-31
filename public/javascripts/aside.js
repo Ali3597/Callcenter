@@ -56,11 +56,15 @@ function tabsCenter() {
 
 
 function newClient() {
-  content = document.querySelector(".MainContent")
-  customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
-  tabsAside= document.querySelectorAll(".aside-bottom li")
-  tabRemoveAddBlue(tabsAside,customerstab)
-  axioxForm("customers",content)
+  answer = document.querySelector(".js-accept")
+  answer.addEventListener("click",()=>{
+    content = document.querySelector(".MainContent")
+    customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
+    tabsAside= document.querySelectorAll(".aside-bottom li")
+    tabRemoveAddBlue(tabsAside,customerstab)
+    axioxForm("customers",content)
+  })
+  
 }
 
 
@@ -80,7 +84,7 @@ tabAside.classList.add("blue")
 
 
 function sendFormInfo(tabTitleElement) {
-    const center = document.querySelector(".theCenter")
+    
     form= document.querySelector("#sendNew")
     console.log("ici")
     form.addEventListener("click",()=>{
@@ -148,7 +152,7 @@ function showForm(tabTitleElement) {
 function axioxForm(tabTitleElement,content) {
 axios.get('/dashboard/' +tabTitleElement +'/form' )
     .then( response => {
-      content.innerHTML= response.datas
+      content.innerHTML= response.data
       sendFormInfo(tabTitleElement)
     })
     .catch( err => {
@@ -157,7 +161,7 @@ axios.get('/dashboard/' +tabTitleElement +'/form' )
   }
 
 
-function getCall(number="123456789bcvbcgf") {
+function getCall(number="12345678986468") {
   const content = document.querySelector(".MainContent")
   right= document.querySelector(".call")
  console.log(number)
@@ -179,7 +183,7 @@ function getCall(number="123456789bcvbcgf") {
 
 }
 
-/////ueiiiiiiiii
+
 
 
 

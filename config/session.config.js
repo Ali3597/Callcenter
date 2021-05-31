@@ -12,7 +12,7 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24 * 14
   },
   store: MongoStore.create({
-    mongoUrl:'mongodb+srv://Ali:pwd@cluster0.l6s0n.mongodb.net/callCenter?retryWrites=true&w=majority',
+    mongoUrl:'mongodb://127.0.0.1:27017/CallCenter',
     ttl: 60 * 60 * 24 * 14,
   }),
 }));

@@ -19,7 +19,7 @@ exports.findLimitedCustomers=(limit,skip)=>{
 
 }
 
-exports.countCustomers= (array)=> {
+exports.countCustomers= ()=> {
 
   return   Customer.find({}).count().exec();
 }

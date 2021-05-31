@@ -1,0 +1,30 @@
+table
+  caption=title 
+  thead
+
+      tr
+          each tab in reportsTableFormat
+              th(scope='col') #{tab}
+              
+  tbody
+      each report in reports  
+          tr
+            td(id="customerNameProfile")=report.request.customer.name 
+            td=subMessage(80,report.message)
+            td=properStringDate(report.date)
+            td Action 
+//- each i in range(1,pageNumber)
+//-     p=i
+.pagination
+  .pagination-container
+    .pagination-hover-overlay
+    a.pagination-prev(href='#0')
+      span.icon-pagination.icon-pagination-prev
+          i(class="fas fa-arrow-left")
+    each i in range(1,pageNumber)
+        a.pagination-page-number(href='#0')=i 
+    a.pagination-next(href='#0')
+      span.icon-pagination.icon-pagination-next
+          i(class="fas fa-arrow-left")
+div(class="buttonIs")
+    button(class=" button myButtonCreate")    Créer un nouveau Rapport
