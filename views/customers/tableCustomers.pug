@@ -14,19 +14,18 @@ table
             td(id="customerNameProfile")=customer.name 
             td=customer.number
             td=customer.email
-            td Action 
-//- each i in range(1,pageNumber)
-//-     p=i
-.pagination
-  .pagination-container
-    .pagination-hover-overlay
-    a.pagination-prev(href='#0')
-      span.icon-pagination.icon-pagination-prev
-          i(class="fas fa-arrow-left")
-    each i in range(1,pageNumber)
-        a.pagination-page-number(href='#0')=i 
-    a.pagination-next(href='#0')
-      span.icon-pagination.icon-pagination-next
-          i(class="fas fa-arrow-left")
+            td Consultez
+if pageNumberCustomers>1
+  .pagination
+    .pagination-container
+      .pagination-hover-overlay
+      a.pagination-prev(href='#0')
+        span.icon-pagination.icon-pagination-prev
+            i(class="fas fa-arrow-left")
+      each i in range(1,pageNumberCustomers)
+          a.pagination-page-number(href='#0')=i 
+      a.pagination-next(href='#0')
+        span.icon-pagination.icon-pagination-next
+            i(class="fas fa-arrow-left")
 div(class="buttonIs")
     button(class=" button myButtonCreate")    Créer un nouveau client

@@ -22,19 +22,19 @@ table
                 i(class="fas fa-check")
               else    
                 i(class="fas fa-times")
-            td Action 
-//- each i in range(1,pageNumber)
-//-     p=i
-.pagination
-  .pagination-container
-    .pagination-hover-overlay
-    a.pagination-prev(href='#0')
-      span.icon-pagination.icon-pagination-prev
-          i(class="fas fa-arrow-left")
-    each i in range(1,pageNumber)
-        a.pagination-page-number(href='#0')=i 
-    a.pagination-next(href='#0')
-      span.icon-pagination.icon-pagination-next
-          i(class="fas fa-arrow-left")
-div(class="buttonIs")
-    button(class=" button myButtonCreate")    Créer une nouvelle requete 
+            td Consultez 
+if pageNumberRequests>1
+  .pagination
+    .pagination-container
+      .pagination-hover-overlay
+      a.pagination-prev(href='#0')
+        span.icon-pagination.icon-pagination-prev
+            i(class="fas fa-arrow-left")
+      each i in range(1,pageNumberRequests)
+          a.pagination-page-number(href='#0')=i 
+      a.pagination-next(href='#0')
+        span.icon-pagination.icon-pagination-next
+            i(class="fas fa-arrow-left")
+if areWeInTherequest
+  div(class="buttonIs")
+      button(class=" button myButtonCreate")    Créer une nouvelle requete 

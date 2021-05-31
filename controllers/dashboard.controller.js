@@ -1,9 +1,16 @@
 const {doWeKnowThisNumber}= require('../queries/customers.queries')
+const {getAlertRequests} = require('../queries/requests.queries')
 
 
 
-exports.waitDashboard = (req, res, next) => {
-res.render('dashboard/theDashboard', {isAuthenticated: req.isAuthenticated(),currentUser:req.user,title:"Accueil"} )
+exports.waitDashboard =async (req, res, next) => {
+requests =  await getAlertRequests()
+res.render('dashboard/theDashboard', {
+    isAuthenticated: req.isAuthenticated(),
+    currentUser:req.user,
+    title:"Accueil",
+    requests,
+} )
 }
 
 exports.homeDashboard = (req, res, next) => {

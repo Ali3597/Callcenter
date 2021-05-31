@@ -4,7 +4,7 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 
     exports.requestsDashboard= async (req, res, next) => { 
         const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
-        pageNumber= pageCalculator(requestsNumbers,5)
+        pageNumberRequests= pageCalculator(requestsNumbers,5)
         // theSubMessage= subMessage(20,requests.message)
     res.render('requests/tableRequests', {
         isAuthenticated: req.isAuthenticated(),
@@ -12,11 +12,12 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
         requests,
         title:"Requetes",
         requestTableFormat,
-        pageNumber,
+        pageNumberRequests,
         subMessage,
         range,
         properStringDate,
-        urgencyColor
+        urgencyColor,
+        areWeInTherequest:true
     } )
     }
     

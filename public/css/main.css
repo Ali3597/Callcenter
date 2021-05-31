@@ -721,8 +721,12 @@ table th {
 
 .buttonIs {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
   width: 100%;
+  padding-bottom: 3%;
 }
 
 #customerNameProfile {
@@ -758,19 +762,26 @@ table th {
 
 .contentprofileCustomer {
   display: flex;
+
   flex: 1;
 }
 
 .contentprofileCustomer div {
-  display: flex;
-  flex-direction: column;
   width: 50%;
 }
 
 .requestprofileCustomer {
   background-color: blue;
+  display: flex;
+  flex-direction: column;
 }
 
+.requestprofileCustomer table {
+  font-size: small;
+}
+.reportprofileCustomer table {
+  font-size: small;
+}
 .reportprofileCustomer {
   background-color: #333d45;
 }
@@ -792,4 +803,22 @@ table th {
   width: 25px;
   border-radius: 50%;
   display: inline-block;
+}
+
+.homeContent {
+  display: flex;
+  height: 100%;
+}
+
+.homeContent div {
+  width: 50%;
+  height: 100%;
+}
+
+.Warning {
+  background-color: #810e05;
+}
+.Warning h1 {
+  width: 100%;
+  border-bottom: #000000 solid 2px;
 }

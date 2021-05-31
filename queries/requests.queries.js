@@ -8,6 +8,21 @@ exports.findLimitedRequests=(limit,skip)=>{
 }
 
   exports.countRequests= ()=> {
-
     return   Request.find({}).count().exec();
   }
+
+  exports.findLimitedRequestsByCustomerId=(limit,skip,customerId)=>{
+    return   Request.find({customer:customerId}).limit(limit).skip(skip).exec();
+}
+
+
+exports.countRequestsByCustomerId= (customerId)=> {
+  return   Request.find({customer:customerId}).count().exec();
+}
+
+
+getAlertRequests
+
+exports.getAlertRequests= ()=> {
+  return  Request.find({customer:customerId}).count().exec();
+}
