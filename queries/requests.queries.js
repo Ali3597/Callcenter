@@ -7,6 +7,12 @@ exports.findLimitedRequests=(limit,skip)=>{
     return   Request.find({}).limit(limit).skip(skip).populate("customer").exec();
 }
 
+exports.findRequestById= (requestId)=> {
+  return   Request.findOne({_id:requestId}).exec();
+}
+
+
+
   exports.countRequests= ()=> {
     return   Request.find({}).count().exec();
   }
@@ -21,8 +27,22 @@ exports.countRequestsByCustomerId= (customerId)=> {
 }
 
 
-getAlertRequests
 
-exports.getAlertRequests= ()=> {
-  return  Request.find({customer:customerId}).count().exec();
+
+
+
+
+exports.getLimitedAlertRequests= (limit,skip)=> {
+  return  Request.find(
+    { $where: function() {
+      return (this.deadline-Date.now()< 1000 * 60 * 60 * 24 )
+    } }).limit(limit).skip(skip).exec();
+}
+
+
+exports.countAlertedRequest= ()=> {
+  return  Request.find(
+    { $where: function() {
+      return (this.deadline-Date.now()< 1000 * 60 * 60 * 24 )
+    } }).count().exec();
 }

@@ -1,4 +1,4 @@
-table
+table(type="requests")
   caption=title 
   thead
 
@@ -8,13 +8,13 @@ table
               
   tbody
       each request in requests  
-          tr
+          tr(id=request._id)
             td=request.customer.name
             td=subMessage(80,request.message)
               a(href="#" id="seeMore") Voir Plus 
             td=request.typeof
             td=properStringDate(request.date)
-            td=properStringDate(request.deadline)
+            td=deadlineTimeCalcul(request.deadline)
             td  
               span(class="dot" style="background-color:"+urgencyColor(request.urgencyLevel))
             td 
@@ -22,7 +22,7 @@ table
                 i(class="fas fa-check")
               else    
                 i(class="fas fa-times")
-            td Consultez 
+            td(id="consult") Consultez 
 if pageNumberRequests>1
   .pagination
     .pagination-container

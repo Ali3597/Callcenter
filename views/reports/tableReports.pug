@@ -1,4 +1,4 @@
-table
+table(type="reports")
   caption=title 
   thead
 
@@ -8,12 +8,11 @@ table
               
   tbody
       each report in reports  
-          tr
-            td=report.author.username
-            td(id="customerNameProfile")=report.customer.name 
+          tr(id=report._id)
+            td=report.author.username 
             td=subMessage(80,report.message)
             td=properStringDate(report.date)
-            td Consultez
+            td(id="consult") Consultez
 if pageNumberReports>1
   .pagination
     .pagination-container

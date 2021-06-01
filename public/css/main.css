@@ -767,7 +767,7 @@ table th {
 }
 
 .contentprofileCustomer div {
-  width: 50%;
+  width: 100%;
 }
 
 .requestprofileCustomer {
@@ -811,7 +811,7 @@ table th {
 }
 
 .homeContent div {
-  width: 50%;
+  width: 100%;
   height: 100%;
 }
 
@@ -821,4 +821,11 @@ table th {
 .Warning h1 {
   width: 100%;
   border-bottom: #000000 solid 2px;
+}
+#consult {
+  cursor: pointer;
+}
+
+#consult:hover {
+  color: red;
 }

@@ -36,15 +36,12 @@ function tabsCenter() {
             axios.get('/dashboard/' +tabTitleElement ,)
             .then( response => {
             tabRemoveAddBlue(tabsAside,tabAside)
-            console.log("tab")
             content.innerHTML=response.data
-            if (tabTitleElement=="customers"){
-              linkCustomerProfile(content) 
-            }
+            consult()
+            // if (tabTitleElement=="customers"){
+            //   linkCustomerProfile(content) 
+            // }
             showForm(tabTitleElement)
-
-            
-
             })
             .catch( err => {
               console.log(err);
@@ -53,7 +50,33 @@ function tabsCenter() {
     })
 }
 
+function consult(){
+  consultButtons= document.querySelectorAll("#consult")
+  typeOfTab= document.querySelector("table").getAttribute("type")
 
+  consultButtons.forEach(consultButton=>{
+    consultButton.addEventListener("click",()=>{
+      idItem= consultButton.parentNode.getAttribute("id")
+      console.log(idItem)
+      axioxProfile(idItem,typeOfTab)
+    })
+   
+})
+
+}
+
+
+function axioxProfile(idItem,typeOfTab){
+  content = document.querySelector(".MainContent")
+
+  axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem)
+    .then( response => {
+      content.innerHTML= response.data
+    })
+    .catch( err => {
+      console.log(err);
+    })  
+}
 
 function newClient() {
   answer = document.querySelector(".js-accept")
@@ -83,40 +106,7 @@ tabAside.classList.add("blue")
 }
 
 
-function sendFormInfo(tabTitleElement) {
-    
-    form= document.querySelector("#sendNew")
-    console.log("ici")
-    form.addEventListener("click",()=>{
-        arrayValue=[]
-      formlists=  form.parentNode.querySelectorAll("li input")
-      formlists.forEach(formlist=>{
-        console.log(formlist.value)
-        arrayValue.push(formlist.value)     
-      })
-      console.log(arrayValue)
-      axios.post('/dashboard/' +tabTitleElement +'/new' ,{arrayValue})
-        .then( response => {
-           if( response.data.hasOwnProperty('error')){
-                error= document.querySelector(".formError")
-                error.innerHTML=response.data.error
-           }else{
-            goBacktoNormal(tabTitleElement)
-           }
 
-           
-            
-            
-        })
-        .catch( err => {
-          console.log(err);
-        })       
-
-
-    })
-
-
-}
 
 
 
@@ -148,7 +138,6 @@ function showForm(tabTitleElement) {
 
 }
 
-
 function axioxForm(tabTitleElement,content) {
 axios.get('/dashboard/' +tabTitleElement +'/form' )
     .then( response => {
@@ -159,6 +148,35 @@ axios.get('/dashboard/' +tabTitleElement +'/form' )
       console.log(err);
     })  
   }
+
+
+
+
+  function sendFormInfo(tabTitleElement) {
+    form= document.querySelector("#sendNew")
+    console.log("ici")
+    form.addEventListener("click",()=>{
+        arrayValue=[]
+      formlists=  form.parentNode.querySelectorAll("li input")
+      formlists.forEach(formlist=>{
+        console.log(formlist.value)
+        arrayValue.push(formlist.value)     
+      })
+      console.log(arrayValue)
+      axios.post('/dashboard/' +tabTitleElement +'/new' ,{arrayValue})
+        .then( response => {
+           if( response.data.hasOwnProperty('error')){
+                error= document.querySelector(".formError")
+                error.innerHTML=response.data.error
+           }else{
+            goBacktoNormal(tabTitleElement)
+           }                    
+        })
+        .catch( err => {
+          console.log(err);
+        })       
+    })
+}
 
 
 function getCall(number="12345678986468") {
@@ -288,27 +306,27 @@ function setCounter() {
 
 
 
-function linkCustomerProfile(content) {
-  links = document.querySelectorAll("#customerNameProfile")
-  console.log(links)
-  links.forEach(link=>{
-    console.log(link)
-    link.addEventListener("click",()=>{
-      axios.get('/dashboard/customers/' +link.innerHTML ,)
-            .then( response => {
-              content.innerHTML=response.data
+// function linkCustomerProfile(content) {
+//   links = document.querySelectorAll("#customerNameProfile")
+//   console.log(links)
+//   links.forEach(link=>{
+//     console.log(link)
+//     link.addEventListener("click",()=>{
+//       axios.get('/dashboard/customers/' +link.innerHTML ,)
+//             .then( response => {
+//               content.innerHTML=response.data
 
-            // tabRemoveAddBlue(tabsAside,tabAside)
-            // content.innerHTML=response.data
-            // showForm(tabTitleElement)
+//             // tabRemoveAddBlue(tabsAside,tabAside)
+//             // content.innerHTML=response.data
+//             // showForm(tabTitleElement)
 
             
 
-            })
-            .catch( err => {
-              console.log(err);
-            })   
-    })
+//             })
+//             .catch( err => {
+//               console.log(err);
+//             })   
+//     })
 
-})
-}
+// })
+// }

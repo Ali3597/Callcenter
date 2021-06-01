@@ -1,9 +1,11 @@
-const {findLimitedReports,countReports} = require ("../queries/reports.queries")
+const {findLimitedReports,countReports,findReportAndRelatedRequestsById} = require ("../queries/reports.queries")
 
 
-const {pageCalculator,range,subMessage,properStringDate} = require ("./functions.controller")
 
-const reportsTableFormat= ["auteur","Customer","Message" ,"Date" ,"action"]
+const {pageCalculator,range,subMessage,properStringDate,urgencyColor,deadlineTimeCalcul} = require ("./functions.controller")
+
+const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
+const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
 
 
 
@@ -24,3 +26,22 @@ const reportsTableFormat= ["auteur","Customer","Message" ,"Date" ,"action"]
     } )
     }
     
+
+
+    exports.reportProfile= async (req, res, next) => { 
+        const  reportId=  req.params.reportId;
+        const report=await findReportAndRelatedRequestsById(reportId)
+        requests= report.request
+     res.render('reports/reportProfile',{
+         report,
+         requests,
+         title:"Requetes",
+         pageNumberReports,
+         requestTableFormat,
+         subMessage,
+         range,
+         properStringDate,
+         urgencyColor,
+         deadlineTimeCalcul
+     } )
+     }

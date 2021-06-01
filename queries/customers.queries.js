@@ -19,6 +19,11 @@ exports.findLimitedCustomers=(limit,skip)=>{
 
 }
 
+
+exports.findCustomerById= (customerId)=> {
+  return   Customer.findOne({_id:customerId}).exec();
+}
+
 exports.countCustomers= ()=> {
 
   return   Customer.find({}).count().exec();

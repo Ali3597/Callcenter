@@ -68,3 +68,42 @@ exports.properStringDate = function(date) {
        return date.toLocaleString()
        
 }
+
+
+exports.deadlineTimeCalcul= (aDate)=>{
+        dateNow=Date.now()
+        ladate = Date.parse(aDate);
+        diffDate= dateNow-ladate
+        if (diffDate>0){
+            seconds = Math.floor((diffDate / 1000) % 60) ;
+            minutes = Math.floor(((diffDate / (1000*60)) % 60));
+            hours   = Math.floor(((diffDate / (1000*60*60)) % 24));
+            jour= Math.floor(hours/24)
+            if (hours==0 && minutes==0){
+                duree= "délai dépassé depuis "+seconds + " secondes"
+            }else if (hours==0){
+                duree= "délai dépassé depuis "+ minutes+ " minutes"
+            }else if(hours<24){
+                duree= "délai dépassé depuis "+hours+ " heure(s)"
+            }else{
+                duree= "délai dépassé depuis "+jour+ " jour(s)"
+            }
+        }else{
+                diffDate=Math.abs(diffDate)      
+                seconds = Math.floor((diffDate / 1000) % 60) ;
+                minutes = Math.floor(((diffDate / (1000*60)) % 60));
+                hours   = Math.floor(((diffDate / (1000*60*60)) % 24));
+                jour= Math.floor(hours/24)  
+                if (hours==0 && minutes==0){
+                        duree= "Il reste "+seconds + " secondes"
+                    }else if (hours==0){
+                        duree= "Il reste"+ minutes+ " minutes"
+                    }else if(hours<24){
+                        duree= "Il reste"+hours+ " heure(s)"
+                    }else{
+                        duree= "Il reste"+jour+ " jour(s)"
+                    }
+        }
+         
+         return duree
+    }

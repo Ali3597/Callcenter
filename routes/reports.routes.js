@@ -1,8 +1,9 @@
 const router = require('express').Router();
 
-const {reportsDashboard} = require('../controllers/report.controller')
+const {reportsDashboard,reportProfile} = require('../controllers/report.controller')
 
 router.get('/',reportsDashboard )
+router.get('/profil/:reportId', reportProfile)
 
 
 

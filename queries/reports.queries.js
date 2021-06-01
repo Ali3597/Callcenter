@@ -10,15 +10,21 @@ exports.findLimitedReports=(limit,skip)=>{
     return   Report.find({}).count().exec();
   }
   
-
-
-  exports.findLimitedReportsByCustomerId=(limit,skip,customerId)=>{
-   
-    return   Report.find({customer:customerId}).limit(limit).skip(skip).populate("author").populate("customer").exec();
-  }
-
-
-  exports.countReportsByCustomerId= (customerId)=> {
-    return   Report.find({customer:customerId}).count().exec();
+  exports.findReportAndRelatedRequestsById= (reportId)=> {
+    return   Report.findOne({_id:reportId}).populate({
+      path : 'request',
+      populate : {
+        path : 'customer'
+      }
+    }).exec();
   }
   
+  
+
+
+
+  exports.countReportsByRequestId= (requestId)=> {
+    return   Report.find({request:requestId}).count().exec();
+  }
+  
+

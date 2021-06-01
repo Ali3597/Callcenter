@@ -1,16 +1,16 @@
 
-const {createCustomer,findLimitedCustomers,countCustomers,findCustomerByName} = require ("../queries/customers.queries")
+const {createCustomer,findLimitedCustomers,countCustomers,findCustomerById,findCustomerByName} = require ("../queries/customers.queries")
 const {findLimitedRequestsByCustomerId,countRequestsByCustomerId}= require ('../queries/requests.queries')
-const {findLimitedReportsByCustomerId,countReportsByCustomerId}= require ('../queries/reports.queries')
 
 
 
-const {pageCalculator,range,urgencyColor,  subMessage,properStringDate} = require ("./functions.controller")
+
+const {pageCalculator,range,urgencyColor,  subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
 
 const customerTableFormat= ["avatar","Nom" ,"Numero" ,"email","action"]
 const customerFormFormat= ["Nom" ,"Numero" ,"email"]
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
-const reportsTableFormat= ["auteur","Customer","Message" ,"Date" ,"action"]
+
 
 
 
@@ -45,30 +45,25 @@ res.render('customers/formCustomers', {
 
 
 exports.customerProfile= async (req, res, next) => { 
-   const  customerName=  req.params.customerName;
-   const customer = await findCustomerByName(customerName)
-   
-   const [reports,reportsNumbers,requests,requestsNumbers]=await Promise.all([
-    findLimitedReportsByCustomerId(5,0,customer._id),
-    countReportsByCustomerId(customer._id),
-    findLimitedRequestsByCustomerId(5,0,customer._id),
-    countRequestsByCustomerId(customer._id)],)
+   const  customerId=  req.params.customerId;
+   const [customer,requests,requestsNumbers]=await Promise.all([
+    findCustomerById(customerId),
+    findLimitedRequestsByCustomerId(5,0,customerId),
+    countRequestsByCustomerId(customerId)],)
 
    pageNumberRequests= pageCalculator(requestsNumbers,5)
-   pageNumberReports= pageCalculator(reportsNumbers,5)
+
 res.render('customers/profileCustomer',{
     customer,
     requests,
     title:"Requetes",
     pageNumberRequests,
-    pageNumberReports,
     requestTableFormat,
-    reportsTableFormat,
-    reports,
     subMessage,
     range,
     properStringDate,
-    urgencyColor
+    urgencyColor,
+    deadlineTimeCalcul
 } )
 }
 

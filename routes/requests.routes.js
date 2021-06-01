@@ -1,8 +1,10 @@
 const router = require('express').Router();
 
-const {requestsDashboard} = require('../controllers/request.controller')
+const {requestsDashboard,requestProfile} = require('../controllers/request.controller')
 
 router.get('/',requestsDashboard)
+router.get('/profil/:requestId', requestProfile)
+
 
 
 

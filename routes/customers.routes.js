@@ -5,7 +5,7 @@ const {customersDashboard,newCustomers,formNewCustomer,customerProfile} = requir
 router.get('/', customersDashboard)
 router.get('/form', formNewCustomer)
 router.post('/new', newCustomers)
-router.get('/:customerName', customerProfile)
+router.get('/profil/:customerId', customerProfile)
 
 
 

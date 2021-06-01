@@ -11,7 +11,7 @@ const requestSchema = schema({
   author:{type: schema.Types.ObjectId, ref: 'worker', required :true},
   customer:{type: schema.Types.ObjectId, ref: 'customer', required :true},
   workerDone:{type: schema.Types.ObjectId, ref: 'worker'},
-  rebound:{type: schema.Types.ObjectId, ref: 'rebound'},
+  rebound:[{type: schema.Types.ObjectId, ref: 'rebound'}],
 });
 
 const Request = mongoose.model('request', requestSchema);

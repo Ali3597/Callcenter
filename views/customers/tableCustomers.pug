@@ -1,4 +1,4 @@
-table
+table(type="customers")
   caption=title 
   thead
 
@@ -8,13 +8,13 @@ table
               
   tbody
       each customer in customers  
-          tr
+          tr(id=customer._id)
             td
                 img(src=customer.avatar class=("imgAvatar") )
-            td(id="customerNameProfile")=customer.name 
+            td=customer.name 
             td=customer.number
             td=customer.email
-            td Consultez
+            td(id="consult") Consultez
 if pageNumberCustomers>1
   .pagination
     .pagination-container
