@@ -1,3 +1,4 @@
+const { json } = require('express')
 const {doWeKnowThisNumber}= require('../queries/customers.queries')
 const {getLimitedAlertRequests,countAlertedRequest} = require('../queries/requests.queries')
 const {pageCalculator,range,urgencyColor,subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
@@ -57,10 +58,11 @@ exports.getCall = async (req, res, next) => {
         res.cookie('callerNumber',customerNumber)
     }else{
         customerName=customer.name
-        res.cookie('callerId', customer._id)
+        res.cookie('callerId',JSON.stringify(customer._id))
         res.cookie('callerNumber',customerNumber)
     }
     
     res.render('dashboard/call',{customerName,customerNumber} )
     }
+  
     

@@ -1,6 +1,10 @@
+
 window.addEventListener('DOMContentLoaded', ()=>{
+  
     tabsCenter()
-    // setTimeout(getCall(), 1000)
+    
+    
+    setTimeout(getCall(), 1000)
   
   
 
@@ -68,7 +72,8 @@ function consult(){
 
 function axioxProfile(idItem,typeOfTab){
   content = document.querySelector(".MainContent")
-
+  console.log("axiosss")
+  console.log(typeof(idItem))
   axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem)
     .then( response => {
       content.innerHTML= response.data
@@ -78,17 +83,6 @@ function axioxProfile(idItem,typeOfTab){
     })  
 }
 
-function newClient() {
-  answer = document.querySelector(".js-accept")
-  answer.addEventListener("click",()=>{
-    content = document.querySelector(".MainContent")
-    customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
-    tabsAside= document.querySelectorAll(".aside-bottom li")
-    tabRemoveAddBlue(tabsAside,customerstab)
-    axioxForm("customers",content)
-  })
-  
-}
 
 
 
@@ -179,7 +173,7 @@ axios.get('/dashboard/' +tabTitleElement +'/form' )
 }
 
 
-function getCall(number="12345678986468") {
+function getCall(number="123456") {
   const content = document.querySelector(".MainContent")
   right= document.querySelector(".call")
  console.log(number)
@@ -192,7 +186,11 @@ function getCall(number="12345678986468") {
           closeCall(right)
           console.log(document.cookie)
           if (getCookie("callerId")=="unknow"){
+            console.log("pas call")
             newClient()
+          }else{
+            console.log("call")
+            clientWeKnow()
           }
         })
         .catch( err => {
@@ -200,6 +198,41 @@ function getCall(number="12345678986468") {
         })      
 
 }
+
+function clientWeKnow() {
+  answer = document.querySelector(".js-accept")
+  answer.addEventListener("click",()=>{
+    console.log("okkkbbbbbbbbbb")
+    content = document.querySelector(".MainContent")
+    customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
+    tabsAside= document.querySelectorAll(".aside-bottom li")
+    tabRemoveAddBlue(tabsAside,customerstab)
+    console.log("c'est lideee")
+    console.log(getCookie("callerId"))
+    console.log("ihigih")
+    idItem=getCookie("callerId")
+    idItem = idItem.replace(/^"(.*)"$/, '$1');
+  
+    axioxProfile(idItem,"customers")
+  })
+  
+}
+
+
+
+
+function newClient() {
+  answer = document.querySelector(".js-accept")
+  answer.addEventListener("click",()=>{
+    content = document.querySelector(".MainContent")
+    customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
+    tabsAside= document.querySelectorAll(".aside-bottom li")
+    tabRemoveAddBlue(tabsAside,customerstab)
+    axioxForm("customers",content)
+  })
+  
+}
+
 
 
 

@@ -18,8 +18,10 @@ exports.findLimitedReports=(limit,skip)=>{
       }
     }).exec();
   }
-  
-  
+  exports.findLimitedReportsByRequestsId=(limit,skip,requestId)=>{
+    return   Report.find({request:requestId}).limit(limit).skip(skip).exec();
+}
+
 
 
 
