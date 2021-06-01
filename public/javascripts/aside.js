@@ -4,7 +4,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
     tabsCenter()
     
     
-    setTimeout(getCall(), 1000)
+    // setTimeout(getCall(), 1000)
   
   
 

@@ -1,4 +1,4 @@
-const {findLimitedReports,countReports,findReportAndRelatedRequestsById} = require ("../queries/reports.queries")
+const {findLimitedReports,countReports,findReportAndRelatedRequestsByIdAndAuthor} = require ("../queries/reports.queries")
 
 
 
@@ -16,7 +16,7 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
         isAuthenticated: req.isAuthenticated(),
         currentUser:req.user,
         reports,
-        title:"Reports",
+        titleReports:"Rapports",
         reportsTableFormat,
         pageNumberReports,
         areWeInTheReport:true,
@@ -30,12 +30,13 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 
     exports.reportProfile= async (req, res, next) => { 
         const  reportId=  req.params.reportId;
-        const report=await findReportAndRelatedRequestsById(reportId)
+        const report=await findReportAndRelatedRequestsByIdAndAuthor(reportId)
         requests= report.request
      res.render('reports/reportProfile',{
          report,
          requests,
-         title:"Requetes",
+         title:"Rapport",
+         titleRequests:"Requetes relié a ce rapport",
          pageNumberReports,
          requestTableFormat,
          subMessage,

@@ -1,3 +1,21 @@
-h1 oui oui oui
-    h2=request._id 
+h1=title 
+div(class="requestProfile")
+    div(class="leftRequestProfile")   
+        div(class="upLeftRequestProfile")   
+            span=request.customer.name
+            span=request.customer.number 
+            span=request.customer.email
+        div(class="downLeftRequestProfile")
+            span=properStringDate(request.date)
+            span=request.typeof
+            span(class="dot" style="background-color:"+urgencyColor(request.urgencyLevel))
+            span=deadlineTimeCalcul(request.deadline)
+    div(class="rightRequestProfile" )
+            p=request.message 
+            if request.done  
+                p Requete Completé 
+                    i(class="fas fa-check")
+            else   
+                p Requete pas encore complété
+                    i(class="fas fa-times")
 include ../reports/tableReports

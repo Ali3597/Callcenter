@@ -24,7 +24,7 @@ res.render('customers/tableCustomers', {
     isAuthenticated: req.isAuthenticated(),
     currentUser:req.user,
     customers,
-    title:"Clients",
+    titleCustomers:"Clients",
     customerTableFormat,
     pageNumberCustomers,
     range,
@@ -39,7 +39,7 @@ exports.formNewCustomer= async (req, res, next) => {
 res.render('customers/formCustomers', {
     customerFormFormat,
     number:req.cookies.callerNumber,
-    title:"Clients",
+    titleCustomers:"Nouveau Client ",
 } )
 }
 
@@ -56,7 +56,7 @@ exports.customerProfile= async (req, res, next) => {
 res.render('customers/profileCustomer',{
     customer,
     requests,
-    title:"Requetes",
+    titleRequests:"Requetes sur le client ",
     pageNumberRequests,
     requestTableFormat,
     subMessage,

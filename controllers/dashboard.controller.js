@@ -14,7 +14,8 @@ pageNumberRequests= pageCalculator(requestsNumbers,5)
 res.render('dashboard/theDashboard', {
     isAuthenticated: req.isAuthenticated(),
     currentUser:req.user,
-    title:"Accuueil",
+    title: "Accueil",
+    titleRequests:"Les requestes qui doivent etre traité",
     requests,
     requestTableFormat,
     pageNumberRequests,
@@ -35,7 +36,8 @@ exports.homeDashboard = async  (req, res, next) => {
 const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequests(5,0),countAlertedRequest()])
 pageNumberRequests= pageCalculator(requestsNumbers,5)
 res.render('includes/center', {
-    title:"Accuueil",
+    titleRequests:"Les requestes qui doivent etre traité",
+    title: "Accueil",
     requests,
     requestTableFormat,
     pageNumberRequests,
