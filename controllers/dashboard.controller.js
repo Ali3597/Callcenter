@@ -1,6 +1,6 @@
 const { json } = require('express')
 const {doWeKnowThisNumber}= require('../queries/customers.queries')
-const {getLimitedAlertRequests,countAlertedRequest} = require('../queries/requests.queries')
+const {getLimitedAlertRequestsWhithCustomers,countAlertedRequest} = require('../queries/requests.queries')
 const {pageCalculator,range,urgencyColor,subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
 
@@ -9,7 +9,7 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 
 exports.waitDashboard =async (req, res, next) => {
     try {
-const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequests(5,0),countAlertedRequest()])
+const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequestsWhithCustomers(5,0),countAlertedRequest()])
 pageNumberRequests= pageCalculator(requestsNumbers,5)
 res.render('dashboard/theDashboard', {
     isAuthenticated: req.isAuthenticated(),
@@ -33,7 +33,7 @@ res.render('dashboard/theDashboard', {
 
 
 exports.homeDashboard = async  (req, res, next) => {
-const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequests(5,0),countAlertedRequest()])
+const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequestsWhithCustomers(5,0),countAlertedRequest()])
 pageNumberRequests= pageCalculator(requestsNumbers,5)
 res.render('includes/center', {
     titleRequests:"Les requestes qui doivent etre traité",
@@ -46,7 +46,6 @@ res.render('includes/center', {
     properStringDate,
     urgencyColor,
     deadlineTimeCalcul,
-
 } )
 }
 

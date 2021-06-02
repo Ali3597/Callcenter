@@ -2,7 +2,9 @@ extends ../layout.pug
 
 block content           
     script(src="/javascripts/aside.js")
+    include ../includes/modal.pug
     include  ../includes/aside.pug 
     div(class="theCenter")
         include  ../includes/center.pug
     include ../includes/right-call.pug
+    

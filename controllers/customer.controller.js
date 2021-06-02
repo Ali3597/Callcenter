@@ -1,5 +1,5 @@
 
-const {createCustomer,findLimitedCustomers,countCustomers,findCustomerById,findCustomerByName} = require ("../queries/customers.queries")
+const {createCustomer,findLimitedCustomers,countCustomers,findCustomerById,findCustomerByName,deleteCustomerById} = require ("../queries/customers.queries")
 const {findLimitedRequestsByCustomerId,countRequestsByCustomerId}= require ('../queries/requests.queries')
 
 
@@ -66,6 +66,37 @@ res.render('customers/profileCustomer',{
     deadlineTimeCalcul
 } )
 }
+
+
+
+exports.deleteCustomer=  async (req, res, next) => {
+    try {
+    const  customerId=  req.params.customerId
+    await deleteCustomerById(customerId)
+    const [customer,requests,requestsNumbers]=await Promise.all([
+        findCustomerById(customerId),
+        findLimitedRequestsByCustomerId(5,0,customerId),
+        countRequestsByCustomerId(customerId)],)
+       pageNumberRequests= pageCalculator(requestsNumbers,5)
+    res.render('customers/profileCustomer',{
+        customer,
+        requests,
+        titleRequests:"Requetes sur le client ",
+        pageNumberRequests,
+        requestTableFormat,
+        subMessage,
+        range,
+        properStringDate,
+        urgencyColor,
+        deadlineTimeCalcul
+    } )
+    }
+     catch (e) {
+    next(e)
+        
+    }
+} 
+
 
 
 

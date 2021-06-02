@@ -46,3 +46,24 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
          deadlineTimeCalcul
      } )
      }
+
+     exports.deleteReport= async (req, res, next) => { 
+        const  reportId=  req.params.reportId;
+        const report=await findReportAndRelatedRequestsByIdAndAuthor(reportId)
+        requests= report.request
+     res.render('reports/reportProfile',{
+         report,
+         requests,
+         title:"Rapport",
+         titleRequests:"Requetes relié a ce rapport",
+         pageNumberReports,
+         requestTableFormat,
+         subMessage,
+         range,
+         properStringDate,
+         urgencyColor,
+         deadlineTimeCalcul
+     } )
+     }
+
+     

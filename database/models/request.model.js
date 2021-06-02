@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
+const Report = require("./report.model")
 
 const requestSchema = schema({
   message: {type:String, required:true},
@@ -13,6 +14,21 @@ const requestSchema = schema({
   workerDone:{type: schema.Types.ObjectId, ref: 'worker'},
   rebound:[{type: schema.Types.ObjectId, ref: 'rebound'}],
 });
+
+
+
+requestSchema.pre('deleteMany', async function(next) {
+  try {
+    await Report.deleteMany({
+      request :  this._id
+    }).exec()
+     console.log("goooooooooooood2");
+     next()
+   }
+   catch (err) {
+    next(err)
+  }
+  })
 
 const Request = mongoose.model('request', requestSchema);
 

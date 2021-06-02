@@ -19,3 +19,9 @@ div(class="requestProfile")
                 p Requete pas encore complété
                     i(class="fas fa-times")
 include ../reports/tableReports
+div(class="buttonIs" id=request._id type="requests"  )  
+    button(class=" button Action" Action="delete" )   Supprimer la requete 
+    if request.done  
+        button(class=" button Action" Action="undone" )   Invalider la requete   
+    else    
+        button(class=" button Action" Action="done" )   Valider la requete   

@@ -27,16 +27,21 @@ exports.countRequestsByCustomerId= (customerId)=> {
 }
 
 
+exports.getDoneRequest= (requestId)=> {
+    return   Request.findByIdAndUpdate(requestId,{$set:{done : true}},{runValidators: true  } );
+}
 
 
+exports.getUndoneRequest= (requestId)=> {
+  return   Request.findByIdAndUpdate(requestId,{$set:{done : false}},{runValidators: true  } );
+}
 
 
-
-exports.getLimitedAlertRequests= (limit,skip)=> {
+exports.getLimitedAlertRequestsWhithCustomers= (limit,skip)=> {
   return  Request.find(
     { $where: function() {
       return (this.deadline-Date.now()< 1000 * 60 * 60 * 24 )
-    } }).limit(limit).skip(skip).exec();
+    } }).limit(limit).skip(skip).populate("customer").exec();
 }
 
 

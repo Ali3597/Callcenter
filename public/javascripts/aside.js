@@ -1,13 +1,11 @@
 
 window.addEventListener('DOMContentLoaded', ()=>{
-  
+    consult()
     tabsCenter()
-    
-    
-    // setTimeout(getCall(), 1000)
-  
-  
+    closeModal()
+    stopPropagationModal()
 
+    // setTimeout(getCall(), 1000)
 
 })
 
@@ -33,13 +31,13 @@ function getCookie(cname) {
 
 function tabsCenter() {
     const content = document.querySelector(".MainContent")
-    tabsAside= document.querySelectorAll(".aside-bottom li")
+    const tabsAside= document.querySelectorAll(".aside-bottom li")
     tabsAside.forEach(tabAside=>{
         tabAside.addEventListener("click",()=>{
             tabTitleElement = tabAside.querySelector("h3").innerHTML.toLowerCase()
             axios.get('/dashboard/' +tabTitleElement ,)
             .then( response => {
-            tabRemoveAddBlue(tabsAside,tabAside)
+            tabRemoveAddBlue(tabAside)
             content.innerHTML=response.data
             consult()
             // if (tabTitleElement=="customers"){
@@ -54,6 +52,22 @@ function tabsCenter() {
     })
 }
 
+
+function giveYouTheRightTab(tab){
+  if (tab=="home"){
+    return document.querySelector(".aside-bottom li:nth-child(1)")
+  }else if (tab=="customers"){
+    return  document.querySelector(".aside-bottom li:nth-child(2)")
+
+  }else if (tab=="requests"){
+    return   document.querySelector(".aside-bottom li:nth-child(3)")
+    
+  }else if (tab=="reports"){
+    return  document.querySelector(".aside-bottom li:nth-child(4)")
+    
+  }
+}
+
 function consult(){
   consultButtons= document.querySelectorAll("#consult")
   typeOfTab= document.querySelector("table").getAttribute("type")
@@ -61,8 +75,9 @@ function consult(){
   consultButtons.forEach(consultButton=>{
     consultButton.addEventListener("click",()=>{
       idItem= consultButton.parentNode.getAttribute("id")
-      console.log(idItem)
+
       axioxProfile(idItem,typeOfTab)
+
     })
    
 })
@@ -76,7 +91,11 @@ function axioxProfile(idItem,typeOfTab){
   console.log(typeof(idItem))
   axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem)
     .then( response => {
+     
       content.innerHTML= response.data
+      showModal()
+      tabRemoveAddBlue(giveYouTheRightTab(typeOfTab))
+      consult()
     })
     .catch( err => {
       console.log(err);
@@ -89,8 +108,8 @@ function axioxProfile(idItem,typeOfTab){
 
 
 
-function tabRemoveAddBlue(tabsAside,tabAside) {
-  console.log("on est la ")
+function tabRemoveAddBlue(tabAside) {
+  const tabsAside= document.querySelectorAll(".aside-bottom li")
     tabsAside.forEach(tab=>{
         if (tab.classList.contains("blue")){
             tab.classList.remove("blue")
@@ -205,8 +224,7 @@ function clientWeKnow() {
     console.log("okkkbbbbbbbbbb")
     content = document.querySelector(".MainContent")
     customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
-    tabsAside= document.querySelectorAll(".aside-bottom li")
-    tabRemoveAddBlue(tabsAside,customerstab)
+    tabRemoveAddBlue(customerstab)
     console.log("c'est lideee")
     console.log(getCookie("callerId"))
     console.log("ihigih")
@@ -226,8 +244,7 @@ function newClient() {
   answer.addEventListener("click",()=>{
     content = document.querySelector(".MainContent")
     customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
-    tabsAside= document.querySelectorAll(".aside-bottom li")
-    tabRemoveAddBlue(tabsAside,customerstab)
+    tabRemoveAddBlue(customerstab)
     axioxForm("customers",content)
   })
   
@@ -338,28 +355,119 @@ function setCounter() {
 }
 
 
+function stopPropagationModal() {
+  modalWrapper = document.querySelector(".modal-wrapper")
+  modalWrapper.addEventListener("click",(e)=>{
+    e.stopPropagation()
+  })
+}
 
-// function linkCustomerProfile(content) {
-//   links = document.querySelectorAll("#customerNameProfile")
-//   console.log(links)
-//   links.forEach(link=>{
-//     console.log(link)
-//     link.addEventListener("click",()=>{
-//       axios.get('/dashboard/customers/' +link.innerHTML ,)
-//             .then( response => {
-//               content.innerHTML=response.data
 
-//             // tabRemoveAddBlue(tabsAside,tabAside)
-//             // content.innerHTML=response.data
-//             // showForm(tabTitleElement)
 
-            
+function showModal() {
+ buttonsOpenModal= document.querySelectorAll(".Action")
+ ValidModal= document.querySelector("#ValidModal")
+ modal = document.querySelector(".modal")
+ paragraphModal= document.querySelector(".modal-wrapper p")
+ buttonsOpenModal.forEach(element=>{
+ element.addEventListener("click",(e)=>{
+  e.stopPropagation()
+  ValidModal.addEventListener("click",()=> {
+    modal.classList.remove("active")
+    removeAllEventListeners(ValidModal)
+  
+  })
+  action = element.getAttribute("Action")
+  item= element.parentNode.getAttribute("id")
+  type = element.parentNode.getAttribute("type")
+  paragraphModal.innerHTML=chooseModalMessage(action,type)
+  modal.classList.add("active")
+  eventListenerOnValidModal(action,item,type)
+ })
+})
 
-//             })
-//             .catch( err => {
-//               console.log(err);
-//             })   
-//     })
+function chooseModalMessage(action,type){
+  if(type =="customers"){
+    if (action=="delete"){
+      return "Etes vous sur de vouloir supprimer ce client ? Cette action sera irreversible "
+    }
+  }else if (type =="requests"){
+    if (action=="delete"){
+      return "Etes vous sur de vouloir supprimer cette requete ? Cette action sera irreversible "
+    }else if (action=="undone"){
+      return "Etes vous sur de vouloir unvalider cette requete ?  "
+    } else if (action=="done"){
+      return "Etes vous sur de vouloir valider cette requete ? "
+    }
+  }else if (type =="reports"){
+    if (action=="delete"){
+      return "Etes vous sur de vouloir supprimer ce rapport ? Cette action sera irreversible "
+    }
+  }
 
-// })
-// }
+}
+
+}
+ function eventListenerOnValidModal (action,item,type) {
+  ValidModal= document.querySelector("#ValidModal")
+  ValidModal.addEventListener("click",()=>{
+    axioxModal(action,item,type)
+  })
+ } 
+
+function  axioxModal (action,item,type){
+
+  axios.get('/dashboard/' +type +'/'+action +'/' + item)
+    .then( response => {
+      content.innerHTML= response.data
+      showModal()
+      consult()
+    })
+    .catch( err => {
+      console.log(err);
+    })  
+
+
+
+}
+
+
+
+
+function removeAllEventListeners(object){
+old_element = object
+new_element = old_element.cloneNode(true);
+old_element.parentNode.replaceChild(new_element, old_element);
+}
+
+function closeModal() {
+  modal = document.querySelector(".modal")
+  crossModal = document.querySelector(".fa-times-circle")
+  cancelModal = document.querySelector("#canceModal")
+  ValidModal= document.querySelector("#ValidModal")
+  window.addEventListener("click",()=> {
+    if (modal.classList.contains("active")){
+      modal.classList.remove("active")
+      removeAllEventListeners(ValidModal)
+    }
+  })
+  crossModal.addEventListener("click",()=> {
+      modal.classList.remove("active")
+      removeAllEventListeners(ValidModal)
+    
+  })
+cancelModal.addEventListener("click",()=> {
+  modal.classList.remove("active")
+  removeAllEventListeners(ValidModal)
+
+})
+
+
+
+
+}
+
+
+
+
+
