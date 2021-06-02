@@ -1,4 +1,4 @@
-const {findLimitedReports,countReports,findReportAndRelatedRequestsByIdAndAuthor} = require ("../queries/reports.queries")
+const {findLimitedReports,countReports,findReportAndRelatedRequestsByIdAndAuthor,deleteReportById} = require ("../queries/reports.queries")
 
 
 
@@ -49,21 +49,21 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 
      exports.deleteReport= async (req, res, next) => { 
         const  reportId=  req.params.reportId;
-        const report=await findReportAndRelatedRequestsByIdAndAuthor(reportId)
-        requests= report.request
-     res.render('reports/reportProfile',{
-         report,
-         requests,
-         title:"Rapport",
-         titleRequests:"Requetes relié a ce rapport",
-         pageNumberReports,
-         requestTableFormat,
-         subMessage,
-         range,
-         properStringDate,
-         urgencyColor,
-         deadlineTimeCalcul
-     } )
-     }
+        await deleteReportById(reportId)
+        const [reports,reportsNumbers]=await Promise.all([findLimitedReports(10,0),countReports()])
+        pageNumberReports= pageCalculator(reportsNumbers)
+    res.render('reports/tableReports', {
+        isAuthenticated: req.isAuthenticated(),
+        currentUser:req.user,
+        reports,
+        titleReports:"Rapports",
+        reportsTableFormat,
+        pageNumberReports,
+        areWeInTheReport:true,
+        range,
+        subMessage,
+        properStringDate
+    } )
+    }
 
      

@@ -28,3 +28,7 @@ exports.findLimitedReports=(limit,skip)=>{
   }
   
 
+  exports.deleteReportById= (reportId)=> {
+    return   Report.findByIdAndDelete(reportId).exec()
+  }
+

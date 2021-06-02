@@ -51,3 +51,9 @@ exports.countAlertedRequest= ()=> {
       return (this.deadline-Date.now()< 1000 * 60 * 60 * 24 )
     } }).count().exec();
 }
+
+
+
+exports.DeleteRequestById= (requestId)=> {
+  return   Request.findByIdAndDelete(requestId).exec()
+}

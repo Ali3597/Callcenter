@@ -8,6 +8,11 @@ const reportSchema = schema({
   request:[{type: schema.Types.ObjectId, ref: 'request', required :true}],
 });
 
+
 const Report = mongoose.model('report', reportSchema);
+
+
+
+
 
 module.exports = Report;

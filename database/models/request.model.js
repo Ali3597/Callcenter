@@ -16,19 +16,17 @@ const requestSchema = schema({
 });
 
 
+requestSchema.post('deleteMany', async    function(next) {
+  console.log(this._conditions.customer)
+requests =  await  Request.find({customer: this._conditions.customer})
+requests.forEach(request=> {
+  Report.updateMany({},{$pull: {request:request._id}},{multi:true}).exec()
 
-requestSchema.pre('deleteMany', async function(next) {
-  try {
-    await Report.deleteMany({
-      request :  this._id
-    }).exec()
-     console.log("goooooooooooood2");
-     next()
-   }
-   catch (err) {
-    next(err)
-  }
   })
+  next()
+});
+  
+ 
 
 const Request = mongoose.model('request', requestSchema);
 

@@ -68,34 +68,21 @@ res.render('customers/profileCustomer',{
 }
 
 
-
-exports.deleteCustomer=  async (req, res, next) => {
-    try {
+exports.deleteCustomer=  async (req, res, next) => { 
     const  customerId=  req.params.customerId
     await deleteCustomerById(customerId)
-    const [customer,requests,requestsNumbers]=await Promise.all([
-        findCustomerById(customerId),
-        findLimitedRequestsByCustomerId(5,0,customerId),
-        countRequestsByCustomerId(customerId)],)
-       pageNumberRequests= pageCalculator(requestsNumbers,5)
-    res.render('customers/profileCustomer',{
-        customer,
-        requests,
-        titleRequests:"Requetes sur le client ",
-        pageNumberRequests,
-        requestTableFormat,
-        subMessage,
-        range,
-        properStringDate,
-        urgencyColor,
-        deadlineTimeCalcul
-    } )
-    }
-     catch (e) {
-    next(e)
-        
-    }
-} 
+    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
+    pageNumberCustomers= pageCalculator(customersNumbers)
+res.render('customers/tableCustomers', {
+    isAuthenticated: req.isAuthenticated(),
+    currentUser:req.user,
+    customers,
+    titleCustomers:"Clients",
+    customerTableFormat,
+    pageNumberCustomers,
+    range,
+} )
+}
 
 
 

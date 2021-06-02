@@ -9,17 +9,12 @@ const customerSchema = schema({
   avatar: {type : String, default:'/images/téléchargement.jfif'}, 
 });
 
-customerSchema.pre('findByIdAndDelete', async function(next) {
-try {
-  await Request.deleteMany({
-    customer :  this._id
-  })
-   console.log("goooooooooooood");
-   next()
- }
- catch (err) {
-  next(err)
-}
+customerSchema.pre('findOneAndDelete', function(next) {
+console.log(this._conditions)
+
+Request.deleteMany({customer : this._conditions._id}).exec()
+next()
+
 })
 
 
