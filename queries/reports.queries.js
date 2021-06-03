@@ -1,3 +1,4 @@
+const { authorize } = require("passport");
 const Report = require("../database/models/report.model")
 
 exports.findLimitedReports=(limit,skip)=>{
@@ -32,3 +33,13 @@ exports.findLimitedReports=(limit,skip)=>{
     return   Report.findByIdAndDelete(reportId).exec()
   }
 
+  exports.createReport= (array,currentUserId)=> {
+
+    const newReport = new Report({
+      request:[array[0]],
+      message: array[1],
+      author:currentUserId,
+    });
+    return   newReport.save();
+  }
+  

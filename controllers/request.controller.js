@@ -42,7 +42,7 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
          reports,   
          title : "Requete",
          titleReports:"Rapport concernant la requete",
-         pageNumberRequests,
+         pageNumberReports,
          reportsTableFormat,
          subMessage,
          deadlineTimeCalcul,

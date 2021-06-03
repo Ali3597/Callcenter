@@ -1,6 +1,6 @@
-const {findLimitedReports,countReports,findReportAndRelatedRequestsByIdAndAuthor,deleteReportById} = require ("../queries/reports.queries")
+const {findLimitedReports,countReports,findReportAndRelatedRequestsByIdAndAuthor,deleteReportById,createReport,findLimitedReportsByRequestsId,countReportsByRequestId} = require ("../queries/reports.queries")
 
-
+const {findRequestById,findRequestByIdWithCustomersAssociate}= require ("../queries/requests.queries")
 
 const {pageCalculator,range,subMessage,properStringDate,urgencyColor,deadlineTimeCalcul} = require ("./functions.controller")
 
@@ -29,7 +29,7 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 
     exports.reportProfile= async (req, res, next) => { 
         const  reportId=  req.params.reportId;
-        const report=await findReportAndRelatedRequestsByIdAndAuthor(reportId)
+        const report= await findReportAndRelatedRequestsByIdAndAuthor(reportId)
         requests= report.request
      res.render('reports/reportProfile',{
         
@@ -69,10 +69,44 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
      
     
 exports.formNewReport= async (req, res, next) => { 
-    console.log(req.cookies.callerNumber)
-    console.log("la"),
+    selectedRequestId=req.body.item
+    selectedRequest=  await findRequestById(selectedRequestId)
 res.render('reports/formReports', {
-    // number:req.cookies.callerNumber,
+    selectedRequest,
     titleForm:"Nouveau rapport",
 } )
 }
+
+
+
+
+exports.newReport=  async (req, res, next) => {
+   
+    currentUserId= req.user.id
+
+    reportArray =req.body.arrayValue
+    requestId = reportArray[0];
+    await createReport(reportArray,currentUserId)
+    const [request,reports,reportsNumbers]=await Promise.all([
+            findRequestByIdWithCustomersAssociate(requestId),
+            findLimitedReportsByRequestsId(5,0,requestId),
+            countReportsByRequestId(requestId)],)
+            pageNumberReports= pageCalculator(reportsNumbers,5)
+         res.render('requests/requestProfile',{
+            profile:true,
+             request,
+             reports,   
+             title : "Requete",
+             titleReports:"Rapport concernant la requete",
+             pageNumberReports,
+             reportsTableFormat,
+             subMessage,
+             deadlineTimeCalcul,
+             urgencyColor,
+             range,
+             properStringDate,
+         } )
+         
+        }
+
+      

@@ -10,6 +10,9 @@ exports.findLimitedRequests=(limit,skip)=>{
 exports.findRequestByIdWithCustomersAssociate= (requestId)=> {
   return   Request.findOne({_id:requestId}).populate('customer').exec();
 }
+exports.findRequestById= (requestId)=> {
+  return   Request.findOne({_id:requestId}).exec();
+}
 
 
 
