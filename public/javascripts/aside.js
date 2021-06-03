@@ -6,7 +6,8 @@ window.addEventListener('DOMContentLoaded', ()=>{
     stopPropagationModal()
 
 
-    // setTimeout(getCall(), 1000)
+    // setTimeout(function() {
+    //   getCall()}, 3000)
 
 })
 
@@ -103,9 +104,7 @@ function axioxProfile(idItem,typeOfTab){
       content.innerHTML= response.data
       showModal()
       tabRemoveAddBlue(giveYouTheRightTab(typeOfTab))
-      console.log(typeOfTab)
-      console.log(newElementOn(typeOfTab))
-      console.log(idItem)
+
       showForm(newElementOn(typeOfTab),idItem)
      
       consult()
@@ -185,7 +184,8 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
         .then( response => {
           console.log(response)
           console.log(response.data)
-            content.innerHTML= response.data        
+            content.innerHTML= response.data  
+            alert(DetermineMessage(tabTitleElement,"new" ))      
             consult()        
         })
         .catch( err => {
@@ -194,9 +194,10 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
     })
 }
 
-function getCall(number="123456") {
+function getCall(number="1234566464") {
   const content = document.querySelector(".MainContent")
   right= document.querySelector(".call")
+  console.log("allor")
   axios.post('/dashboard/call' ,{number})
         .then( response => {
           right.innerHTML=response.data
@@ -413,6 +414,7 @@ function  axioxModal (action,item,type){
   axios.get('/dashboard/' +type +'/'+action +'/' + item)
     .then( response => {
       content.innerHTML= response.data
+      alert(DetermineMessage(type,action ))
       showModal()
       consult()
     })
@@ -447,20 +449,56 @@ function closeModal() {
   crossModal.addEventListener("click",()=> {
       modal.classList.remove("active")
       removeAllEventListeners(ValidModal)
-    
   })
 cancelModal.addEventListener("click",()=> {
   modal.classList.remove("active")
   removeAllEventListeners(ValidModal)
-
 })
-
-
-
-
 }
 
 
+
+
+function DetermineMessage(type,action ) {
+
+if(type =="customers"){
+    if (action=="delete"){
+      return "Le client a bien été supprimé"
+    }else if (action=="new"){
+      return "le client  a bien été creer "
+    }
+  }else if (type =="requests"){
+    if (action=="delete"){
+      return "La requete a bien été supprimé "
+    }else if (action=="undone"){
+      return "La requete a bien été invalider  "
+    } else if (action=="done"){
+      return "La requete a bien été valider "
+    }else if (action=="new"){
+      return "la Requete a bien été creer "
+    }
+  }else if (type =="reports"){
+    if (action=="delete"){
+      return "Ce rapport a  bien été supprimer "
+    }else if (action=="new"){
+      return "le rapport a bien été creer "
+    }
+  }
+
+  
+}
+
+function alert(message) {
+  console.log("allo")
+  console.log(message)
+  alertP= document.querySelector(".alertMessage")
+  console.log(alertP)
+  alertP.innerHTML=message
+  alertP.classList.add("active")
+  setTimeout(function(){
+    alertP.classList.remove("active")}
+    , 3000)
+}
 
 
 

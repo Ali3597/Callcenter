@@ -48,6 +48,25 @@ exports.getLimitedAlertRequestsWhithCustomers= (limit,skip)=> {
 }
 
 
+
+// exports.getCurrentUserTweetsAndRetweetsWithFollowing= (user)=> {
+//   return  Tweet.find({ 
+//     $or: [
+//       {
+//     author:{$in:[...user.following,user._id]}
+//   },
+//     {
+//     retweets:{$in:[...user.following,user._id]
+//     }},
+//   ]
+//     }).sort({date: -1}).populate('author').exec();
+// }
+
+
+
+
+
+
 exports.countAlertedRequest= ()=> {
   return  Request.find(
     { $where: function() {

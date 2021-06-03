@@ -968,3 +968,18 @@ table th {
   display: flex;
   justify-content: center;
 }
+
+.alertMessage {
+  position: absolute;
+  color: red;
+  font-size: large;
+  font-style: bold;
+  top: 5.5%;
+  left: 53%;
+  z-index: 200;
+  display: none;
+}
+
+.alertMessage.active {
+  display: flex;
+}
