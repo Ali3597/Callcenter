@@ -13,7 +13,6 @@ table(type="requests")
           tr(id=request._id)
             td=request.customer.name
             td=subMessage(80,request.message)
-              a(href="#" id="seeMore") Voir Plus 
             td=request.typeof
             td=properStringDate(request.date)
             td=deadlineTimeCalcul(request.deadline)

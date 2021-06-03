@@ -1,6 +1,6 @@
 
 const {createCustomer,findLimitedCustomers,countCustomers,findCustomerById,findCustomerByName,deleteCustomerById} = require ("../queries/customers.queries")
-const {findLimitedRequestsByCustomerId,countRequestsByCustomerId,createRequestOnCustomerId}= require ('../queries/requests.queries')
+const {findLimitedRequestsByCustomerId,countRequestsByCustomerId,createRequestOnCustomerId,findLimitedRequestsByCustomerIdWithCustomersAssociate}= require ('../queries/requests.queries')
 
 
 
@@ -46,7 +46,7 @@ exports.customerProfile= async (req, res, next) => {
    const  customerId=  req.params.customerId;
    const [customer,requests,requestsNumbers]=await Promise.all([
     findCustomerById(customerId),
-    findLimitedRequestsByCustomerId(5,0,customerId),
+    findLimitedRequestsByCustomerIdWithCustomersAssociate(5,0,customerId),
     countRequestsByCustomerId(customerId)],)
 
    pageNumberRequests= pageCalculator(requestsNumbers,5)

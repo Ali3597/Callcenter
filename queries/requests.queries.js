@@ -25,6 +25,10 @@ exports.findRequestById= (requestId)=> {
 }
 
 
+exports.findLimitedRequestsByCustomerIdWithCustomersAssociate=(limit,skip,customerId)=>{
+  return   Request.find({customer:customerId}).limit(limit).skip(skip).populate('customer').exec();
+}
+
 exports.countRequestsByCustomerId= (customerId)=> {
   return   Request.find({customer:customerId}).count().exec();
 }
@@ -41,26 +45,17 @@ exports.getUndoneRequest= (requestId)=> {
 
 
 exports.getLimitedAlertRequestsWhithCustomers= (limit,skip)=> {
-  return  Request.find(
+  return  Request.find({
+    $and : [
     { $where: function() {
       return (this.deadline-Date.now()< 1000 * 60 * 60 * 24 )
-    } }).limit(limit).skip(skip).populate("customer").exec();
+    }} ,
+    {done:false},
+  ]
+  }).limit(limit).skip(skip).populate("customer").exec();
 }
 
 
-
-// exports.getCurrentUserTweetsAndRetweetsWithFollowing= (user)=> {
-//   return  Tweet.find({ 
-//     $or: [
-//       {
-//     author:{$in:[...user.following,user._id]}
-//   },
-//     {
-//     retweets:{$in:[...user.following,user._id]
-//     }},
-//   ]
-//     }).sort({date: -1}).populate('author').exec();
-// }
 
 
 

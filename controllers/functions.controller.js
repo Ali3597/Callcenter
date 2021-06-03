@@ -59,6 +59,8 @@ exports.subMessage = function(limit,message) {
         if (message.length>limit){
                 
                 return message.substring(0,limit) + "..." 
+                
+        }else{
                 return message
         }
        
