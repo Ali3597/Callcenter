@@ -19,7 +19,6 @@ exports.findLimitedCustomers=(limit,skip)=>{
 
 }
 
-
 exports.findCustomerById= (customerId)=> {
   return   Customer.findOne({_id:customerId}).exec();
 }
@@ -43,4 +42,10 @@ exports.findCustomerByName= (customerName)=> {
 
 exports.deleteCustomerById= (customerId)=> {
   return   Customer.findByIdAndDelete(customerId).exec()
+}
+
+
+exports.findCustomersAlphabeticallySorted=(limit,skip)=>{
+  return   Customer.find({}).sort({name:1}).exec();
+
 }

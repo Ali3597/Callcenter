@@ -5,7 +5,7 @@ const Request = require("./request.model")
 const customerSchema = schema({
   name: {type:String, default:"unknow"},
   number: {type: String,unique:true,required:true},
-  email:{ type: String  ,unique:true},
+  email:{ type: String  ,unique:true,default:"unknow"},
   avatar: {type : String, default:'/images/téléchargement.jfif'}, 
 });
 

@@ -1,6 +1,6 @@
 
 const {createCustomer,findLimitedCustomers,countCustomers,findCustomerById,findCustomerByName,deleteCustomerById} = require ("../queries/customers.queries")
-const {findLimitedRequestsByCustomerId,countRequestsByCustomerId}= require ('../queries/requests.queries')
+const {findLimitedRequestsByCustomerId,countRequestsByCustomerId,createRequestOnCustomerId}= require ('../queries/requests.queries')
 
 
 
@@ -34,12 +34,10 @@ res.render('customers/tableCustomers', {
 
 
 exports.formNewCustomer= async (req, res, next) => { 
-    console.log(req.cookies.callerNumber)
-    console.log("la"),
+    
 res.render('customers/formCustomers', {
-    customerFormFormat,
     number:req.cookies.callerNumber,
-    titleCustomers:"Nouveau Client ",
+    titleForm:"Nouveau Client ",
 } )
 }
 
@@ -106,15 +104,64 @@ res.render('customers/tableCustomers', {
 
 
 exports.newCustomers=  async (req, res, next) => {
-    console.log("on est laaaaaaaaaaa")
     try {
     customerArray =req.body.arrayValue
     await createCustomer(customerArray)
-    res.send()
+    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
+    pageNumberCustomers= pageCalculator(customersNumbers)
+res.render('customers/tableCustomers', {
+    isAuthenticated: req.isAuthenticated(),
+    currentUser:req.user,
+    customers,
+    titleCustomers:"Clients",
+    customerTableFormat,
+    pageNumberCustomers,
+    range,
+} )
     } catch (e) {
-        res.send( {error:"Erreur dans le formulaire"})
-        
+        res.status(404).send()
     }
     
 } 
+
+
+async (req, res, next) => { 
+    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
+    pageNumberCustomers= pageCalculator(customersNumbers)
+res.render('customers/tableCustomers', {
+    isAuthenticated: req.isAuthenticated(),
+    currentUser:req.user,
+    customers,
+    titleCustomers:"Clients",
+    customerTableFormat,
+    pageNumberCustomers,
+    range,
+} )
+}
+
+
+
+exports.newRequestOnCustomer= async (req, res, next) => { 
+    const  customerId=  req.params.customerId;
+     await createRequestOnCustomerId(customerId)
+    const [customer,requests,requestsNumbers]=await Promise.all([
+     findCustomerById(customerId),
+     findLimitedRequestsByCustomerId(5,0,customerId),
+     countRequestsByCustomerId(customerId)],)
+ 
+    pageNumberRequests= pageCalculator(requestsNumbers,5)
+ 
+ res.render('customers/profileCustomer',{
+     customer,
+     requests,
+     titleRequests:"Requetes sur le client ",
+     pageNumberRequests,
+     requestTableFormat,
+     subMessage,
+     range,
+     properStringDate,
+     urgencyColor,
+     deadlineTimeCalcul
+ } )
+ }
 

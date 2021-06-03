@@ -57,3 +57,17 @@ exports.countAlertedRequest= ()=> {
 exports.DeleteRequestById= (requestId)=> {
   return   Request.findByIdAndDelete(requestId).exec()
 }
+
+exports.createRequest= (array,currentUserId)=> {
+
+  const newRequest = new Request({
+    author:currentUserId,
+    customer:array[0],
+    message:array[1],
+    typeof:array[2],
+    urgencyLevel:array[3],
+    deadline:  Date.parse(array[4])
+  });
+  return   newRequest.save();
+}
+

@@ -67,3 +67,12 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
     }
 
      
+    
+exports.formNewReport= async (req, res, next) => { 
+    console.log(req.cookies.callerNumber)
+    console.log("la"),
+res.render('reports/formReports', {
+    // number:req.cookies.callerNumber,
+    titleForm:"Nouveau rapport",
+} )
+}

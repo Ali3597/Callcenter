@@ -4,10 +4,14 @@ window.addEventListener('DOMContentLoaded', ()=>{
     tabsCenter()
     closeModal()
     stopPropagationModal()
+    console.log(window.location)
 
     // setTimeout(getCall(), 1000)
 
 })
+
+
+function urlView(){}
 
 
 function getCookie(cname) {
@@ -40,9 +44,6 @@ function tabsCenter() {
             tabRemoveAddBlue(tabAside)
             content.innerHTML=response.data
             consult()
-            // if (tabTitleElement=="customers"){
-            //   linkCustomerProfile(content) 
-            // }
             showForm(tabTitleElement)
             })
             .catch( err => {
@@ -87,8 +88,6 @@ function consult(){
 
 function axioxProfile(idItem,typeOfTab){
   content = document.querySelector(".MainContent")
-  console.log("axiosss")
-  console.log(typeof(idItem))
   axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem)
     .then( response => {
      
@@ -128,30 +127,18 @@ tabAside.classList.add("blue")
 
 
 
-function goBacktoNormal(tabTitleElement) {
-  const content = document.querySelector(".MainContent")
-  axios.get('/dashboard/' +tabTitleElement ,)
-            .then( response => {
-            content.innerHTML=response.data
-            showForm(tabTitleElement)
-            })
-            .catch( err => {
-              console.log(err);
-            })     
-}
-
 
 
 function showForm(tabTitleElement) {
-  const content = document.querySelector(".MainContent")
-  buttonForm = document.querySelector(".myButtonCreate")
+  buttonForm = document.querySelector("#showForm")
   buttonForm.addEventListener("click", ()=>{
-    axioxForm(tabTitleElement,content)
+    axioxForm(tabTitleElement)
   })
 
 }
 
-function axioxForm(tabTitleElement,content) {
+function axioxForm(tabTitleElement) {
+  content = document.querySelector(".MainContent") 
 axios.get('/dashboard/' +tabTitleElement +'/form' )
     .then( response => {
       content.innerHTML= response.data
@@ -166,36 +153,32 @@ axios.get('/dashboard/' +tabTitleElement +'/form' )
 
 
   function sendFormInfo(tabTitleElement) {
-    form= document.querySelector("#sendNew")
-    console.log("ici")
-    form.addEventListener("click",()=>{
+    const content = document.querySelector(".MainContent")
+    errorpara= document.querySelector(".formError")
+    formButton= document.querySelector("#sendNew")
+    formButton.addEventListener("click",()=>{
         arrayValue=[]
-      formlists=  form.parentNode.querySelectorAll("li input")
+      formlists=  formButton.parentNode.querySelectorAll("li input,select")
       formlists.forEach(formlist=>{
-        console.log(formlist.value)
         arrayValue.push(formlist.value)     
       })
-      console.log(arrayValue)
+
       axios.post('/dashboard/' +tabTitleElement +'/new' ,{arrayValue})
         .then( response => {
-           if( response.data.hasOwnProperty('error')){
-                error= document.querySelector(".formError")
-                error.innerHTML=response.data.error
-           }else{
-            goBacktoNormal(tabTitleElement)
-           }                    
+          console.log(response)
+          console.log(response.data)
+            content.innerHTML= response.data        
+            consult()        
         })
         .catch( err => {
-          console.log(err);
+          errorpara.innerHTML= "Erreur dans le formulaire"
         })       
     })
 }
 
-
 function getCall(number="123456") {
   const content = document.querySelector(".MainContent")
   right= document.querySelector(".call")
- console.log(number)
   axios.post('/dashboard/call' ,{number})
         .then( response => {
           right.innerHTML=response.data
@@ -203,12 +186,9 @@ function getCall(number="123456") {
           ringPhone()
           answerThePhone()
           closeCall(right)
-          console.log(document.cookie)
           if (getCookie("callerId")=="unknow"){
-            console.log("pas call")
             newClient()
           }else{
-            console.log("call")
             clientWeKnow()
           }
         })
@@ -221,13 +201,9 @@ function getCall(number="123456") {
 function clientWeKnow() {
   answer = document.querySelector(".js-accept")
   answer.addEventListener("click",()=>{
-    console.log("okkkbbbbbbbbbb")
     content = document.querySelector(".MainContent")
     customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
     tabRemoveAddBlue(customerstab)
-    console.log("c'est lideee")
-    console.log(getCookie("callerId"))
-    console.log("ihigih")
     idItem=getCookie("callerId")
     idItem = idItem.replace(/^"(.*)"$/, '$1');
   
@@ -319,7 +295,6 @@ function closeCall(right) {
     right.innerHTML=""
     document.cookie = "callerNumber= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
     document.cookie = "callerId= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-    console.log(document.cookie)
   })
   
 }
@@ -408,10 +383,11 @@ function chooseModalMessage(action,type){
 }
 
 }
- function eventListenerOnValidModal (action,item,type) {
+function eventListenerOnValidModal (action,item,type) {
   ValidModal= document.querySelector("#ValidModal")
   ValidModal.addEventListener("click",()=>{
     axioxModal(action,item,type)
+    
   })
  } 
 

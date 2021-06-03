@@ -1,5 +1,6 @@
-const {findLimitedRequests,countRequests,findRequestByIdWithCustomersAssociate,DeleteRequestById,getDoneRequest,getUndoneRequest} = require ("../queries/requests.queries")
+const {findLimitedRequests,countRequests,findLimitedRequestsByCustomerId,findRequestByIdWithCustomersAssociate,DeleteRequestById,getDoneRequest,getUndoneRequest,createRequest, countRequestsByCustomerId} = require ("../queries/requests.queries")
 const {findLimitedReportsByRequestsId,countReportsByRequestId} = require ('../queries/reports.queries')
+const {findCustomersAlphabeticallySorted,findCustomerById} = require ('../queries/customers.queries')
 const {pageCalculator,range,urgencyColor,subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
 const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
@@ -116,3 +117,91 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         areWeInTherequest:true
     } )
     }
+    exports.formNewRequest= async (req, res, next) => { 
+        customers = await findCustomersAlphabeticallySorted()
+    res.render('requests/formRequests', {
+        customers,
+        titleForm:"Nouvelle requete ",
+    } )
+    }
+    
+
+
+    exports.newRequest=  async (req, res, next) => {
+        try {
+        currentUserId= req.user.id
+        console.log(req.user)
+        requestArray =req.body.arrayValue
+        customerId = requestArray[0]
+        console.log("customer")
+        console.log(customerId)
+        await createRequest(requestArray,currentUserId)
+        const [customer,requests,requestsNumbers]=await Promise.all([
+        findCustomerById(customerId),
+        findLimitedRequestsByCustomerId(5,0,customerId),
+        countRequestsByCustomerId(customerId)],)           
+    pageNumberRequests= pageCalculator(requestsNumbers,5)
+    res.render('customers/profileCustomer',{
+        customer,
+        requests,
+        titleRequests:"Requetes sur le client ",
+        pageNumberRequests,
+        requestTableFormat,
+        subMessage,
+        range,
+        properStringDate,
+        urgencyColor,
+        deadlineTimeCalcul
+             } )
+             }
+     catch (e) {
+         console.log(e)
+         res.status(404).send()
+
+        }
+        
+    } 
+    // { 
+    //     const  customerId=  req.params.customerId;
+    //     const [customer,requests,requestsNumbers]=await Promise.all([
+    //      findCustomerById(customerId),
+    //      findLimitedRequestsByCustomerId(5,0,customerId),
+    //      countRequestsByCustomerId(customerId)],)
+     
+    //     pageNumberRequests= pageCalculator(requestsNumbers,5)
+     
+    //  res.render('customers/profileCustomer',{
+    //      customer,
+    //      requests,
+    //      titleRequests:"Requetes sur le client ",
+    //      pageNumberRequests,
+    //      requestTableFormat,
+    //      subMessage,
+    //      range,
+    //      properStringDate,
+    //      urgencyColor,
+    //      deadlineTimeCalcul
+    //  } )
+    //  }
+
+    // exports.newCustomers=  async (req, res, next) => {
+    //     try {
+    //     customerArray =req.body.arrayValue
+    //     await createCustomer(customerArray)
+    //     const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
+    //     pageNumberCustomers= pageCalculator(customersNumbers)
+    // res.render('customers/tableCustomers', {
+    //     isAuthenticated: req.isAuthenticated(),
+    //     currentUser:req.user,
+    //     customers,
+    //     titleCustomers:"Clients",
+    //     customerTableFormat,
+    //     pageNumberCustomers,
+    //     range,
+    // } )
+    //     } catch (e) {
+    //         res.status(404).send()
+    //     }
+        
+    // } 
+    
