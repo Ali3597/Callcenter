@@ -4,14 +4,13 @@ window.addEventListener('DOMContentLoaded', ()=>{
     tabsCenter()
     closeModal()
     stopPropagationModal()
-    console.log(window.location)
+
 
     // setTimeout(getCall(), 1000)
 
 })
 
 
-function urlView(){}
 
 
 function getCookie(cname) {
@@ -52,6 +51,16 @@ function tabsCenter() {
         })
     })
 }
+ 
+function newElementOn(tabTitleElement){
+  if (tabTitleElement=="customers"){
+    return "requests"
+
+  }else if(tabTitleElement=="requests"){
+    return "reports"
+  }
+}
+
 
 
 function giveYouTheRightTab(tab){
@@ -94,6 +103,11 @@ function axioxProfile(idItem,typeOfTab){
       content.innerHTML= response.data
       showModal()
       tabRemoveAddBlue(giveYouTheRightTab(typeOfTab))
+      console.log(typeOfTab)
+      console.log(newElementOn(typeOfTab))
+      console.log(idItem)
+      showForm(newElementOn(typeOfTab),idItem)
+     
       consult()
     })
     .catch( err => {
@@ -129,17 +143,21 @@ tabAside.classList.add("blue")
 
 
 
-function showForm(tabTitleElement) {
+function showForm(tabTitleElement,item) {
+  console.log("laaa")
+  console.log(item)
   buttonForm = document.querySelector("#showForm")
   buttonForm.addEventListener("click", ()=>{
-    axioxForm(tabTitleElement)
+    axioxForm(tabTitleElement,item)
   })
 
 }
 
-function axioxForm(tabTitleElement) {
+function axioxForm(tabTitleElement,item) {
+  console.log(item)
   content = document.querySelector(".MainContent") 
-axios.get('/dashboard/' +tabTitleElement +'/form' )
+
+axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
     .then( response => {
       content.innerHTML= response.data
       sendFormInfo(tabTitleElement)
@@ -271,7 +289,6 @@ function answerThePhone() {
       </div>
         </div>
   `
-  
     callInfo.innerHTML="En cours"
     actions= document.querySelector(".Card-actions")
     closeCall(right)

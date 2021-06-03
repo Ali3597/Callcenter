@@ -52,6 +52,7 @@ exports.customerProfile= async (req, res, next) => {
    pageNumberRequests= pageCalculator(requestsNumbers,5)
 
 res.render('customers/profileCustomer',{
+    profile:true,
     customer,
     requests,
     titleRequests:"Requetes sur le client ",
@@ -106,6 +107,7 @@ res.render('customers/tableCustomers', {
 exports.newCustomers=  async (req, res, next) => {
     try {
     customerArray =req.body.arrayValue
+    console.log(req.body)
     await createCustomer(customerArray)
     const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
     pageNumberCustomers= pageCalculator(customersNumbers)
@@ -150,8 +152,8 @@ exports.newRequestOnCustomer= async (req, res, next) => {
      countRequestsByCustomerId(customerId)],)
  
     pageNumberRequests= pageCalculator(requestsNumbers,5)
- 
  res.render('customers/profileCustomer',{
+    profile:true,
      customer,
      requests,
      titleRequests:"Requetes sur le client ",

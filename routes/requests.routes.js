@@ -8,7 +8,7 @@ router.get('/profil/:requestId', requestProfile)
 router.get('/delete/:requestId', deleteRequest)
 router.get('/done/:requestId', doneRequest)
 router.get('/undone/:requestId',undoneRequest)
-router.get('/form', formNewRequest)
+router.post('/form', formNewRequest)
 router.post('/new', newRequest)
 // router.get('/newreport/:requestId',newReportOnRequest)
 

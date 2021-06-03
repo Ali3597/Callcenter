@@ -3,9 +3,13 @@ div.form-style-7
      ul  
         li
             label Client
-            select(name="customer")
-                each customer in customers 
-                     option(value=customer._id) #{customer.name}// #{customer.number}
+            if selectedCustomer
+                input(type='hidden' value=selectedCustomer._id readonly) 
+                h3 #{selectedCustomer.name}// #{selectedCustomer.number}
+            else
+                select(name="customer")
+                    each customer in customers 
+                        option(value=customer._id) #{customer.name}// #{customer.number}
         li
             label message 
             input(type='textarea' name='message' )  

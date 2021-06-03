@@ -25,7 +25,6 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
         properStringDate
     } )
     }
-    
 
 
     exports.reportProfile= async (req, res, next) => { 
@@ -33,6 +32,7 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
         const report=await findReportAndRelatedRequestsByIdAndAuthor(reportId)
         requests= report.request
      res.render('reports/reportProfile',{
+        
          report,
          requests,
          title:"Rapport",

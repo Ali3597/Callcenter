@@ -37,6 +37,7 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         pageNumberReports= pageCalculator(reportsNumbers,5)
      
      res.render('requests/requestProfile',{
+        profile:true,
          request,
          reports,   
          title : "Requete",
@@ -117,10 +118,21 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         areWeInTherequest:true
     } )
     }
-    exports.formNewRequest= async (req, res, next) => { 
-        customers = await findCustomersAlphabeticallySorted()
+
+
+    exports.formNewRequest= async (req, res, next) => {  
+        selectedCustomerId=req.body.item
+        if (selectedCustomerId){
+            selectedCustomer = await findCustomerById(selectedCustomerId)
+            customers=false
+
+        }else{
+            selectedCustomer=false
+            customers = await findCustomersAlphabeticallySorted()
+        }
     res.render('requests/formRequests', {
         customers,
+        selectedCustomer,
         titleForm:"Nouvelle requete ",
     } )
     }
@@ -142,6 +154,7 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         countRequestsByCustomerId(customerId)],)           
     pageNumberRequests= pageCalculator(requestsNumbers,5)
     res.render('customers/profileCustomer',{
+        profile:true,
         customer,
         requests,
         titleRequests:"Requetes sur le client ",

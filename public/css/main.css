@@ -961,3 +961,10 @@ table th {
   color: red;
   cursor: pointer;
 }
+
+.titleTab {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+}

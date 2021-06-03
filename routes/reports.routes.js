@@ -5,7 +5,7 @@ const {reportsDashboard,reportProfile,deleteReport,formNewReport} = require('../
 router.get('/',reportsDashboard )
 router.get('/profil/:reportId', reportProfile)
 router.get('/delete/:reportId', deleteReport)
-router.get('/form', formNewReport)
+router.post('/form', formNewReport)
 
 
 
