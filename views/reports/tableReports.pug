@@ -2,19 +2,21 @@ table(type="reports")
   caption=titleReports  
     if profile 
       button(class="button" id="showForm")   Rajouter un rapport a cette requete
-  thead
+  if reports.length
+    thead
 
-      tr
-          each tab in reportsTableFormat
-              th(scope='col') #{tab}
+       tr
+            each tab in reportsTableFormat
+                th(scope='col') #{tab}
               
-  tbody
-      each report in reports  
-          tr(id=report._id)
-            td=report.author.username 
-            td=subMessage(80,report.message)
-            td=properStringDate(report.date)
-            td(id="consult") Consultez
+    tbody
+        each report in reports  
+            tr(id=report._id)
+              td=report.author.username 
+              td=subMessage(80,report.message)
+              td=properStringDate(report.date)
+              td(id="consult") Consultez
+
 if pageNumberReports>1
   .pagination
     .pagination-container

@@ -2,7 +2,7 @@ const {findLimitedReports,countReports,findReportAndRelatedRequestsByIdAndAuthor
 
 const {findRequestById,findRequestByIdWithCustomersAssociate}= require ("../queries/requests.queries")
 
-const {pageCalculator,range,subMessage,properStringDate,urgencyColor,deadlineTimeCalcul} = require ("./functions.controller")
+const {pageCalculator,range,subMessage,properStringDate,urgencyColor,deadlineTimeCalcul,titleMessage,titleMessageOn} = require ("./functions.controller")
 
 const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
@@ -12,11 +12,12 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
     exports.reportsDashboard= async (req, res, next) => { 
         const [reports,reportsNumbers]=await Promise.all([findLimitedReports(10,0),countReports()])
         pageNumberReports= pageCalculator(reportsNumbers)
+        titleReports= titleMessage("reports", reports)
     res.render('reports/tableReports', {
         isAuthenticated: req.isAuthenticated(),
         currentUser:req.user,
         reports,
-        titleReports:"Rapports",
+        titleReports,
         reportsTableFormat,
         pageNumberReports,
         areWeInTheReport:true,
@@ -32,10 +33,8 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
         const report= await findReportAndRelatedRequestsByIdAndAuthor(reportId)
         requests= report.request
      res.render('reports/reportProfile',{
-        
          report,
          requests,
-         title:"Rapport",
          titleRequests:"Requetes relié a ce rapport",
          pageNumberReports,
          requestTableFormat,
@@ -52,11 +51,12 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
         await deleteReportById(reportId)
         const [reports,reportsNumbers]=await Promise.all([findLimitedReports(10,0),countReports()])
         pageNumberReports= pageCalculator(reportsNumbers)
+        titleReports= titleMessage("reports", reports)
     res.render('reports/tableReports', {
         isAuthenticated: req.isAuthenticated(),
         currentUser:req.user,
         reports,
-        titleReports:"Rapports",
+        titleReports,
         reportsTableFormat,
         pageNumberReports,
         areWeInTheReport:true,
@@ -92,11 +92,11 @@ exports.newReport=  async (req, res, next) => {
             findLimitedReportsByRequestsId(5,0,requestId),
             countReportsByRequestId(requestId)],)
             pageNumberReports= pageCalculator(reportsNumbers,5)
+
          res.render('requests/requestProfile',{
             profile:true,
              request,
-             reports,   
-             title : "Requete",
+             reports, 
              titleReports:"Rapport concernant la requete",
              pageNumberReports,
              reportsTableFormat,

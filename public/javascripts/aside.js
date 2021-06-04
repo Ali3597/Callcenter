@@ -543,5 +543,4 @@ function clientAnswer(){
   setCounter()
   callInfo = document.querySelector(".js-callInfo")
   callInfo.innerHTML="En cours"
-
 }

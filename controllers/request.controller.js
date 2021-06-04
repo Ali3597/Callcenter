@@ -1,19 +1,19 @@
 const {findLimitedRequests,countRequests,findLimitedRequestsByCustomerId,findRequestByIdWithCustomersAssociate,DeleteRequestById,getDoneRequest,getUndoneRequest,createRequest, countRequestsByCustomerId} = require ("../queries/requests.queries")
 const {findLimitedReportsByRequestsId,countReportsByRequestId} = require ('../queries/reports.queries')
 const {findCustomersAlphabeticallySorted,findCustomerById} = require ('../queries/customers.queries')
-const {pageCalculator,range,urgencyColor,subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
+const {pageCalculator,range,urgencyColor,subMessage,properStringDate,deadlineTimeCalcul,titleMessage,titleMessageOn} = require ("./functions.controller")
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
 const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
 
     exports.requestsDashboard= async (req, res, next) => { 
         const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
         pageNumberRequests= pageCalculator(requestsNumbers,5)
-        // theSubMessage= subMessage(20,requests.message)
+        titleRequests= titleMessage("requests",requests)
     res.render('requests/tableRequests', {
         isAuthenticated: req.isAuthenticated(),
         currentUser:req.user,
         requests,
-        titleRequests:"Requetes",
+        titleRequests,
         requestTableFormat,
         pageNumberRequests,
         subMessage,
@@ -33,15 +33,14 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         findRequestByIdWithCustomersAssociate(requestId),
         findLimitedReportsByRequestsId(5,0,requestId),
         countReportsByRequestId(requestId)],)
-     
+        titleReports=titleMessageOn("reports",reports)
         pageNumberReports= pageCalculator(reportsNumbers,5)
-     
+        
      res.render('requests/requestProfile',{
         profile:true,
          request,
          reports,   
-         title : "Requete",
-         titleReports:"Rapport concernant la requete",
+         titleReports,
          pageNumberReports,
          reportsTableFormat,
          subMessage,
@@ -57,12 +56,12 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         await getUndoneRequest(requestId)
         const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
         pageNumberRequests= pageCalculator(requestsNumbers,5)
-        // theSubMessage= subMessage(20,requests.message)
+        titleRequests=titleMessage("requests", requests)
     res.render('requests/tableRequests', {
         isAuthenticated: req.isAuthenticated(),
         currentUser:req.user,
         requests,
-        titleRequests:"Requetes",
+        titleRequests,
         requestTableFormat,
         pageNumberRequests,
         subMessage,
@@ -80,12 +79,12 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         await getDoneRequest(requestId)
         const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
         pageNumberRequests= pageCalculator(requestsNumbers,5)
-        // theSubMessage= subMessage(20,requests.message)
+        titleRequests= titleMessage("requests", requests)
     res.render('requests/tableRequests', {
         isAuthenticated: req.isAuthenticated(),
         currentUser:req.user,
         requests,
-        titleRequests:"Requetes",
+        titleRequests,
         requestTableFormat,
         pageNumberRequests,
         subMessage,
@@ -102,12 +101,12 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         await DeleteRequestById(requestId)
         const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
         pageNumberRequests= pageCalculator(requestsNumbers,5)
-        // theSubMessage= subMessage(20,requests.message)
+        titleRequests= titleMessage("requests", requests)
     res.render('requests/tableRequests', {
         isAuthenticated: req.isAuthenticated(),
         currentUser:req.user,
         requests,
-        titleRequests:"Requetes",
+        titleRequests,
         requestTableFormat,
         pageNumberRequests,
         subMessage,
@@ -174,47 +173,4 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         }
         
     } 
-    // { 
-    //     const  customerId=  req.params.customerId;
-    //     const [customer,requests,requestsNumbers]=await Promise.all([
-    //      findCustomerById(customerId),
-    //      findLimitedRequestsByCustomerId(5,0,customerId),
-    //      countRequestsByCustomerId(customerId)],)
-     
-    //     pageNumberRequests= pageCalculator(requestsNumbers,5)
-     
-    //  res.render('customers/profileCustomer',{
-    //      customer,
-    //      requests,
-    //      titleRequests:"Requetes sur le client ",
-    //      pageNumberRequests,
-    //      requestTableFormat,
-    //      subMessage,
-    //      range,
-    //      properStringDate,
-    //      urgencyColor,
-    //      deadlineTimeCalcul
-    //  } )
-    //  }
-
-    // exports.newCustomers=  async (req, res, next) => {
-    //     try {
-    //     customerArray =req.body.arrayValue
-    //     await createCustomer(customerArray)
-    //     const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
-    //     pageNumberCustomers= pageCalculator(customersNumbers)
-    // res.render('customers/tableCustomers', {
-    //     isAuthenticated: req.isAuthenticated(),
-    //     currentUser:req.user,
-    //     customers,
-    //     titleCustomers:"Clients",
-    //     customerTableFormat,
-    //     pageNumberCustomers,
-    //     range,
-    // } )
-    //     } catch (e) {
-    //         res.status(404).send()
-    //     }
-        
-    // } 
     

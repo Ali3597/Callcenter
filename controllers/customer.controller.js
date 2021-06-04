@@ -5,7 +5,7 @@ const {findLimitedRequestsByCustomerId,countRequestsByCustomerId,createRequestOn
 
 
 
-const {pageCalculator,range,urgencyColor,  subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
+const {pageCalculator,range,urgencyColor,  subMessage,properStringDate,deadlineTimeCalcul,titleMessage,titleMessageOn} = require ("./functions.controller")
 
 const customerTableFormat= ["Nom" ,"Numero" ,"email","action"]
 const customerFormFormat= ["Nom" ,"Numero" ,"email"]
@@ -20,11 +20,12 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 exports.customersDashboard= async (req, res, next) => { 
     const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
     pageNumberCustomers= pageCalculator(customersNumbers)
+    titleCustomers= titleMessage("customers",customers)
 res.render('customers/tableCustomers', {
     isAuthenticated: req.isAuthenticated(),
     currentUser:req.user,
     customers,
-    titleCustomers:"Clients",
+    titleCustomers,
     customerTableFormat,
     pageNumberCustomers,
     range,
@@ -48,14 +49,14 @@ exports.customerProfile= async (req, res, next) => {
     findCustomerById(customerId),
     findLimitedRequestsByCustomerIdWithCustomersAssociate(5,0,customerId),
     countRequestsByCustomerId(customerId)],)
-
+    titleRequests=titleMessageOn("requests",requests)
    pageNumberRequests= pageCalculator(requestsNumbers,5)
 
 res.render('customers/profileCustomer',{
     profile:true,
     customer,
     requests,
-    titleRequests:"Requetes sur le client ",
+    titleRequests,
     pageNumberRequests,
     requestTableFormat,
     subMessage,
@@ -72,11 +73,12 @@ exports.deleteCustomer=  async (req, res, next) => {
     await deleteCustomerById(customerId)
     const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
     pageNumberCustomers= pageCalculator(customersNumbers)
+    titleCustomers=titleMessage("customers",customers)
 res.render('customers/tableCustomers', {
     isAuthenticated: req.isAuthenticated(),
     currentUser:req.user,
     customers,
-    titleCustomers:"Clients",
+    titleCustomers,
     customerTableFormat,
     pageNumberCustomers,
     range,
@@ -86,21 +88,7 @@ res.render('customers/tableCustomers', {
 
 
 
-// exports.reportsDashboard= async (req, res, next) => { 
-//     const [reports,reportsNumbers]=await Promise.all([findLimitedReports(10,0),countReports()])
-//     pageNumber= pageCalculator(reportsNumbers)
-// res.render('reports/tableReports', {
-//     isAuthenticated: req.isAuthenticated(),
-//     currentUser:req.user,
-//     reports,
-//     title:"Reports",
-//     reportsTableFormat,
-//     pageNumber,
-//     range,
-//     subMessage,
-//     properStringDate
-// } )
-// }
+
 
 
 
@@ -111,11 +99,14 @@ exports.newCustomers=  async (req, res, next) => {
     await createCustomer(customerArray)
     const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
     pageNumberCustomers= pageCalculator(customersNumbers)
+    titleCustomers= titleMessage("customers", customers)
+
+
 res.render('customers/tableCustomers', {
     isAuthenticated: req.isAuthenticated(),
     currentUser:req.user,
     customers,
-    titleCustomers:"Clients",
+    titleCustomers,
     customerTableFormat,
     pageNumberCustomers,
     range,
@@ -127,19 +118,6 @@ res.render('customers/tableCustomers', {
 } 
 
 
-async (req, res, next) => { 
-    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
-    pageNumberCustomers= pageCalculator(customersNumbers)
-res.render('customers/tableCustomers', {
-    isAuthenticated: req.isAuthenticated(),
-    currentUser:req.user,
-    customers,
-    titleCustomers:"Clients",
-    customerTableFormat,
-    pageNumberCustomers,
-    range,
-} )
-}
 
 
 
@@ -150,13 +128,13 @@ exports.newRequestOnCustomer= async (req, res, next) => {
      findCustomerById(customerId),
      findLimitedRequestsByCustomerId(5,0,customerId),
      countRequestsByCustomerId(customerId)],)
- 
+        titleRequests=titleMessageOn("requests", requests)
     pageNumberRequests= pageCalculator(requestsNumbers,5)
  res.render('customers/profileCustomer',{
     profile:true,
      customer,
      requests,
-     titleRequests:"Requetes sur le client ",
+     titleRequests,
      pageNumberRequests,
      requestTableFormat,
      subMessage,

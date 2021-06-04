@@ -109,3 +109,46 @@ exports.deadlineTimeCalcul= (aDate)=>{
          
          return duree
     }
+
+
+    exports.titleMessageOn = function(type,object) { 
+        if (type=="requests"){
+                if (object.length){
+                        return "Requete(s) concernant le client"
+                } else{
+                        return "Il n'ya pour l'instant aucune requetes concernant le client "
+                }
+         } else if (type=="reports") {
+                if (object.length){
+                        return "Rapport(s) concernant la requete"
+                } else{
+                        return "Il n'ya pour l'instant aucun rapport pour cette requete"
+                }
+        }
+        }
+ 
+ 
+
+ exports.titleMessage= function(type,object) { 
+        if (type=="customers"){
+                if (object.length){
+                        return "Clients"
+                } else{
+                        return "Il n'ya pour l'instant aucun  client "
+                }
+        } else if (type=="requests") {
+                        if (object.length){
+                        return "Requetes"
+                        } else{
+                                return "Il n'ya pour l'instant aucune requete"
+                        }
+
+        }else if (type=="requests") {
+                if (object.length){
+                        return "Rapport(s)"
+                } else{
+                        return "Il n'ya pour l'instant aucun rapports"
+                }
+
+        }
+ }

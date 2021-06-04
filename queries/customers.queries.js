@@ -47,6 +47,7 @@ exports.findCustomerByName= (customerName)=> {
 
 exports.deleteCustomerById= (customerId)=> {
   return   Customer.findByIdAndDelete(customerId).exec()
+  
 }
 
 
