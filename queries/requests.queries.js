@@ -48,7 +48,7 @@ exports.getLimitedAlertRequestsWhithCustomers= (limit,skip)=> {
   return  Request.find({
     $and : [
     { $where: function() {
-      return (this.deadline-Date.now()< 1000 * 60 * 60 * 24 )
+      return (this.deadline-Date.now()> 1000 * 60 * 60 * 24 )
     }} ,
     {done:false},
   ]

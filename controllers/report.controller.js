@@ -7,8 +7,6 @@ const {pageCalculator,range,subMessage,properStringDate,urgencyColor,deadlineTim
 const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
 
-
-
     exports.reportsDashboard= async (req, res, next) => { 
         const [reports,reportsNumbers]=await Promise.all([findLimitedReports(10,0),countReports()])
         pageNumberReports= pageCalculator(reportsNumbers)
