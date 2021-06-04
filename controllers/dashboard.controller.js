@@ -10,7 +10,6 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 exports.waitDashboard =async (req, res, next) => {
     try {
 const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequestsWhithCustomers(5,0),countAlertedRequest()])
-console.log(requests)
 pageNumberRequests= pageCalculator(requestsNumbers,5)
 res.render('dashboard/theDashboard', {
     isAuthenticated: req.isAuthenticated(),

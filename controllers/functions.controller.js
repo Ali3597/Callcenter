@@ -72,7 +72,10 @@ exports.properStringDate = function(date) {
 }
 
 
-exports.deadlineTimeCalcul= (aDate)=>{
+exports.deadlineTimeCalcul= (aDate,done)=>{
+        if (done){
+                duree= "Requete Validé"
+        }else{
         dateNow=Date.now()
         ladate = Date.parse(aDate);
         diffDate= dateNow-ladate
@@ -106,6 +109,7 @@ exports.deadlineTimeCalcul= (aDate)=>{
                         duree= "Il reste"+jour+ " jour(s)"
                     }
         }
+}
          
          return duree
     }

@@ -31,15 +31,16 @@ function getCookie(cname) {
 }
 
 
-function transitionInnerHtml( response) {
+function transitionInnerHtml( response,time) {
   const content = document.querySelector(".MainContent")
-  content.innerHTML=response
+ 
 
-  // content.style.opacity=0
-  //  setTimeout(function() {
-  //   ontent.innerHTML=response
-  //   content.style.opacity=1
-  //     }, 500)
+  content.style.opacity=0
+  
+   setTimeout(function() {
+    content.innerHTML=response
+    content.style.opacity=1
+      }, time)
   
  
 
@@ -52,11 +53,16 @@ function tabsCenter() {
             tabTitleElement = tabAside.querySelector("h3").innerHTML.toLowerCase()
             axios.get('/dashboard/' +tabTitleElement ,)
             .then( response => {
+              time=400
             tabRemoveAddBlue(tabAside)
-           transitionInnerHtml(response.data)
-           makeCall()
+           transitionInnerHtml(response.data,time)
+           setTimeout(function() {
+            makeCall()
             consult()
+            if (tabTitleElement=="customers" || tabTitleElement=="requests"){
             showForm(tabTitleElement)
+            }
+              }, time)
             })
             .catch( err => {
               console.log(err);
@@ -112,14 +118,20 @@ function axioxProfile(idItem,typeOfTab){
   
   axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem)
     .then( response => {
-     
-      transitionInnerHtml(response.data)
-      showModal()
+      time=400
       tabRemoveAddBlue(giveYouTheRightTab(typeOfTab))
+      transitionInnerHtml(response.data,time)
+      
+      setTimeout(function() {
+        makeCall()
+        showModal()
+        if (typeOfTab!="reports"){
+        showForm(newElementOn(typeOfTab),idItem)
+        }
+        consult()
 
-      showForm(newElementOn(typeOfTab),idItem)
+          }, time)
      
-      consult()
     })
     .catch( err => {
       console.log(err);
@@ -155,8 +167,7 @@ tabAside.classList.add("blue")
 
 
 function showForm(tabTitleElement,item) {
-  console.log("laaa")
-  console.log(item)
+
   buttonForm = document.querySelector("#showForm")
   buttonForm.addEventListener("click", ()=>{
     axioxForm(tabTitleElement,item)
@@ -168,8 +179,13 @@ function axioxForm(tabTitleElement,item) {
 
 axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
     .then( response => {
-      transitionInnerHtml(response.data)
-      sendFormInfo(tabTitleElement)
+      time=400
+      transitionInnerHtml(response.data,time)
+      
+      setTimeout(function() {
+        sendFormInfo(tabTitleElement)
+          }, time)
+      
     })
     .catch( err => {
       console.log(err);
@@ -191,9 +207,14 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
 
       axios.post('/dashboard/' +tabTitleElement +'/new' ,{arrayValue})
         .then( response => {
-          transitionInnerHtml(response.data)
+          time=400
+          transitionInnerHtml(response.data,time)
+
+          setTimeout(function() {
             alert(DetermineMessage(tabTitleElement,"new" ))      
-            consult()        
+            consult()       
+              }, time)
+             
         })
         .catch( err => {
           errorpara.innerHTML= "Erreur dans le formulaire"
@@ -421,10 +442,14 @@ function  axioxModal (action,item,type){
 
   axios.get('/dashboard/' +type +'/'+action +'/' + item)
     .then( response => {
-      content.innerHTML= response.data
-      alert(DetermineMessage(type,action ))
-      showModal()
-      consult()
+      time=400
+      transitionInnerHtml(response.data)
+      setTimeout(function() {
+        alert(DetermineMessage(type,action ))
+        showModal()
+        consult()
+          }, time)
+     
     })
     .catch( err => {
       console.log(err);
@@ -497,10 +522,8 @@ if(type =="customers"){
 }
 
 function alert(message) {
-  console.log("allo")
-  console.log(message)
   alertP= document.querySelector(".alertMessage")
-  console.log(alertP)
+
   alertP.innerHTML=message
   alertP.classList.add("active")
   setTimeout(function(){

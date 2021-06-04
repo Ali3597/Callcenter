@@ -33,6 +33,7 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         findRequestByIdWithCustomersAssociate(requestId),
         findLimitedReportsByRequestsId(5,0,requestId),
         countReportsByRequestId(requestId)],)
+        
         titleReports=titleMessageOn("reports",reports)
         pageNumberReports= pageCalculator(reportsNumbers,5)
         
@@ -141,11 +142,8 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
     exports.newRequest=  async (req, res, next) => {
         try {
         currentUserId= req.user.id
-        console.log(req.user)
         requestArray =req.body.arrayValue
         customerId = requestArray[0]
-        console.log("customer")
-        console.log(customerId)
         await createRequest(requestArray,currentUserId)
         const [customer,requests,requestsNumbers]=await Promise.all([
         findCustomerById(customerId),
@@ -173,4 +171,26 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         }
         
     } 
+    
+
+
+    exports.searchRequests= async (req, res, next) => { 
+        const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
+        pageNumberRequests= pageCalculator(requestsNumbers,5)
+        titleRequests= titleMessage("requests",requests)
+    res.render('requests/tableRequests', {
+        isAuthenticated: req.isAuthenticated(),
+        currentUser:req.user,
+        requests,
+        titleRequests,
+        requestTableFormat,
+        pageNumberRequests,
+        subMessage,
+        range,
+        properStringDate,
+        urgencyColor,
+        deadlineTimeCalcul,
+        areWeInTherequest:true
+    } )
+    }
     

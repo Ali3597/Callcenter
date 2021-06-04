@@ -15,7 +15,7 @@ table(type="requests")
             td=subMessage(80,request.message)
             td=request.typeof
             td=properStringDate(request.date)
-            td=deadlineTimeCalcul(request.deadline)
+            td=deadlineTimeCalcul(request.deadline,request.done)
             td  
               span(class="dot" style="background-color:"+urgencyColor(request.urgencyLevel))
             td 

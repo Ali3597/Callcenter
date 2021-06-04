@@ -14,8 +14,6 @@ exports.findRequestById= (requestId)=> {
   return   Request.findOne({_id:requestId}).exec();
 }
 
-
-
   exports.countRequests= ()=> {
     return   Request.find({}).count().exec();
   }

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const {requestsDashboard,requestProfile,formNewRequest,deleteRequest,doneRequest,undoneRequest,newRequest} = require('../controllers/request.controller')
+const {requestsDashboard,requestProfile,formNewRequest,deleteRequest,doneRequest,undoneRequest,newRequest,searchRequests} = require('../controllers/request.controller')
 
 
 router.get('/',requestsDashboard)
@@ -10,6 +10,8 @@ router.get('/done/:requestId', doneRequest)
 router.get('/undone/:requestId',undoneRequest)
 router.post('/form', formNewRequest)
 router.post('/new', newRequest)
+router.post('/search',searchRequests)
+
 // router.get('/newreport/:requestId',newReportOnRequest)
 
 

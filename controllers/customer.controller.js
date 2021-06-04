@@ -95,7 +95,6 @@ res.render('customers/tableCustomers', {
 exports.newCustomers=  async (req, res, next) => {
     try {
     customerArray =req.body.arrayValue
-    console.log(req.body)
     await createCustomer(customerArray)
     const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
     pageNumberCustomers= pageCalculator(customersNumbers)
@@ -145,3 +144,20 @@ exports.newRequestOnCustomer= async (req, res, next) => {
  } )
  }
 
+
+
+
+ exports.searchCustomers= async (req, res, next) => { 
+    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
+    pageNumberCustomers= pageCalculator(customersNumbers)
+    titleCustomers= titleMessage("customers",customers)
+res.render('customers/tableCustomers', {
+    isAuthenticated: req.isAuthenticated(),
+    currentUser:req.user,
+    customers,
+    titleCustomers,
+    customerTableFormat,
+    pageNumberCustomers,
+    range,
+} )
+}
