@@ -31,10 +31,21 @@ function getCookie(cname) {
 }
 
 
+function transitionInnerHtml( response) {
+  const content = document.querySelector(".MainContent")
+  content.innerHTML=response
 
+  // content.style.opacity=0
+  //  setTimeout(function() {
+  //   ontent.innerHTML=response
+  //   content.style.opacity=1
+  //     }, 500)
+  
+ 
+
+}
 
 function tabsCenter() {
-    const content = document.querySelector(".MainContent")
     const tabsAside= document.querySelectorAll(".aside-bottom li")
     tabsAside.forEach(tabAside=>{
         tabAside.addEventListener("click",()=>{
@@ -42,7 +53,8 @@ function tabsCenter() {
             axios.get('/dashboard/' +tabTitleElement ,)
             .then( response => {
             tabRemoveAddBlue(tabAside)
-            content.innerHTML=response.data
+           transitionInnerHtml(response.data)
+           makeCall()
             consult()
             showForm(tabTitleElement)
             })
@@ -97,11 +109,11 @@ function consult(){
 
 
 function axioxProfile(idItem,typeOfTab){
-  content = document.querySelector(".MainContent")
+  
   axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem)
     .then( response => {
      
-      content.innerHTML= response.data
+      transitionInnerHtml(response.data)
       showModal()
       tabRemoveAddBlue(giveYouTheRightTab(typeOfTab))
 
@@ -153,12 +165,10 @@ function showForm(tabTitleElement,item) {
 }
 
 function axioxForm(tabTitleElement,item) {
-  console.log(item)
-  content = document.querySelector(".MainContent") 
 
 axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
     .then( response => {
-      content.innerHTML= response.data
+      transitionInnerHtml(response.data)
       sendFormInfo(tabTitleElement)
     })
     .catch( err => {
@@ -170,7 +180,6 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
 
 
   function sendFormInfo(tabTitleElement) {
-    const content = document.querySelector(".MainContent")
     errorpara= document.querySelector(".formError")
     formButton= document.querySelector("#sendNew")
     formButton.addEventListener("click",()=>{
@@ -182,9 +191,7 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
 
       axios.post('/dashboard/' +tabTitleElement +'/new' ,{arrayValue})
         .then( response => {
-          console.log(response)
-          console.log(response.data)
-            content.innerHTML= response.data  
+          transitionInnerHtml(response.data)
             alert(DetermineMessage(tabTitleElement,"new" ))      
             consult()        
         })
@@ -197,8 +204,7 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
 function getCall(number="1234566464") {
   const content = document.querySelector(".MainContent")
   right= document.querySelector(".call")
-  console.log("allor")
-  axios.post('/dashboard/call' ,{number})
+  axios.post('/dashboard/getcall' ,{number})
         .then( response => {
           right.innerHTML=response.data
           fadeIn()
@@ -208,7 +214,7 @@ function getCall(number="1234566464") {
           if (getCookie("callerId")=="unknow"){
             newClient()
           }else{
-            clientWeKnow()
+               listenClientWeKnow()
           }
         })
         .catch( err => {
@@ -217,21 +223,23 @@ function getCall(number="1234566464") {
 
 }
 
-function clientWeKnow() {
+function listenClientWeKnow() {
   answer = document.querySelector(".js-accept")
   answer.addEventListener("click",()=>{
-    content = document.querySelector(".MainContent")
-    customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
-    tabRemoveAddBlue(customerstab)
-    idItem=getCookie("callerId")
-    idItem = idItem.replace(/^"(.*)"$/, '$1');
-  
-    axioxProfile(idItem,"customers")
+   
+    activateClientWeKnow()
   })
   
 }
 
+ function activateClientWeKnow( ){
+  customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
+  tabRemoveAddBlue(customerstab)
+  idItem=getCookie("callerId")
+  idItem = idItem.replace(/^"(.*)"$/, '$1');
 
+  axioxProfile(idItem,"customers")
+ }
 
 
 function newClient() {
@@ -502,3 +510,38 @@ function alert(message) {
 
 
 
+
+function makeCall(){
+  callElements = document.querySelectorAll(".makeCall")
+  right= document.querySelector(".call")
+  callElements.forEach(callElement=>{
+    callElement.addEventListener("click",()=>{
+      number=callElement.querySelector(":first-child").innerHTML
+      axios.post('/dashboard/makecall' ,{number})
+        .then( response => {
+          right.innerHTML=response.data
+          fadeIn()
+          closeCall(right)
+          activateClientWeKnow()
+            setTimeout(function() {clientAnswer()
+      }, 5000)
+          
+        })
+        .catch( err => {
+          console.log(err);
+        })      
+      
+    })
+    
+  })
+
+}
+
+
+function clientAnswer(){
+  animationAnswer()
+  setCounter()
+  callInfo = document.querySelector(".js-callInfo")
+  callInfo.innerHTML="En cours"
+
+}

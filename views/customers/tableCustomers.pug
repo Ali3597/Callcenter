@@ -9,10 +9,13 @@ table(type="customers")
   tbody
       each customer in customers  
           tr(id=customer._id)
+            td(class="tdImageName")
+              img(src=customer.avatar class=("imgAvatar") )
+              p=customer.name 
             td
-                img(src=customer.avatar class=("imgAvatar") )
-            td=customer.name 
-            td=customer.number
+              div(class="makeCall")
+                span=customer.number
+                i(class="fas fa-phone")
             td=customer.email
             td(id="consult") Consultez
 if pageNumberCustomers>1

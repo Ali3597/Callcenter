@@ -620,6 +620,11 @@ table th {
 }
 
 .MainContent {
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+  -ms-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
   border: #000000 solid 1px;
   flex: 1;
 }
@@ -794,6 +799,7 @@ table th {
   width: fit-content;
   background-color: #00c1dd;
   display: flex;
+  align-items: center;
 }
 
 .detailprofileCustomer h2 {
@@ -982,4 +988,32 @@ table th {
 
 .alertMessage.active {
   display: flex;
+}
+
+.tdImageName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tdImageName img {
+  height: 20%;
+  border-radius: 50%;
+  margin-right: 4%;
+  border: 1px solid black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.makeCall {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.makeCall:hover > i {
+  color: green;
 }

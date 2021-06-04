@@ -7,7 +7,7 @@ const {findLimitedRequestsByCustomerId,countRequestsByCustomerId,createRequestOn
 
 const {pageCalculator,range,urgencyColor,  subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
 
-const customerTableFormat= ["avatar","Nom" ,"Numero" ,"email","action"]
+const customerTableFormat= ["Nom" ,"Numero" ,"email","action"]
 const customerFormFormat= ["Nom" ,"Numero" ,"email"]
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
 

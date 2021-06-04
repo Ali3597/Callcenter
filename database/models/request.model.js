@@ -26,7 +26,19 @@ requests.forEach(request=> {
   next()
 });
   
+
+
+requestSchema.post('findOneAndDelete', async    function(next) {
+  console.log(this._conditions.customer)
+requests =  await  Request.find({customer: this._conditions.customer})
+requests.forEach(request=> {
+  Report.updateMany({},{$pull: {request:request._id}},{multi:true}).exec()
+
+  })
+  next()
+});
  
+
 
 const Request = mongoose.model('request', requestSchema);
 

@@ -3,8 +3,9 @@ h1 Profil
 div(class="titreprofileCustomer")
     img(src=customer.avatar class="imgAvatar" )
     div(class="detailprofileCustomer")
-        i(class="fas fa-phone-square-alt")
-        h2=customer.number
+        div(class="makeCall")
+            h2=customer.number
+            i(class="fas fa-phone")
         h2=customer.name
         h2=customer.email
 div(class="contentprofileCustomer")

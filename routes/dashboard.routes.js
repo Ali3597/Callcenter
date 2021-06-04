@@ -3,10 +3,11 @@ const home = require('./home.routes');
 const customers = require('./customers.routes');
 const requests = require('./requests.routes');
 const reports = require('./reports.routes');
-const {waitDashboard,getCall} = require('../controllers/dashboard.controller')
+const {waitDashboard,getCall,makeCall} = require('../controllers/dashboard.controller')
 
 router.get('/', waitDashboard)
-router.post('/call', getCall)
+router.post('/getcall', getCall)
+router.post('/makecall', makeCall)
 router.use('/home', home)
 router.use('/customers', customers)
 router.use('/requests', requests)

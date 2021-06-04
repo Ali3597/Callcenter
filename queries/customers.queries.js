@@ -23,6 +23,11 @@ exports.findCustomerById= (customerId)=> {
   return   Customer.findOne({_id:customerId}).exec();
 }
 
+exports.getCustomeByNumber= (customerNumber)=> {
+  return   Customer.findOne({number:customerNumber}).exec();
+}
+
+
 exports.countCustomers= ()=> {
 
   return   Customer.find({}).count().exec();

@@ -18,8 +18,9 @@ audio(id="telephoneRing" src="mp3/telephone.mp3" preload="auto" )
           .Card-actionButton.Card-actionButton--decline
             i.material-icons 
           p Raccrocher 
-        .Card-action.js-accept
-          .Card-actionButton.Card-actionButton--accept
-            i.material-icons 
-          p Repondre 
+        if getcall
+          .Card-action.js-accept
+            .Card-actionButton.Card-actionButton--accept
+              i.material-icons 
+            p Repondre 
       p(class="timer")

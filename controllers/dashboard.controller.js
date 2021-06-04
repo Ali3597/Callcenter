@@ -1,5 +1,5 @@
 const { json } = require('express')
-const {doWeKnowThisNumber}= require('../queries/customers.queries')
+const {doWeKnowThisNumber,getCustomeByNumber}= require('../queries/customers.queries')
 const {getLimitedAlertRequestsWhithCustomers,countAlertedRequest} = require('../queries/requests.queries')
 const {pageCalculator,range,urgencyColor,subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
@@ -63,7 +63,25 @@ exports.getCall = async (req, res, next) => {
         res.cookie('callerNumber',customerNumber)
     }
     
-    res.render('dashboard/call',{customerName,customerNumber} )
+    res.render('dashboard/call',{
+        customerName  ,
+        customerNumber,
+        getcall:true
     }
+         )
+    }
+
+
+    exports.makeCall = async (req, res, next) => {
+        customerNumber= req.body.number
+        customer= await getCustomeByNumber(customerNumber)
+        customerName=customer.name
+        res.cookie('callerId',JSON.stringify(customer._id))
+        res.cookie('callerNumber',customerNumber)
+        
+        
+        res.render('dashboard/call',{customerName,customerNumber} )
+        }
   
     
+        
