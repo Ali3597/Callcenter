@@ -443,6 +443,7 @@ table {
   padding: 0;
   width: 100%;
   table-layout: fixed;
+  background-color: red;
 }
 
 table caption {
@@ -474,7 +475,7 @@ table th {
   }
 
   table caption {
-    font-size: 1.3em;
+    font-size: 1em;
   }
 
   table thead {
@@ -515,6 +516,9 @@ table th {
   table td:last-child {
     border-bottom: 0;
   }
+}
+td {
+  min-height: 100px;
 }
 
 .form-style-7 {
@@ -779,12 +783,6 @@ table th {
   flex-direction: column;
 }
 
-.requestprofileCustomer table {
-  font-size: small;
-}
-.reportprofileCustomer table {
-  font-size: small;
-}
 .reportprofileCustomer {
   background-color: #333d45;
 }

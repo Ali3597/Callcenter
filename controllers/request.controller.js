@@ -141,7 +141,7 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
 
     exports.newRequest=  async (req, res, next) => {
         try {
-        currentUserId= req.user.id
+        currentUserId= req.user._id
         requestArray =req.body.arrayValue
         customerId = requestArray[0]
         await createRequest(requestArray,currentUserId)
@@ -174,23 +174,7 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
     
 
 
-    exports.searchRequests= async (req, res, next) => { 
-        const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
-        pageNumberRequests= pageCalculator(requestsNumbers,5)
-        titleRequests= titleMessage("requests",requests)
-    res.render('requests/tableRequests', {
-        isAuthenticated: req.isAuthenticated(),
-        currentUser:req.user,
-        requests,
-        titleRequests,
-        requestTableFormat,
-        pageNumberRequests,
-        subMessage,
-        range,
-        properStringDate,
-        urgencyColor,
-        deadlineTimeCalcul,
-        areWeInTherequest:true
-    } )
-    }
+
     
+    
+   

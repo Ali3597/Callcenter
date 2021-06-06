@@ -1,9 +1,10 @@
 table(type="customers")
-  .wrap
-    .search
-      input.searchTerm(type='text' placeholder='What are you looking for?')
-      button.searchButton(type='submit')
-        i.fa.fa-search
+  if (!profile)
+    .wrap
+      .search
+        input.searchTerm(type='text' placeholder='What are you looking for?')
+        button.searchButton(type='submit')
+          i.fa.fa-search
 
   caption=titleCustomers  
 

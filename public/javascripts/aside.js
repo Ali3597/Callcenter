@@ -31,19 +31,92 @@ function getCookie(cname) {
 }
 
 
+
+
+function whichProfileActivate( table,item){
+  if (table=="customers"){
+    activateProfileCustomers(item)
+  }else if (table=="requests"){
+    activateProfileRequests(item)
+  }else if (table=="reports"){
+    activateProfileReports()
+  }
+}
+
+
+function whichTableActivate( table){
+  if (table=="customers"){
+    activateTableCustomers()
+  }else if (table=="requests"){
+   activateTableRequests()
+  }else if (table=="reports"){
+    activateTableReports()
+  }
+}
+
+
+function activateProfileCustomers(item){
+  consult()
+  makeCall()
+  showModal()
+  showForm("requests",item)
+}
+
+
+
+function activateProfileRequests(item){
+  consult()
+  makeCall()
+  showModal()
+  showForm("customers",item)
+  
+}
+
+
+function activateProfileReports(){
+  consult()
+  
+}
+
+
+function activateTableCustomers(){
+  consult()
+  makeCall()
+  showForm("customers")
+  search("customers")
+  
+}
+
+
+function activateTableRequests(){
+  consult()
+  makeCall()
+  showForm("requests")
+  search("requests")
+  console.log("allo")
+  
+}
+
+
+
+
+function activateTableReports(){
+  consult()
+  
+}
+
+
+
+
+
+
 function transitionInnerHtml( response,time) {
   const content = document.querySelector(".MainContent")
- 
-
   content.style.opacity=0
-  
    setTimeout(function() {
     content.innerHTML=response
     content.style.opacity=1
       }, time)
-  
- 
-
 }
 
 function tabsCenter() {
@@ -53,15 +126,12 @@ function tabsCenter() {
             tabTitleElement = tabAside.querySelector("h3").innerHTML.toLowerCase()
             axios.get('/dashboard/' +tabTitleElement ,)
             .then( response => {
-              time=400
+              time=150
             tabRemoveAddBlue(tabAside)
            transitionInnerHtml(response.data,time)
            setTimeout(function() {
-            makeCall()
-            consult()
-            if (tabTitleElement=="customers" || tabTitleElement=="requests"){
-            showForm(tabTitleElement)
-            }
+             console.log(tabTitleElement)
+            whichTableActivate( tabTitleElement)
               }, time)
             })
             .catch( err => {
@@ -118,18 +188,11 @@ function axioxProfile(idItem,typeOfTab){
   
   axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem)
     .then( response => {
-      time=400
+      time=150
       tabRemoveAddBlue(giveYouTheRightTab(typeOfTab))
       transitionInnerHtml(response.data,time)
-      
       setTimeout(function() {
-        makeCall()
-        showModal()
-        if (typeOfTab!="reports"){
-        showForm(newElementOn(typeOfTab),idItem)
-        }
-        consult()
-
+        whichProfileActivate(typeOfTab,idItem)
           }, time)
      
     })
@@ -179,7 +242,7 @@ function axioxForm(tabTitleElement,item) {
 
 axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
     .then( response => {
-      time=400
+      time=150
       transitionInnerHtml(response.data,time)
       
       setTimeout(function() {
@@ -207,14 +270,12 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
 
       axios.post('/dashboard/' +tabTitleElement +'/new' ,{arrayValue})
         .then( response => {
-          time=400
+          time=150
           transitionInnerHtml(response.data,time)
-
           setTimeout(function() {
-            alert(DetermineMessage(tabTitleElement,"new" ))      
-            consult()       
-              }, time)
-             
+            alert(DetermineMessage(tabTitleElement,"new" ))     
+            whichTableActivate(tabTitleElement)  
+              }, time)    
         })
         .catch( err => {
           errorpara.innerHTML= "Erreur dans le formulaire"
@@ -408,6 +469,7 @@ function showModal() {
  })
 })
 
+
 function chooseModalMessage(action,type){
   if(type =="customers"){
     if (action=="delete"){
@@ -442,14 +504,12 @@ function  axioxModal (action,item,type){
 
   axios.get('/dashboard/' +type +'/'+action +'/' + item)
     .then( response => {
-      time=400
+      time=150
       transitionInnerHtml(response.data)
       setTimeout(function() {
         alert(DetermineMessage(type,action ))
-        showModal()
-        consult()
+        whichProfileActivate(type)
           }, time)
-     
     })
     .catch( err => {
       console.log(err);
@@ -566,4 +626,28 @@ function clientAnswer(){
   setCounter()
   callInfo = document.querySelector(".js-callInfo")
   callInfo.innerHTML="En cours"
+}
+
+
+
+function search(table){
+  buttonSearch = document.querySelector(".searchButton")
+ content = document.querySelector(".MainContent")
+  buttonSearch.addEventListener("click",()=>{
+    console.log("on cherche ")
+    searchValue=  buttonSearch.parentNode.querySelector("input").value
+    axios.post('/dashboard/' +table +'/search',{searchValue})
+    .then( response => {
+      content.innerHTML=response.data
+      whichTableActivate(table)
+
+    })
+    .catch( err => {
+      console.log(err);
+    }) 
+      
+
+
+  })
+   
 }

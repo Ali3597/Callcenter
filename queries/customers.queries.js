@@ -55,3 +55,21 @@ exports.findCustomersAlphabeticallySorted=(limit,skip)=>{
   return   Customer.find({}).sort({name:1}).exec();
 
 }
+
+
+
+exports.findCustomersLikeNameLimited = (search,limit,skip) => {
+  const regExp = `^${ search }`;
+  const reg = new RegExp(regExp);
+  console.log(reg)
+  return Customer.find({ name: { $regex: reg } }).limit(limit).skip(skip).exec();
+}
+
+
+exports.countCustomersLikeName = (search) => {
+  const regExp = `^${ search }`;
+  const reg = new RegExp(regExp);
+  
+  return Customer.find({ name: { $regex: reg } }).count().exec();
+}
+

@@ -1,5 +1,5 @@
 
-const {createCustomer,findLimitedCustomers,countCustomers,findCustomerById,findCustomerByName,deleteCustomerById} = require ("../queries/customers.queries")
+const {createCustomer,findLimitedCustomers,countCustomers,findCustomerById,findCustomerByName,findCustomersLikeNameLimited,countCustomersLikeName,deleteCustomerById} = require ("../queries/customers.queries")
 const {findLimitedRequestsByCustomerId,countRequestsByCustomerId,createRequestOnCustomerId,findLimitedRequestsByCustomerIdWithCustomersAssociate}= require ('../queries/requests.queries')
 
 
@@ -148,12 +148,14 @@ exports.newRequestOnCustomer= async (req, res, next) => {
 
 
  exports.searchCustomers= async (req, res, next) => { 
-    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
+     searchValue = req.body.searchValue
+    const [customers,customersNumbers]=await Promise.all([findCustomersLikeNameLimited(searchValue,10,0),countCustomersLikeName(searchValue)])
+    console.log(searchValue)
+    console.log(customers)
     pageNumberCustomers= pageCalculator(customersNumbers)
     titleCustomers= titleMessage("customers",customers)
 res.render('customers/tableCustomers', {
-    isAuthenticated: req.isAuthenticated(),
-    currentUser:req.user,
+    
     customers,
     titleCustomers,
     customerTableFormat,

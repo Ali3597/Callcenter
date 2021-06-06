@@ -111,24 +111,6 @@ exports.newReport=  async (req, res, next) => {
 
 
 
-        exports.searchReports= async (req, res, next) => { 
-            const [reports,reportsNumbers]=await Promise.all([findLimitedReports(10,0),countReports()])
-            pageNumberReports= pageCalculator(reportsNumbers)
-            titleReports= titleMessage("reports", reports)
-        res.render('reports/tableReports', {
-            isAuthenticated: req.isAuthenticated(),
-            currentUser:req.user,
-            reports,
-            titleReports,
-            reportsTableFormat,
-            pageNumberReports,
-            areWeInTheReport:true,
-            range,
-            subMessage,
-            properStringDate
-        } )
-        }
-    
         
 
          
