@@ -16,27 +16,27 @@ const requestSchema = schema({
 });
 
 
-requestSchema.post('deleteMany', async    function(next) {
-  console.log(this._conditions.customer)
-requests =  await  Request.find({customer: this._conditions.customer})
-requests.forEach(request=> {
-  Report.updateMany({},{$pull: {request:request._id}},{multi:true}).exec()
+// requestSchema.post('deleteMany', async    function(next) {
+//   console.log(this._conditions.customer)
+// requests =  await  Request.find({customer: this._conditions.customer})
+// requests.forEach(request=> {
+//   Report.updateMany({},{$pull: {request:request._id}},{multi:true}).exec()
 
-  })
-  next()
-});
+//   })
+//   next()
+// });
   
 
 
-requestSchema.post('findOneAndDelete', async    function(next) {
-  console.log(this._conditions.customer)
-requests =  await  Request.find({customer: this._conditions.customer})
-requests.forEach(request=> {
-  Report.updateMany({},{$pull: {request:request._id}},{multi:true}).exec()
+// requestSchema.post('findOneAndDelete', async    function(next) {
+//   console.log(this._conditions.customer)
+// requests =  await  Request.find({customer: this._conditions.customer})
+// requests.forEach(request=> {
+//   Report.updateMany({},{$pull: {request:request._id}},{multi:true}).exec()
 
-  })
-  next()
-});
+//   })
+//   next()
+// });
  
 
 

@@ -76,7 +76,7 @@ exports.deadlineTimeCalcul= (aDate,done)=>{
         if (done){
                 duree= "Requete Validé"
         }else{
-        dateNow=Date.now()
+        dateNow= Date.now()
         ladate = Date.parse(aDate);
         diffDate= dateNow-ladate
         if (diffDate>0){
@@ -95,9 +95,9 @@ exports.deadlineTimeCalcul= (aDate,done)=>{
             }
         }else{
                 diffDate=Math.abs(diffDate)      
-                seconds = Math.floor((diffDate / 1000) % 60) ;
-                minutes = Math.floor(((diffDate / (1000*60)) % 60));
-                hours   = Math.floor(((diffDate / (1000*60*60)) % 24));
+                seconds = Math.floor((diffDate / 1000) ) ;
+                minutes = Math.floor(((diffDate / (1000*60)) ));
+                hours   = Math.floor(((diffDate / (1000*60*60)) ));
                 jour= Math.floor(hours/24)  
                 if (hours==0 && minutes==0){
                         duree= "Il reste "+seconds + " secondes"

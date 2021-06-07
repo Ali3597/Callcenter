@@ -1,4 +1,5 @@
 
+const { request } = require('express')
 const {doWeKnowThisNumber,getCustomeByNumber}= require('../queries/customers.queries')
 const {getLimitedAlertRequestsWhithCustomers,countAlertedRequest} = require('../queries/requests.queries')
 const {pageCalculator,range,urgencyColor,subMessage,properStringDate,deadlineTimeCalcul} = require ("./functions.controller")
@@ -33,9 +34,13 @@ res.render('dashboard/theDashboard', {
 
 
 exports.homeDashboard = async  (req, res, next) => {
-const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequestsWhithCustomers(5,0),countAlertedRequest()])
+    page = req.params.page
+    skip = (5*page)-5
+const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequestsWhithCustomers(5,skip),countAlertedRequest()])
+console.log(requests)
 pageNumberRequests= pageCalculator(requestsNumbers,5)
 res.render('includes/center', {
+    page,
     titleRequests:"Les requestes qui doivent etre traité",
     title: "Accueil",
     requests,

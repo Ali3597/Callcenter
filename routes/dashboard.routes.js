@@ -1,14 +1,13 @@
 const router = require('express').Router();
-const home = require('./home.routes');
 const customers = require('./customers.routes');
 const requests = require('./requests.routes');
 const reports = require('./reports.routes');
-const {waitDashboard,getCall,makeCall} = require('../controllers/dashboard.controller')
+const {waitDashboard,getCall,makeCall,homeDashboard } = require('../controllers/dashboard.controller')
 
 router.get('/', waitDashboard)
 router.post('/getcall', getCall)
 router.post('/makecall', makeCall)
-router.use('/home', home)
+router.use('/home/:page', homeDashboard )
 router.use('/customers', customers)
 router.use('/requests', requests)
 router.use('/reports', reports)

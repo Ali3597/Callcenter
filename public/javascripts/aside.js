@@ -4,6 +4,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
     tabsCenter()
     closeModal()
     stopPropagationModal()
+    changePage("home")
 
 
     // setTimeout(function() {
@@ -51,6 +52,8 @@ function whichTableActivate( table){
    activateTableRequests()
   }else if (table=="reports"){
     activateTableReports()
+  }else if (table=="home"){
+   activateTableHome()
   }
 }
 
@@ -60,6 +63,7 @@ function activateProfileCustomers(item){
   makeCall()
   showModal()
   showForm("requests",item)
+  changePageOnProfile("customers")
 }
 
 
@@ -68,9 +72,11 @@ function activateProfileRequests(item){
   consult()
   makeCall()
   showModal()
-  showForm("customers",item)
+  showForm("reports",item)
   
 }
+
+
 
 
 function activateProfileReports(){
@@ -79,11 +85,18 @@ function activateProfileReports(){
 }
 
 
+function activateTableHome(){
+  consult()
+  changePage("home")
+  
+}
+
 function activateTableCustomers(){
   consult()
   makeCall()
   showForm("customers")
   search("customers")
+  changePage("customers")
   
 }
 
@@ -92,8 +105,8 @@ function activateTableRequests(){
   consult()
   makeCall()
   showForm("requests")
-  search("requests")
-  console.log("allo")
+  
+  changePage("requests")
   
 }
 
@@ -124,7 +137,7 @@ function tabsCenter() {
     tabsAside.forEach(tabAside=>{
         tabAside.addEventListener("click",()=>{
             tabTitleElement = tabAside.querySelector("h3").innerHTML.toLowerCase()
-            axios.get('/dashboard/' +tabTitleElement ,)
+            axios.get('/dashboard/' +tabTitleElement + '/1' ,)
             .then( response => {
               time=150
             tabRemoveAddBlue(tabAside)
@@ -175,7 +188,7 @@ function consult(){
     consultButton.addEventListener("click",()=>{
       idItem= consultButton.parentNode.getAttribute("id")
 
-      axioxProfile(idItem,typeOfTab)
+      axioxProfile(idItem,typeOfTab,1)
 
     })
    
@@ -184,9 +197,9 @@ function consult(){
 }
 
 
-function axioxProfile(idItem,typeOfTab){
+function axioxProfile(idItem,typeOfTab,page){
   
-  axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem)
+  axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem+'/'+page)
     .then( response => {
       time=150
       tabRemoveAddBlue(giveYouTheRightTab(typeOfTab))
@@ -401,8 +414,12 @@ function closeCall(right) {
   decline.addEventListener("click",()=>{
     fadeOut(callPart,centerPart)
     right.innerHTML=""
+    
     document.cookie = "callerNumber= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+    console.log("ouuulala")
+    console.log("iciiiiii")
     document.cookie = "callerId= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+    console.log(document.cookie)
   })
   
 }
@@ -650,4 +667,45 @@ function search(table){
 
   })
    
+}
+
+
+
+function changePage(tabTitleElement){
+  pages = document.querySelectorAll(".pagination-page-number")
+
+
+  pages.forEach(page=>{
+  page.addEventListener("click",()=>{
+   
+    axios.get('/dashboard/' +tabTitleElement + '/'+ page.innerHTML ,)
+    .then( response => {
+      time=150
+   transitionInnerHtml(response.data,time)
+   setTimeout(function() {
+    whichTableActivate( tabTitleElement)
+      }, time)
+    })
+    .catch( err => {
+      console.log(err);
+    })       
+
+  })
+})
+
+
+}
+
+
+
+function changePageOnProfile(tabTitleElement){
+  pages = document.querySelectorAll(".pagination-page-number")
+  idItem= document.querySelector(".profileButton").getAttribute("id")
+  pages.forEach(page=>{
+  page.addEventListener("click",()=>{
+   axioxProfile(idItem,tabTitleElement,page.innerHTML)
+  })
+})
+
+
 }

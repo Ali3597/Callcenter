@@ -443,7 +443,6 @@ table {
   padding: 0;
   width: 100%;
   table-layout: fixed;
-  background-color: red;
 }
 
 table caption {
@@ -516,9 +515,6 @@ table th {
   table td:last-child {
     border-bottom: 0;
   }
-}
-td {
-  min-height: 100px;
 }
 
 .form-style-7 {
@@ -710,12 +706,14 @@ td {
   z-index: 2;
   font-weight: 700;
   font-size: 18px;
+  cursor: pointer;
 }
 .pagination-page-number:hover {
-  color: #fff;
+  color: grey;
 }
 .pagination-page-number.active {
-  color: #fff;
+  background-color: red;
+  border-radius: 50px;
 }
 
 .tab {
@@ -730,7 +728,6 @@ td {
   align-items: center;
   height: 100%;
   width: 100%;
-  padding-bottom: 3%;
 }
 .buttonIs button {
   margin: 2%;
@@ -773,10 +770,6 @@ td {
   flex: 1;
 }
 
-.contentprofileCustomer div {
-  width: 100%;
-}
-
 .requestprofileCustomer {
   background-color: blue;
   display: flex;
@@ -812,13 +805,11 @@ td {
   height: 100%;
 }
 
-.homeContent div {
-  width: 100%;
-  height: 100%;
-}
-
 .Warning {
   background-color: #810e05;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .Warning h1 {
   width: 100%;

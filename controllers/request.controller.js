@@ -6,10 +6,13 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
 
     exports.requestsDashboard= async (req, res, next) => { 
-        const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,0),countRequests()])
+        page = req.params.page
+        skip = (5*page)-5
+        const [requests,requestsNumbers]=await Promise.all([findLimitedRequests(5,skip),countRequests()])
         pageNumberRequests= pageCalculator(requestsNumbers,5)
         titleRequests= titleMessage("requests",requests)
     res.render('requests/tableRequests', {
+        page,
         isAuthenticated: req.isAuthenticated(),
         currentUser:req.user,
         requests,

@@ -9,13 +9,13 @@ const customerSchema = schema({
   avatar: {type : String, default:'/images/téléchargement.jfif'}, 
 });
 
-customerSchema.pre('findOneAndDelete', function(next) {
-console.log(this._conditions)
+// customerSchema.pre('findOneAndDelete', function(next) {
+// console.log(this._conditions)
 
-Request.deleteMany({customer : this._conditions._id}).exec()
-next()
+// Request.deleteMany({customer : this._conditions._id}).exec()
+// next()
 
-})
+// })
 
 
 

@@ -32,7 +32,10 @@ if pageNumberRequests>1
         span.icon-pagination.icon-pagination-prev
             i(class="fas fa-arrow-left")
       each i in range(1,pageNumberRequests)
-          a.pagination-page-number(href='#0')=i 
+          if page==i
+            a.pagination-page-number.active=i 
+          else 
+            a.pagination-page-number=i 
       a.pagination-next(href='#0')
         span.icon-pagination.icon-pagination-next
             i(class="fas fa-arrow-left")

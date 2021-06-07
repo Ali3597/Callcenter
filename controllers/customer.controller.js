@@ -18,10 +18,13 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 
 
 exports.customersDashboard= async (req, res, next) => { 
-    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
-    pageNumberCustomers= pageCalculator(customersNumbers)
+    page = req.params.page
+    skip = (5*page)-5
+    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(5,skip),countCustomers()])
+    pageNumberCustomers= pageCalculator(customersNumbers,5)
     titleCustomers= titleMessage("customers",customers)
 res.render('customers/tableCustomers', {
+    page,
     isAuthenticated: req.isAuthenticated(),
     currentUser:req.user,
     customers,
@@ -44,13 +47,15 @@ res.render('customers/formCustomers', {
 
 
 exports.customerProfile= async (req, res, next) => { 
+    page = req.params.page
+    skip = (3*page)-3
    const  customerId=  req.params.customerId;
    const [customer,requests,requestsNumbers]=await Promise.all([
     findCustomerById(customerId),
-    findLimitedRequestsByCustomerIdWithCustomersAssociate(5,0,customerId),
+    findLimitedRequestsByCustomerIdWithCustomersAssociate(3,skip,customerId),
     countRequestsByCustomerId(customerId)],)
     titleRequests=titleMessageOn("requests",requests)
-   pageNumberRequests= pageCalculator(requestsNumbers,5)
+   pageNumberRequests= pageCalculator(requestsNumbers,3)
 
 res.render('customers/profileCustomer',{
     profile:true,
@@ -71,8 +76,8 @@ res.render('customers/profileCustomer',{
 exports.deleteCustomer=  async (req, res, next) => { 
     const  customerId=  req.params.customerId
     await deleteCustomerById(customerId)
-    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
-    pageNumberCustomers= pageCalculator(customersNumbers)
+    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(5,0),countCustomers()])
+    pageNumberCustomers= pageCalculator(customersNumbers,5)
     titleCustomers=titleMessage("customers",customers)
 res.render('customers/tableCustomers', {
     isAuthenticated: req.isAuthenticated(),
@@ -96,8 +101,8 @@ exports.newCustomers=  async (req, res, next) => {
     try {
     customerArray =req.body.arrayValue
     await createCustomer(customerArray)
-    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(10,0),countCustomers()])
-    pageNumberCustomers= pageCalculator(customersNumbers)
+    const [customers,customersNumbers]=await Promise.all([findLimitedCustomers(5,0),countCustomers()])
+    pageNumberCustomers= pageCalculator(customersNumbers,5)
     titleCustomers= titleMessage("customers", customers)
 
 
@@ -125,10 +130,10 @@ exports.newRequestOnCustomer= async (req, res, next) => {
      await createRequestOnCustomerId(customerId)
     const [customer,requests,requestsNumbers]=await Promise.all([
      findCustomerById(customerId),
-     findLimitedRequestsByCustomerId(5,0,customerId),
+     findLimitedRequestsByCustomerIdWithCustomersAssociate(3,0,customerId),
      countRequestsByCustomerId(customerId)],)
-        titleRequests=titleMessageOn("requests", requests)
-    pageNumberRequests= pageCalculator(requestsNumbers,5)
+    titleRequests=titleMessageOn("requests", requests)
+    pageNumberRequests= pageCalculator(requestsNumbers,3)
  res.render('customers/profileCustomer',{
     profile:true,
      customer,
@@ -149,10 +154,10 @@ exports.newRequestOnCustomer= async (req, res, next) => {
 
  exports.searchCustomers= async (req, res, next) => { 
      searchValue = req.body.searchValue
-    const [customers,customersNumbers]=await Promise.all([findCustomersLikeNameLimited(searchValue,10,0),countCustomersLikeName(searchValue)])
+    const [customers,customersNumbers]=await Promise.all([findCustomersLikeNameLimited(searchValue,5,0),countCustomersLikeName(searchValue)])
     console.log(searchValue)
     console.log(customers)
-    pageNumberCustomers= pageCalculator(customersNumbers)
+    pageNumberCustomers= pageCalculator(customersNumbers,5)
     titleCustomers= titleMessage("customers",customers)
 res.render('customers/tableCustomers', {
     
@@ -163,3 +168,5 @@ res.render('customers/tableCustomers', {
     range,
 } )
 }
+
+

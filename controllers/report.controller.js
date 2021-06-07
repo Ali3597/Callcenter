@@ -8,8 +8,10 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
 const requestTableFormat= ["customer","message", "type" ,"date","deadline","Niveau d'urgence ","done","Action"]
 
     exports.reportsDashboard= async (req, res, next) => { 
-        const [reports,reportsNumbers]=await Promise.all([findLimitedReports(10,0),countReports()])
-        pageNumberReports= pageCalculator(reportsNumbers)
+        page = req.params.page
+        skip = (5*page)-5
+        const [reports,reportsNumbers]=await Promise.all([findLimitedReports(5,0),countReports()])
+        pageNumberReports= pageCalculator(reportsNumbers,5)
         titleReports= titleMessage("reports", reports)
     res.render('reports/tableReports', {
         isAuthenticated: req.isAuthenticated(),
@@ -28,13 +30,15 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
 
     exports.reportProfile= async (req, res, next) => { 
         const  reportId=  req.params.reportId;
-        const report= await findReportAndRelatedRequestsByIdAndAuthor(reportId)
+        const report = await    findReportAndRelatedRequestsByIdAndAuthor(reportId),
         requests= report.request
+        titleRequests=titleMessageOn("request",requests)
+        pageNumberRequests= 1
      res.render('reports/reportProfile',{
          report,
          requests,
          titleRequests:"Requetes relié a ce rapport",
-         pageNumberReports,
+         pageNumberRequests,
          requestTableFormat,
          subMessage,
          range,
@@ -43,12 +47,14 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
          deadlineTimeCalcul
      } )
      }
+    
+     
 
      exports.deleteReport= async (req, res, next) => { 
         const  reportId=  req.params.reportId;
         await deleteReportById(reportId)
         const [reports,reportsNumbers]=await Promise.all([findLimitedReports(10,0),countReports()])
-        pageNumberReports= pageCalculator(reportsNumbers)
+        pageNumberReports= pageCalculator(reportsNumbers,5)
         titleReports= titleMessage("reports", reports)
     res.render('reports/tableReports', {
         isAuthenticated: req.isAuthenticated(),
