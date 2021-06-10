@@ -12,7 +12,11 @@ module.exports = {
 var ari = require('ari-client');
 var util = require('util');
 const {clientLoaded }= require('./asterisk/index')
-ari.connect('http://192.168.1.12:8088', 'asterisk', 'asterisk', clientLoaded);
+ipAsterisk= "192.168.1.12"
+PortAsterisk="8088"
+userAsterisk="asterisk"
+mdpAsterisk="asterisk"
+ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk, clientLoaded);
 
 app.use(cookieParser());
 require("./config/jwt.config");
