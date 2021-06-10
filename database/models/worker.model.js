@@ -16,15 +16,20 @@ const workerSchema = schema({
 
 
 
-workerSchema.statics.hashPassword = function(password){
-  return bcrypt.hash(password,12)
+
+workerSchema.statics.hashPassword = async (password) => {
+  try {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(password, salt);
+  } catch(e) {
+    throw e
+  }
 }
 
+workerSchema.methods.comparePassword = function(password) {
+  return bcrypt.compare(password, this.local.password);
+}
 
-
-workerSchema.methods.comparePassword=function(password){
-  return bcrypt.compare(password,this.local.password)
- }
 
 const Worker = mongoose.model('worker', workerSchema);
 
