@@ -1,4 +1,7 @@
+
+
 exports.clientLoaded= (err, client)=> {
+  ns = require("../config/socket.config")
     if (err) {
       throw err;
     }
@@ -20,8 +23,18 @@ exports.clientLoaded= (err, client)=> {
         });
       }
     }
-   
+    function chooseTherightChannel() {
+      
+    }
+    function callAWorker() {
+      
+    }
+    function callAWorker() {
+      
+    }
+
     function findOrCreateHoldingBridge(channel) {
+      ns.to(`/60c37f8395ff75257c692908`).emit("call", "customer");
       client.bridges.list(function(err, bridges) {
         var holdingBridge = bridges.filter(function(candidate) {
           return candidate.bridge_type === 'holding';

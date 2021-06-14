@@ -37,7 +37,6 @@ exports.homeDashboard = async  (req, res, next) => {
     page = req.params.page
     skip = (5*page)-5
 const [requests,requestsNumbers]=await Promise.all([getLimitedAlertRequestsWhithCustomers(5,skip),countAlertedRequest()])
-console.log(requests)
 pageNumberRequests= pageCalculator(requestsNumbers,5)
 res.render('includes/center', {
     page,

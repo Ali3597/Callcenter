@@ -1,7 +1,7 @@
 
 
 const passport = require('passport');
-const {createWorker} = require ('../queries/workers.queries')
+const {createWorker,updateAvailableWorkerById} = require ('../queries/workers.queries')
 
 
 
@@ -11,17 +11,24 @@ exports.signupForm = (req, res, next) => {
     
 
 exports.signup =  async (req, res, next) => {
-    const body = req.body
-
     try {
+        const body = req.body
         const user = await createWorker(body)
-        req.login(user, (err) => {
-          if (err) { next(err) } else {
-            res.redirect('/');
-          }
-        })
+        req.login(user);
+        res.redirect('/');
         
     } catch (e) {
         res.render('workers/worker-form',{errors: [e.message], isAuthenticated: req.isAuthenticated(), currentUser: req.user })
     }
   }
+
+
+  exports.updateAvailable = async (req, res, next) => {
+    userId=req.user._id
+    newuser=await updateAvailableWorkerById(userId)
+    res.send()
+    }
+
+
+
+

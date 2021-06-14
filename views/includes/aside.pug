@@ -1,7 +1,14 @@
 div(class="aside-top")
     img(src=currentUser.avatar  id="image-profile")
-    a(href="worker/profile")
-        h2= currentUser.username 
+    div(class="flex")
+        label.switch
+                if currentUser.available==true
+                        input(type='checkbox' checked)
+                else    
+                        input(type='checkbox' )
+                span.slider.round
+        a(href="worker/profile")
+                h2= currentUser.username 
 div(class="aside-bottom")
     ul      
         li(class=("blue"))

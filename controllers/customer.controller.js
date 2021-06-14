@@ -155,8 +155,6 @@ exports.newRequestOnCustomer= async (req, res, next) => {
  exports.searchCustomers= async (req, res, next) => { 
      searchValue = req.body.searchValue
     const [customers,customersNumbers]=await Promise.all([findCustomersLikeNameLimited(searchValue,5,0),countCustomersLikeName(searchValue)])
-    console.log(searchValue)
-    console.log(customers)
     pageNumberCustomers= pageCalculator(customersNumbers,5)
     titleCustomers= titleMessage("customers",customers)
 res.render('customers/tableCustomers', {

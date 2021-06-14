@@ -19,9 +19,12 @@ exports.findWorkerPerEmail= (email)=> {
       const hashedPassword = await Worker.hashPassword(user.password);
       const newWorker = new Worker({
         username: user.username,
+        type:"assistant",
+        number:"worker2",
         local: {
           email: user.email,
           password: hashedPassword
+          
         }
       })
       return newWorker.save();
@@ -29,3 +32,13 @@ exports.findWorkerPerEmail= (email)=> {
       throw e;
     }
   }
+ 
+  exports.updateAvailableWorkerById=async (userId)=> {
+    value = await Worker.findOne({_id:userId}).exec()
+    return   Worker.findByIdAndUpdate(userId,{$set:{available : !value.available}},{runValidators: true  } );
+}
+
+
+exports.updateAvailableToFalseById=async (userId)=> {
+  return   Worker.findByIdAndUpdate(userId,{$set:{available : false}},{runValidators: true  } );
+}

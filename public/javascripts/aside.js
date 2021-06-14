@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
     closeModal()
     stopPropagationModal()
     changePage("home")
+    makeYouAvailable()
 
 
     // setTimeout(function() {
@@ -706,6 +707,26 @@ function changePageOnProfile(tabTitleElement){
    axioxProfile(idItem,tabTitleElement,page.innerHTML)
   })
 })
+
+
+}
+
+
+function makeYouAvailable(){
+availableSwitch = document.querySelector(".slider")
+availableSwitch.addEventListener("click",(e)=>{
+  e.stopPropagation()
+  axios.post('/workers/availableUpdate')
+  .then( response => {
+  })
+  .catch( err => {
+    console.log(err);
+  })       
+
+})
+
+
+
 
 
 }

@@ -11,6 +11,9 @@ const workerSchema = schema({
       password:{ type: String , required: true },
   },
   avatar: {type : String, default:'/images/téléchargement.jfif'}, 
+  number: {type: String,required:true ,unique:true},
+  type: {type: String,required:true },
+  available : { type: Boolean, default: false },
 });
 
 

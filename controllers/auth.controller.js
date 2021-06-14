@@ -1,4 +1,4 @@
-const { findWorkerPerEmail } = require('../queries/workers.queries');
+const { findWorkerPerEmail,updateAvailableToFalseById } = require('../queries/workers.queries');
 
 exports.signinForm = (req, res, next) => {
   res.render('auth/auth-form', { errors: null, isAuthenticated: req.isAuthenticated(), currentUser: req.user  });
@@ -36,7 +36,8 @@ exports.signin = async (req, res, next) => {
 
 }
 
-exports.signout = (req, res, next) => {
+exports.signout = async  (req, res, next) => {
+  await updateAvailableToFalseById(userId)
   req.logout();
   res.redirect('/');
 }
