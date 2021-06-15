@@ -1,4 +1,4 @@
-const {findAllTheAvailableWorkers}= require('../queries/workers.queries')
+const {findAllTheAvailableWorkers,updateAvailableToOccupiedById,updateAvailableToTrueById}= require('../queries/workers.queries')
 ios = require('../config/socket.config')
 var ari = require('ari-client');
 var util = require('util');
@@ -43,6 +43,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
         safeHangup(channel)    
       })  
     });
+    updateAvailableToOccupiedById(idCaller)
 
     // console.log(socket.sockets.socket)
     // socket.on("connect",(ns)=>{

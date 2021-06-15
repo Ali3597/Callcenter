@@ -2,7 +2,7 @@ div(class="aside-top")
     img(src=currentUser.avatar  id="image-profile")
     div(class="flex")
         label.switch
-                if currentUser.available==true
+                if currentUser.state=="available"
                         input(type='checkbox' checked)
                 else    
                         input(type='checkbox' )

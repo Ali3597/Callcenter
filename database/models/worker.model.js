@@ -13,7 +13,7 @@ const workerSchema = schema({
   avatar: {type : String, default:'/images/téléchargement.jfif'}, 
   number: {type: String,required:true ,unique:true},
   type: {type: String,required:true },
-  available : { type: Boolean, default: false },
+  state : { type: String, default: "unavailable" },
 });
 
 
