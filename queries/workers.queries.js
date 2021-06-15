@@ -20,7 +20,7 @@ exports.findWorkerPerEmail= (email)=> {
       const newWorker = new Worker({
         username: user.username,
         type:"assistant",
-        number:"worker2",
+        number:"worker",
         local: {
           email: user.email,
           password: hashedPassword
@@ -35,10 +35,26 @@ exports.findWorkerPerEmail= (email)=> {
  
   exports.updateAvailableWorkerById=async (userId)=> {
     value = await Worker.findOne({_id:userId}).exec()
-    return   Worker.findByIdAndUpdate(userId,{$set:{available : !value.available}},{runValidators: true  } );
+    return   Worker.findByIdAndUpdate(userId,{$set:{available : !value.available}},{runValidators: true  } ).exec();
 }
 
 
 exports.updateAvailableToFalseById=async (userId)=> {
-  return   Worker.findByIdAndUpdate(userId,{$set:{available : false}},{runValidators: true  } );
+  return   Worker.findByIdAndUpdate(userId,{$set:{available : false}},{runValidators: true  } ).exec();
 }
+
+
+exports.updateAvailableToTrueById=async (userId)=> {
+  return   Worker.findByIdAndUpdate(userId,{$set:{available : true}},{runValidators: true  } ).exec();
+}
+
+exports.findAllTheAvailableWorkers= ()=> {
+  return   Worker.find(
+    {$where: function(){
+      return (this.available==true)
+    }
+    }
+  ).exec()
+}
+
+

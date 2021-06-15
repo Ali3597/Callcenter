@@ -1,4 +1,4 @@
-
+let nsSocket
 const ioClient = io({
     reconnection: false,
   });
@@ -6,12 +6,46 @@ const ioClient = io({
 
   ioClient.on("connect", () => {
     console.log("connexion ok !");
-    const nsSocket = io(`/`);
-
-
-    nsSocket.on("call", (data) => {
-      getCall(data)
-    })
+   
    
 })
 
+ioClient.on("workerId", (data) => {
+  nsSocket = io(`/${data}`);
+  nsSocket.on("call",(data)=>{
+    getCall(data[0],data[1])
+  })
+
+  nsSocket.on("closeCall",(data)=>{
+    console.log("on close le callll")
+    closeCall()
+  })
+
+})
+ 
+
+
+
+
+
+function activateCloseCall(id) {
+  console.log(id)
+  decline = document.querySelector(".js-decline")
+  decline.addEventListener("click",()=>{
+    console.log("ouia ouais ouais ")
+    console.log(nsSocket)
+   nsSocket.emit("closeCall",'boommmmmmm')
+
+    closeCall()
+  })
+  
+}
+
+function closeCall(){
+  console.log("on double close")
+  right=document.querySelector(".call")
+  fadeOut()
+    right.innerHTML=""
+    document.cookie = "callerNumber= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+    document.cookie = "callerId= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+}

@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
     stopPropagationModal()
     changePage("home")
     makeYouAvailable()
-
+ 
 
     // setTimeout(function() {
     //   getCall()}, 3000)
@@ -297,8 +297,7 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
     })
 }
 
-function getCall(number="1234566464") {
-  const content = document.querySelector(".MainContent")
+function getCall(number="1234566464",id) {
   right= document.querySelector(".call")
   axios.post('/dashboard/getcall' ,{number})
         .then( response => {
@@ -306,7 +305,7 @@ function getCall(number="1234566464") {
           fadeIn()
           ringPhone()
           answerThePhone()
-          closeCall(right)
+          activateCloseCall(id)
           if (getCookie("callerId")=="unknow"){
             newClient()
           }else{
@@ -396,7 +395,7 @@ function answerThePhone() {
   `
     callInfo.innerHTML="En cours"
     actions= document.querySelector(".Card-actions")
-    closeCall(right)
+    activateCloseCall()
    
   })
 }
@@ -409,21 +408,6 @@ function animationAnswer() {
 }
 
 
-function closeCall(right) {
-  
-  decline = document.querySelector(".js-decline")
-  decline.addEventListener("click",()=>{
-    fadeOut(callPart,centerPart)
-    right.innerHTML=""
-    
-    document.cookie = "callerNumber= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-    console.log("ouuulala")
-    console.log("iciiiiii")
-    document.cookie = "callerId= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-    console.log(document.cookie)
-  })
-  
-}
 
 
 
@@ -622,7 +606,7 @@ function makeCall(){
         .then( response => {
           right.innerHTML=response.data
           fadeIn()
-          closeCall(right)
+          activateCloseCall()
           activateClientWeKnow()
             setTimeout(function() {clientAnswer()
       }, 5000)

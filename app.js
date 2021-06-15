@@ -14,6 +14,7 @@ module.exports = {
 app.use(cookieParser());
 require("./config/jwt.config");
 require("./config/socket.config");
+require("./asterisk/index")
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -21,3 +22,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(router);
+
+
+
+// setTimeout(() => {
+//   ns = require("./config/socket.config")
+//   console.log(ns.server.sockets.adapter)
+// }, 8000);
