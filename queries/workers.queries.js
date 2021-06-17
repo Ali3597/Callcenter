@@ -34,9 +34,7 @@ exports.findWorkerPerEmail= (email)=> {
   }
  
   exports.updateAvailableWorkerById=async (userId)=> {
-    console.log(userId)
     value = await Worker.findOne({_id:userId}).exec()
-    console.log(value)
     if (value.state=="available"){
     return   Worker.findByIdAndUpdate(userId,{$set:{state : "unavailable"}},{runValidators: true  } ).exec();
     } else if (value.state=="unavailable"){
@@ -67,5 +65,18 @@ exports.findAllTheAvailableWorkers= ()=> {
     }
   ).exec()
 }
+
+
+exports.findAllTheOccupiedWorkers= ()=> {
+  return   Worker.find(
+    {$where: function(){
+      return (this.state=="occupied")
+    }
+    }
+  ).exec()
+}
+
+
+
 
 

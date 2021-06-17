@@ -1101,6 +1101,10 @@ input:checked + .slider {
   background-color: #2196f3;
 }
 
+.slider.busy {
+  background-color: orange !important;
+}
+
 input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
 }

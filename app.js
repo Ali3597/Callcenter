@@ -13,8 +13,8 @@ module.exports = {
 
 app.use(cookieParser());
 require("./config/jwt.config");
-// require("./config/socket.config");
-// require("./asterisk/index")
+require("./config/socket.config");
+require("./asterisk/index")
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
