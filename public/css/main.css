@@ -1101,9 +1101,7 @@ input:checked + .slider {
   background-color: #2196f3;
 }
 
-.slider.busy {
-  background-color: orange !important;
-}
+
 
 input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
@@ -1122,4 +1120,17 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+
+.occupied{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.occupied span{
+  color: orange;
+  font-size: large;
+  margin-right: 10px;
 }

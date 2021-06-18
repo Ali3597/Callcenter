@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
  
 
     // setTimeout(function() {
-    //   getCall()}, 3000)
+    //   imOccupied()}, 3000)
 
 })
 
@@ -298,6 +298,7 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
 }
 
 function getCall(number) {
+  console.log("si senor")
   console.log(number)
   right= document.querySelector(".call")
   axios.post('/dashboard/getcall' ,{number})
@@ -305,28 +306,17 @@ function getCall(number) {
           right.innerHTML=response.data
           fadeIn()
           ringPhone()
-          answerThePhone()
           activateCloseCall()
-          if (getCookie("callerId")=="unknow"){
-            newClient()
-          }else{
-               listenClientWeKnow()
-          }
+          console.log(getCookie("callerId"))
         })
         .catch( err => {
           console.log(err);
-        })      
+        }) 
+        imOccupied()     
 
 }
 
-function listenClientWeKnow() {
-  answer = document.querySelector(".js-accept")
-  answer.addEventListener("click",()=>{
-   
-    activateClientWeKnow()
-  })
-  
-}
+
 
  function activateClientWeKnow( ){
   customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
@@ -339,13 +329,12 @@ function listenClientWeKnow() {
 
 
 function newClient() {
-  answer = document.querySelector(".js-accept")
-  answer.addEventListener("click",()=>{
+  
     content = document.querySelector(".MainContent")
     customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
     tabRemoveAddBlue(customerstab)
     axioxForm("customers",content)
-  })
+
   
 }
 
@@ -382,9 +371,16 @@ function stopingPhone() {
 
 }
 
+
 function answerThePhone() {
-  accept = document.querySelector(".js-accept")
-  accept.addEventListener("click",()=>{
+  if (getCookie("callerId")=="unknow"){
+    console.log("watcha")
+    newClient()
+  }else{
+    console.log("client we know")
+       activateClientWeKnow()
+  }
+  
     animationAnswer()
     setCounter()
     actions= document.querySelector(".Card-actions")
@@ -396,9 +392,7 @@ function answerThePhone() {
   `
     callInfo.innerHTML="En cours"
     actions= document.querySelector(".Card-actions")
-    activateCloseCall()
-   
-  })
+    activateCloseCall() 
 }
 
 function animationAnswer() {
@@ -715,3 +709,22 @@ availableSwitch.addEventListener("click",(e)=>{
 
 
 }
+
+
+
+function imOccupied(){
+  availibility = document.querySelector(".occupied div")
+  availibility.innerHTML=`<span> occupied </span>`
+  console.log("occupied")
+ }
+ 
+ function imNotOccupied(){
+   availibility = document.querySelector(".occupied div")
+   availibility.innerHTML=` <label class="switch" > 
+   <input type='checkbox' checked >
+           <span class= "slider round">  </span>
+   
+   </label>
+           `
+           console.log(" not occupied")
+  }

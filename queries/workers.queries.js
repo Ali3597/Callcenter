@@ -57,6 +57,14 @@ exports.updateAvailableToTrueById=async (userId)=> {
   return   Worker.findByIdAndUpdate(userId,{$set:{state : "available"}},{runValidators: true  } ).exec();
 }
 
+exports.updateAvailableToTrueAndLastHangUp=async (userId)=> {
+  return   Worker.findByIdAndUpdate(userId,{$set:{
+    state : "available",
+    lastHangUp: Date.now()
+  }
+  },{runValidators: true  } ).exec();
+}
+
 exports.findAllTheAvailableWorkers= ()=> {
   return   Worker.find(
     {$where: function(){

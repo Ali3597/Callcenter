@@ -12,15 +12,10 @@ audio(id="telephoneRing" src="mp3/telephone.mp3" preload="auto" )
         h2=customerName
         h3=customerNumber
         p
-          span.js-callInfo Waiting
+          span.js-callInfo Vous avez un nouveau appel
       .Card-actions
         .Card-action.js-decline
           .Card-actionButton.Card-actionButton--decline
             i.material-icons 
           p Raccrocher 
-        if getcall
-          .Card-action.js-accept
-            .Card-actionButton.Card-actionButton--accept
-              i.material-icons 
-            p Repondre 
       p(class="timer")

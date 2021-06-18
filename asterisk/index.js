@@ -1,4 +1,4 @@
-const {findAllTheAvailableWorkers,findAllTheOccupiedWorkers,updateAvailableToOccupiedById,updateAvailableToTrueById}= require('../queries/workers.queries')
+const {findAllTheAvailableWorkers,findAllTheOccupiedWorkers,updateAvailableToOccupiedById,updateAvailableToTrueAndLastHangUp}= require('../queries/workers.queries')
 ios = require('../config/socket.config')
 var ari = require('ari-client');
 var util = require('util');
@@ -166,16 +166,20 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
   
 
   async function nextOnTheQueue(holdingBridge) {
+    
     console.log("waiting  not begin")
     if(queue.length){
+      let socket
       console.log("waiting begin")
       
       console.log("voila la queue ")
       channel=queue[0]
       TheOnetoCAllId= await chooseAWorker()
       console.log("debut")
-     
       queue = queue.filter(item => item !== channel)
+      if (TheOnetoCAllId==false){
+        safeHangup(channel)
+      }else{
       
       console.log("fin")
       nextOnTheQueue(holdingBridge)
@@ -183,17 +187,19 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
       console.log("le number")
       console.log(channel.caller.number)
       socket.emit("call", channel.caller.number);
-      // socket.sockets.forEach(element => {
-      //   element.on("closeCall",()=>{
-      //     safeHangup(channel)    
-      //   })  
-      // });
+      socket.sockets.forEach(element => {
+        element.on("closeCall",()=>{
+          safeHangup(channel)    
+        })  
+      });
+    await  updateAvailableToOccupiedById(TheOnetoCAllId)
       console.log(channel.caller.number)
       console.log("on a passé la ")
       var dialed = client.Channel();
   
       channel.on('StasisEnd', function(event, channel) {
         console.log('StasisEnd')
+        socket.emit("closeCall", "ok");
         safeHangup(dialed);
         //si la chaine qui appelle sort de lappli on lenleve du tableau
       });
@@ -201,6 +207,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
    
   
     dialed.on('ChannelDestroyed', function(event, dialed) {
+      updateAvailableToTrueAndLastHangUp(TheOnetoCAllId)
       console.log("dialed")
       console.log('ChannelDestroyed')
       safeHangup(channel);
@@ -210,7 +217,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
       console.log('StasisStart')
       joinMixingBridge(channel, dialed, holdingBridge);
       console.log("joinnnnnn")
-      socket.emit("call", channel.caller.number);
+      socket.emit("respond");
     });
   
     dialed.originate(
@@ -223,12 +230,13 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
 
     }
     
+  }
     
   }
 
   function safeHangup(channel) {
+    console.log("on safe hang up")
     console.log('Hanging up channel %s', channel.name);
-    // socket.emit("closeCall", "ok");
     channel.hangup(function(err) {
       // ignore error
     });
@@ -293,12 +301,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
     });
   }
 
-  // ios.on("closeCall",()=>{
-  //   console.log("emit marche iu")
-  //   channel.hangup(function(err) {
-  //     // ignore error
-  //   });
-  // })
+ 
  
   client.on('StasisStart', stasisStart);
  
@@ -314,17 +317,7 @@ module.exports = ari
 
 
 
-// socket.sockets.forEach(element => {
-//   element.on("closeCall",()=>{
-//     safeHangup(channel)    
-//   })  
-// });
 
-// console.log("id debut")
-// console.log(channel.id)
-// console.log("id fin")
-// queue.push(channel.id)
-//     // updateAvailableToOccupiedById(idCaller)
 
 
 

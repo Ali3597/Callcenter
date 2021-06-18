@@ -19,8 +19,13 @@ ioClient.on("workerId", (data) => {
   nsSocket.on("closeCall",(data)=>{
     console.log("on close le callll")
     closeCall()
+    
   })
-
+  nsSocket.on("respond",()=>{
+    console.log("papa")
+    answerThePhone()
+   
+  })
 })
  
 
@@ -29,7 +34,7 @@ ioClient.on("workerId", (data) => {
 
 
 function activateCloseCall() {
-  console.log()
+  
   decline = document.querySelector(".js-decline")
   decline.addEventListener("click",()=>{
     console.log("ouia ouais ouais ")
@@ -48,4 +53,11 @@ function closeCall(){
     right.innerHTML=""
     document.cookie = "callerNumber= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
     document.cookie = "callerId= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+  imNotOccupied()
 }
+
+
+
+
+
+
