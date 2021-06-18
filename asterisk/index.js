@@ -2,11 +2,11 @@ const {findAllTheAvailableWorkers,findAllTheOccupiedWorkers,updateAvailableToOcc
 ios = require('../config/socket.config')
 var ari = require('ari-client');
 var util = require('util');
-ipAsterisk= "192.168.223.53"
+ipAsterisk= "192.168.1.12"
 PortAsterisk="8088"
 userAsterisk="asterisk"
 mdpAsterisk="asterisk"
-let queue = []
+
 
 
 
@@ -22,8 +22,8 @@ let queue = []
         
 ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
 .then(function(client) {
-    let idCaller
-    let socket
+    
+    let queue =[]
 
   function stasisStart(event, channel) {
     // ensure the channel is not a dialed channel
@@ -42,11 +42,11 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
         findOrCreateHoldingBridge(channel);
       });
     }
-  
-    
   }
 
+ 
   async  function waitForWorkers() {
+    
     let TheOnetoCAllId
     availableWorkers= await findAllTheAvailableWorkers()
     if (availableWorkers.length){
@@ -70,16 +70,21 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
 
     }
   }
-  
+
+  function waitforme(milisec) {
+    return new Promise(resolve => {
+        setTimeout(() => { resolve('') }, milisec);
+    })
+}
+   
 
   async  function chooseAWorker() {
     TheOnetoCAllId=true
     while(TheOnetoCAllId==true){
-      TheOnetoCAllId =   waitForWorkers()
-      setTimeout(function() {
-        console.log("waiting")
-      }
-      , 5000)  
+      await waitforme(3000)
+      TheOnetoCAllId =  await waitForWorkers()
+      console.log("waiting")
+      console.log(TheOnetoCAllId)
 }
  return TheOnetoCAllId
    
@@ -87,10 +92,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
 
 
    async function findOrCreateHoldingBridge(channel) {
-    console.log("id debut")
-    console.log(channel.id)
-    console.log("id fin")
-    queue.push(channel.id)
+  
     
   client.bridges.list(function(err, bridges) {
 
@@ -122,6 +124,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
       if (err) {
         throw err;
       }
+    
  
       holdingBridge.startMoh(function(err) {
         // ignore error
@@ -130,26 +133,86 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
     
     });
 
+    
+    console.log("id debut")
+    console.log(channel.id)
+    console.log("id fin")
+    queue.push(channel)
     console.log("On attend la")
-    test=await chooseAWorker()
-    console.log(test)
-    console.log("on a passé la ")
- 
-    var dialed = client.Channel();
- 
+    
     channel.on('StasisEnd', function(event, channel) {
-      safeHangup(dialed);
+      queue.splice(queue.indexOf(channel), 1)
+
+      nextOnTheQueue(holdingBridge)
+      // queue.splice(queue.indexOf(channel.id), 1)
+      //si la chaine qui appelle sort de lappli on lenleve du tableau
     });
  
+  
+
+// console.log("la queue")
+// console.log(queue.indexOf(channel.id))
+
+
+// while(queue.indexOf(channel.id)!=0){
+//   console.log("ouhooo")
+// }
+ 
+  nextOnTheQueue(holdingBridge)
+
+  }
+
+     
+  
+
+  async function nextOnTheQueue(holdingBridge) {
+    console.log("waiting  not begin")
+    if(queue.length){
+      console.log("waiting begin")
+      
+      console.log("voila la queue ")
+      channel=queue[0]
+      TheOnetoCAllId= await chooseAWorker()
+      console.log("debut")
+     
+      queue = queue.filter(item => item !== channel)
+      
+      console.log("fin")
+      nextOnTheQueue(holdingBridge)
+      socket=ios.of(`/${TheOnetoCAllId}`)
+      console.log("le number")
+      console.log(channel.caller.number)
+      socket.emit("call", channel.caller.number);
+      // socket.sockets.forEach(element => {
+      //   element.on("closeCall",()=>{
+      //     safeHangup(channel)    
+      //   })  
+      // });
+      console.log(channel.caller.number)
+      console.log("on a passé la ")
+      var dialed = client.Channel();
+  
+      channel.on('StasisEnd', function(event, channel) {
+        console.log('StasisEnd')
+        safeHangup(dialed);
+        //si la chaine qui appelle sort de lappli on lenleve du tableau
+      });
+    
+   
+  
     dialed.on('ChannelDestroyed', function(event, dialed) {
-      // 
+      console.log("dialed")
+      console.log('ChannelDestroyed')
       safeHangup(channel);
     });
- 
+  
     dialed.on('StasisStart', function(event, dialed) {
+      console.log('StasisStart')
       joinMixingBridge(channel, dialed, holdingBridge);
+      console.log("joinnnnnn")
+      socket.emit("call", channel.caller.number);
     });
- 
+  
     dialed.originate(
       {endpoint: "PJSIP/worker", app: 'Callcenter', appArgs: 'dialed'},
       function(err, dialed) {
@@ -157,6 +220,10 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
           throw err;
         }
     });
+
+    }
+    
+    
   }
 
   function safeHangup(channel) {
@@ -215,11 +282,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
       if (err) {
         throw err;
       }
-      console.log("debut")
-      console.log(queue)
-      queue = queue.filter(item => item !== channel.id)
-      console.log(queue)
-      console.log("fin")
+      
  
       mixingBridge.addChannel(
           {channel: [channel.id, dialed.id]}, function(err) {

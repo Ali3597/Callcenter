@@ -297,7 +297,8 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
     })
 }
 
-function getCall(number="1234566464",id) {
+function getCall(number) {
+  console.log(number)
   right= document.querySelector(".call")
   axios.post('/dashboard/getcall' ,{number})
         .then( response => {
@@ -305,7 +306,7 @@ function getCall(number="1234566464",id) {
           fadeIn()
           ringPhone()
           answerThePhone()
-          activateCloseCall(id)
+          activateCloseCall()
           if (getCookie("callerId")=="unknow"){
             newClient()
           }else{

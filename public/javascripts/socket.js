@@ -13,7 +13,7 @@ const ioClient = io({
 ioClient.on("workerId", (data) => {
   nsSocket = io(`/${data}`);
   nsSocket.on("call",(data)=>{
-    getCall(data[0],data[1])
+    getCall(data)
   })
 
   nsSocket.on("closeCall",(data)=>{
@@ -28,13 +28,13 @@ ioClient.on("workerId", (data) => {
 
 
 
-function activateCloseCall(id) {
-  console.log(id)
+function activateCloseCall() {
+  console.log()
   decline = document.querySelector(".js-decline")
   decline.addEventListener("click",()=>{
     console.log("ouia ouais ouais ")
     console.log(nsSocket)
-   nsSocket.emit("closeCall",'boommmmmmm')
+   nsSocket.emit("closeCall")
 
     closeCall()
   })
