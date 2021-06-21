@@ -156,3 +156,11 @@ exports.deadlineTimeCalcul= (aDate,done)=>{
 
         }
  }
+
+
+ exports.waitforme=  async(millisec)=> { 
+ 
+        return new Promise(resolve => {
+            setTimeout(() => { resolve('') }, millisec);
+        })
+    }

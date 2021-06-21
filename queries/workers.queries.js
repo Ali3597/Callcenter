@@ -62,7 +62,7 @@ exports.updateAvailableToTrueAndLastHangUp=async (userId)=> {
     state : "available",
     lastHangUp: Date.now()
   }
-  },{runValidators: true  } ).exec();
+  }).exec();
 }
 
 exports.findAllTheAvailableWorkers= ()=> {

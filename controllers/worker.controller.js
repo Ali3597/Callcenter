@@ -1,7 +1,6 @@
 
-
-const passport = require('passport');
 const {createWorker,updateAvailableWorkerById} = require ('../queries/workers.queries')
+
 
 
 
@@ -28,7 +27,5 @@ exports.signup =  async (req, res, next) => {
     newuser=await updateAvailableWorkerById(userId)
     res.send()
     }
-
-
 
 

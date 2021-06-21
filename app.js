@@ -24,8 +24,3 @@ app.use(express.urlencoded({ extended: false }));
 app.use(router);
 
 
-
-// setTimeout(() => {
-//   ns = require("./config/socket.config")
-//   console.log(ns.server.sockets.adapter)
-// }, 8000);
