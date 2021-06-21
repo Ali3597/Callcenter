@@ -132,11 +132,8 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
       console.log("le number")
       console.log(thischannel.caller.number)
       socket.emit("call", thischannel.caller.number);
-      socket.sockets.forEach(element => {
-        element.on("closeCall",()=>{
-          safeHangup(thischannel)    
-        })  
-      });
+      socketCloseCall(socket,thischannel)
+      
     await  updateAvailableToOccupiedById(TheOnetoCAllId)
     console.log("on a await ")
     
@@ -160,15 +157,19 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
   }
     
   }
+  function socketCloseCall(socket,aChannel){
+    socket.sockets.forEach(element => {
+      element.on("closeCall",()=>{
+        safeHangup(aChannel)    
+      })  
+    });
+  }
   
   function dialedAttribute(client,TheOnetoCAllId,thischannel,dialed,socket,holdingBridge){
     dialed.on('ChannelDestroyed',  async function(event, dialed) {
       console.log(TheOnetoCAllId)
       await  updateAvailableToTrueAndLastHangUp(TheOnetoCAllId)
-      console.log("dialed")
-      console.log("yesssirrrrrr")
-      console.log('ChannelDestroyed')
-      console.log("thisssssss channel")
+
       safeHangup(thischannel);
     });
   
