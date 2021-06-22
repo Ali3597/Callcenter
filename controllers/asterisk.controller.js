@@ -1,5 +1,5 @@
 const {findAllTheAvailableWorkers,findAllTheOccupiedWorkers} = require ('../queries/workers.queries')
-const {waitforme} = require (('../controllers/functions.controller'))
+
 
     
     waitForWorkers= async ()=>{
@@ -17,6 +17,7 @@ const {waitforme} = require (('../controllers/functions.controller'))
       }
         else{
           occupiedWorkers= await findAllTheOccupiedWorkers()
+          console.log(occupiedWorkers)
           if(!occupiedWorkers.length){
             id=false
           }else{
@@ -28,14 +29,11 @@ const {waitforme} = require (('../controllers/functions.controller'))
       }
 
       exports.chooseAWorker= async ()=>{
-      
-        id=true
-        while(id==true){
-          await waitforme(3000)
+  
           id =  await waitForWorkers()
           console.log("waiting")
           console.log(id)
-    }
+    
      return id
     }
 
