@@ -81,6 +81,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
     
     console.log("on ush ")
     queue.push(channel)
+    console.log(channel.caller.number)
     console.log(queue.length)
    
     
@@ -104,11 +105,20 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
     console.log(queue.length)
     console.log(channel.caller.number)
     console.log(queue.indexOf(channel))
-    if (queue.indexOf(channel)>=0){
-    queue.splice(queue.indexOf(channel), 1)
+    console.log
+    let i =0
+    queue.forEach(element => {
+
+      if (element.id==channel.id){
+        queue.splice(i, 1)
+      console.log(queue.length)
+      console.log("on remove ")
+      }
+      i++
+    });
     console.log(queue.length)
-    console.log("on remove ")
-    }
+   console.log("lenght apres ")
+   
   }
 
   async function nextOnTheQueue(holdingBridge) {
