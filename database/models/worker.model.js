@@ -12,7 +12,6 @@ const workerSchema = schema({
   },
   avatar: {type : String, default:'/images/téléchargement.jfif'}, 
   number: {type: String,required:true ,unique:true},
-  type: {type: String,required:true },
   state : { type: String, default: "unavailable" },
   lastHangUp: {type: Date, default : Date.now()}
 });

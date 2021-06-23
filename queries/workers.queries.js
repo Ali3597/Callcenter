@@ -19,8 +19,7 @@ exports.findWorkerPerEmail= (email)=> {
       const hashedPassword = await Worker.hashPassword(user.password);
       const newWorker = new Worker({
         username: user.username,
-        type:"assistant",
-        number:"worker",
+        number:"PJSIP/worker2",
         local: {
           email: user.email,
           password: hashedPassword
@@ -51,6 +50,7 @@ exports.updateAvailableToFalseById=async (userId)=> {
 
 exports.updateAvailableToOccupiedById=async (userId)=> {
   return   Worker.findByIdAndUpdate(userId,{$set:{state : "occupied"}},{runValidators: true  } ).exec();
+  
 }
 
 exports.updateAvailableToTrueById=async (userId)=> {

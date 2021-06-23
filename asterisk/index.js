@@ -5,7 +5,7 @@ const {waitforme} = require (('../controllers/functions.controller'))
 ios = require('../config/socket.config')
 var ari = require('ari-client');
 var util = require('util');
-ipAsterisk= "192.168.1.15"
+ipAsterisk= "192.168.1.25"
 PortAsterisk="8088"
 userAsterisk="asterisk"
 mdpAsterisk="asterisk"
@@ -132,23 +132,23 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
 
       let socket
 
-      TheOnetoCAllId= await chooseAWorker()
+      TheOnetoCAll= await chooseAWorker()
  
       
-      if (TheOnetoCAllId==false){
+      if (TheOnetoCAll==false){
         safeHangup(thischannel)
-      }else if (TheOnetoCAllId != true){
+      }else if (TheOnetoCAll != true){
         console.log("on est passé")
         console
         removeChannelofQueue(queue,thischannel)
       
       nextOnTheQueue(holdingBridge)
-      socket=ios.of(`/${TheOnetoCAllId}`)
+      socket=ios.of(`/${TheOnetoCAll._id}`)
 
       socket.emit("call", thischannel.caller.number);
       socketCloseCall(socket,thischannel)
       
-    await  updateAvailableToOccupiedById(TheOnetoCAllId)
+    await  updateAvailableToOccupiedById(TheOnetoCAll._id)
 
       var dialed = client.Channel();
   
@@ -159,7 +159,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
         //si la chaine qui appelle sort de lappli on lenleve du tableau
       });
     
-      dialedAttribute(client,TheOnetoCAllId,thischannel,dialed,socket,holdingBridge)
+      dialedAttribute(client,TheOnetoCAll,thischannel,dialed,socket,holdingBridge)
     
 
     }
@@ -175,22 +175,25 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
     });
   }
   
-  function dialedAttribute(client,TheOnetoCAllId,thischannel,dialed,socket,holdingBridge){
+
+  
+  function dialedAttribute(client,TheOnetoCAll,thischannel,dialed,socket,holdingBridge){
+
     dialed.on('ChannelDestroyed',  async function(event, dialed) {
-      await  updateAvailableToTrueAndLastHangUp(TheOnetoCAllId)
+      await  updateAvailableToTrueAndLastHangUp(TheOnetoCAll._id)
       nextOnTheQueue(holdingBridge)
       safeHangup(thischannel);
     });
   
-    dialed.on('StasisStart', function(event, dialed) {
-
+    dialed.on('StasisStart', async function(event, dialed) {
+    
       joinMixingBridge(thischannel, dialed, holdingBridge);
 
       socket.emit("respond");
     });
   
     dialed.originate(
-      {endpoint: "PJSIP/worker", app: 'Callcenter', appArgs: 'dialed'},
+      {endpoint: TheOnetoCAll.number, app: 'Callcenter', appArgs: 'dialed'},
       function(err, dialed) {
         if (err) {
           throw err;

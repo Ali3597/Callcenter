@@ -80,9 +80,9 @@ exports.deadlineTimeCalcul= (aDate,done)=>{
         ladate = Date.parse(aDate);
         diffDate= dateNow-ladate
         if (diffDate>0){
-            seconds = Math.floor((diffDate / 1000) % 60) ;
-            minutes = Math.floor(((diffDate / (1000*60)) % 60));
-            hours   = Math.floor(((diffDate / (1000*60*60)) % 24));
+            seconds = Math.floor((diffDate / 1000) ) ;
+            minutes = Math.floor(((diffDate / (1000*60))));
+            hours   = Math.floor(((diffDate / (1000*60*60))));
             jour= Math.floor(hours/24)
             if (hours==0 && minutes==0){
                 duree= "délai dépassé depuis "+seconds + " secondes"
@@ -152,6 +152,13 @@ exports.deadlineTimeCalcul= (aDate,done)=>{
                         return "Rapport(s)"
                 } else{
                         return "Il n'ya pour l'instant aucun rapports"
+                }
+
+        }else if (type=="calls") {
+                if (object.length){
+                        return "Appels"
+                } else{
+                        return "Il n'ya pour l'instant aucun appels"
                 }
 
         }

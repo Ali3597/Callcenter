@@ -3,37 +3,37 @@ const {findAllTheAvailableWorkers,findAllTheOccupiedWorkers} = require ('../quer
 
     
     waitForWorkers= async ()=>{
-        let id
+        let customer
         availableWorkers= await findAllTheAvailableWorkers()
         if (availableWorkers.length){
           theDAte=Date.now()
         availableWorkers.forEach(element => {
           if (element.lastHangUp<theDAte){
             theDAte=element.lastHangUp
-            id=element._id
+            customer=element
           } 
         })
-        return id
+        return customer
       }
         else{
           occupiedWorkers= await findAllTheOccupiedWorkers()
           console.log(occupiedWorkers)
           if(!occupiedWorkers.length){
-            id=false
+            customer=false
           }else{
-            id=true
+            customer=true
           }
-          return id
+          return customer
     
         }
       }
 
       exports.chooseAWorker= async ()=>{
   
-          id =  await waitForWorkers()
+          customer =  await waitForWorkers()
           console.log("waiting")
-          console.log(id)
+          console.log(customer)
     
-     return id
+     return customer
     }
 
