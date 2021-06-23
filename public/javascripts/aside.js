@@ -55,6 +55,8 @@ function whichTableActivate( table){
     activateTableReports()
   }else if (table=="home"){
    activateTableHome()
+  }else if (table=="calls"){
+    activateTableCalls()
   }
 }
 
@@ -89,6 +91,12 @@ function activateProfileReports(){
 function activateTableHome(){
   consult()
   changePage("home")
+  
+}
+
+function activateTableCalls(){
+  consult()
+  changePage("calls")
   
 }
 
@@ -184,6 +192,7 @@ function giveYouTheRightTab(tab){
 function consult(){
   consultButtons= document.querySelectorAll("#consult")
   typeOfTab= document.querySelector("table").getAttribute("type")
+
 
   consultButtons.forEach(consultButton=>{
     consultButton.addEventListener("click",()=>{

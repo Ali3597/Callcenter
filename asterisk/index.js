@@ -1,7 +1,8 @@
 const {updateAvailableToOccupiedById,updateAvailableToTrueAndLastHangUp}= require('../queries/workers.queries')
+const {doWeKnowThisNumber} = require('../queries/customers.queries')
 const {chooseAWorker}= require ("../controllers/asterisk.controller")
-const {waitforme} = require (('../controllers/functions.controller'))
-
+const {millisToMinutesAndSeconds} = require (('../controllers/functions.controller'))
+const{createCall,updateCallToAnsweredANdTimeById} = require ('../queries/calls.queries')
 ios = require('../config/socket.config')
 var ari = require('ari-client');
 var util = require('util');
@@ -147,19 +148,21 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
 
       socket.emit("call", thischannel.caller.number);
       socketCloseCall(socket,thischannel)
-      
+   thisCAll= await putCallInData(thischannel,TheOnetoCAll)
     await  updateAvailableToOccupiedById(TheOnetoCAll._id)
+
 
       var dialed = client.Channel();
   
-      thischannel.on('StasisEnd', function(event, thischannel) {
-
+      thischannel.on('StasisEnd', function(event, thischannel,TheOnetoCAll) {
+       
+       
         socket.emit("closeCall", "ok");
         safeHangup(dialed);
         //si la chaine qui appelle sort de lappli on lenleve du tableau
       });
     
-      dialedAttribute(client,TheOnetoCAll,thischannel,dialed,socket,holdingBridge)
+      dialedAttribute(client,TheOnetoCAll,thischannel,dialed,socket,holdingBridge,thisCAll)
     
 
     }
@@ -167,6 +170,27 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
   }
     
   }
+
+
+  async function putCallInData(thischannel,TheOnetoCAll){
+    customer = await  doWeKnowThisNumber(thischannel.caller.number);
+    if (customer==null){
+      customerId= null
+  }else{
+      customerId=customer._id
+
+  }
+    myArray=[
+      customerId,
+      thischannel.caller.number,
+      TheOnetoCAll._id
+    ]
+
+     callID =await   createCall(myArray)
+     return callID
+  }
+
+
   function socketCloseCall(socket,aChannel){
     socket.sockets.forEach(element => {
       element.on("closeCall",()=>{
@@ -177,7 +201,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
   
 
   
-  function dialedAttribute(client,TheOnetoCAll,thischannel,dialed,socket,holdingBridge){
+  function dialedAttribute(client,TheOnetoCAll,thischannel,dialed,socket,holdingBridge,thisCAll){
 
     dialed.on('ChannelDestroyed',  async function(event, dialed) {
       await  updateAvailableToTrueAndLastHangUp(TheOnetoCAll._id)
@@ -187,8 +211,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
   
     dialed.on('StasisStart', async function(event, dialed) {
     
-      joinMixingBridge(thischannel, dialed, holdingBridge);
-
+      joinMixingBridge(thischannel, dialed, holdingBridge,thisCAll);
       socket.emit("respond");
     });
   
@@ -211,11 +234,17 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
   }
  
   // handler for dialed channel entering Stasis
-  function joinMixingBridge(channel, dialed, holdingBridge) {
+  function joinMixingBridge(channel, dialed, holdingBridge,thisCAll) {
     
     var mixingBridge = client.Bridge();
  
     dialed.on('StasisEnd', function(event, dialed) {
+      console.log(thisCAll._id)
+      console.log("lid de lupdate du call ")
+     counter= millisToMinutesAndSeconds(Date.now()-thisCAll.date)
+      console.log("le imeeeeeeeeeeeeeee")
+      console.log(counter)
+      updateCallToAnsweredANdTimeById(thisCAll._id,counter)
       dialedExit(dialed, mixingBridge,holdingBridge);
     });
  
@@ -233,7 +262,7 @@ ari.connect('http://'+ipAsterisk+':'+ PortAsterisk,userAsterisk, mdpAsterisk)
       console.log('Created mixing bridge %s', mixingBridge.id);
  
       moveToMixingBridge(channel, dialed, mixingBridge, holdingBridge);
-    });
+    });T
   }
  
   // handler for the dialed channel leaving Stasis

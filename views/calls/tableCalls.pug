@@ -1,4 +1,4 @@
-table(type="calls")
+table(type="customers")
 
 
   caption=titleCalls 
@@ -11,13 +11,23 @@ table(type="calls")
                 th(scope='col') #{tab}
               
     tbody
-        each call in calls  
-            tr(id=call._id)
-              td=call.name 
+        each call in calls 
+          if call.customer==null 
+            tr
+              td Numero Inconnu 
               td=call.number
               td=properStringDate(call.date)
               td=call.state
               td=call.time
+              td None
+          else 
+            tr(id=call.customer._id)
+              td=call.customer.name
+              td=call.number
+              td=properStringDate(call.date)
+              td=call.state
+              td=call.time
+              td(id="consult") Consultez le client 
 if pageNumberCalls>1
   .pagination
     .pagination-container

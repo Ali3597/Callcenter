@@ -2,7 +2,7 @@
 
 const {findLimitedCallsByWorkerId,countCallsByWorkerId}= require("../queries/calls.queries")
 const {pageCalculator,range,titleMessage,properStringDate} = require ("./functions.controller")
-const callTableFormat= ["Nom" ,"Numero" ,"date","statut","temps"]
+const callTableFormat= ["Nom" ,"Numero" ,"date","statut","temps","action"]
 
 
 
@@ -13,6 +13,7 @@ exports.callsDashboard= async (req, res, next) => {
     const [calls,callsNumbers]=await Promise.all([findLimitedCallsByWorkerId(5,skip,workerId),countCallsByWorkerId(workerId)])
     pageNumberCalls= pageCalculator(callsNumbers,5)
     titleCalls= titleMessage("calls",calls)
+    console.log(calls)
 res.render('calls/tableCalls', {
     page,
     currentUser:req.user,

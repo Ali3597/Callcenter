@@ -155,19 +155,18 @@ exports.deadlineTimeCalcul= (aDate,done)=>{
                 }
 
         }else if (type=="calls") {
-                if (object.length){
-                        return "Appels"
-                } else{
-                        return "Il n'ya pour l'instant aucun appels"
-                }
+                
+                        return "Mon journal d'appel"
+                
 
         }
  }
 
 
- exports.waitforme=  async(millisec)=> { 
  
-        return new Promise(resolve => {
-            setTimeout(() => { resolve('') }, millisec);
-        })
+
+exports.millisToMinutesAndSeconds=(millis)=> {
+      var minutes = Math.floor(millis / 60000);
+      var seconds = ((millis % 60000) / 1000).toFixed(0);
+      return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }

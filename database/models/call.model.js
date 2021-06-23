@@ -3,11 +3,11 @@ const schema = mongoose.Schema;
 
 
 const callSchema = schema({
-  name: {type:String, default:"unknow"},
-  number: {type: String,unique:true,required:true},
+  customer:{type: schema.Types.ObjectId, ref: 'customer'},
+  number: {type: String,required:true},
   date : { type : Date, default: Date.now },
   time:{ type: String, default:"00:00" },
-  state:{ type: String, required:true  },
+  state:{ type: String, default:"missCall"  },
   destination:{type: schema.Types.ObjectId, ref: 'worker', required :true},
 });
 
