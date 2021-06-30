@@ -3,7 +3,7 @@ const Call = require ("../database/models/call.model")
 
 
 exports.findLimitedCallsByWorkerId=(limit,skip,workerId)=>{
-    return   Call.find({destination:workerId}).populate("customer").limit(limit).skip(skip).exec();
+    return   Call.find({destination:workerId}).populate("customer").sort({date:-1}).limit(limit).skip(skip).exec();
   }
 
 //   .sort({"created_at": 1})

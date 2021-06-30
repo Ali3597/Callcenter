@@ -6,16 +6,17 @@ window.addEventListener('DOMContentLoaded', ()=>{
     stopPropagationModal()
     changePage("home")
     makeYouAvailable()
+
  
 
     // setTimeout(function() {
-    //   imOccupied()}, 3000)
+    //  getc}, 3000)
 
 })
 
 
 
-
+// To get a cookie
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -34,7 +35,7 @@ function getCookie(cname) {
 
 
 
-
+// Help to activate event listener on every pages *********************************************************************************
 function whichProfileActivate( table,item){
   if (table=="customers"){
     activateProfileCustomers(item)
@@ -127,11 +128,11 @@ function activateTableReports(){
   
 }
 
+//******************************************************************************************************************************** */
 
 
 
-
-
+// transition to load every page 
 function transitionInnerHtml( response,time) {
   const content = document.querySelector(".MainContent")
   content.style.opacity=0
@@ -141,6 +142,7 @@ function transitionInnerHtml( response,time) {
       }, time)
 }
 
+// add envent listenr on all tabs and load te right page 
 function tabsCenter() {
     const tabsAside= document.querySelectorAll(".aside-bottom li")
     tabsAside.forEach(tabAside=>{
@@ -163,37 +165,32 @@ function tabsCenter() {
     })
 }
  
-function newElementOn(tabTitleElement){
-  if (tabTitleElement=="customers"){
-    return "requests"
 
-  }else if(tabTitleElement=="requests"){
-    return "reports"
-  }
-}
 
 
 
 function giveYouTheRightTab(tab){
   if (tab=="home"){
     return document.querySelector(".aside-bottom li:nth-child(1)")
-  }else if (tab=="customers"){
+  }else if (tab=="calls"){
     return  document.querySelector(".aside-bottom li:nth-child(2)")
 
+  }else if (tab=="customers"){
+    return  document.querySelector(".aside-bottom li:nth-child(3)")
+
   }else if (tab=="requests"){
-    return   document.querySelector(".aside-bottom li:nth-child(3)")
+    return   document.querySelector(".aside-bottom li:nth-child(4)")
     
   }else if (tab=="reports"){
-    return  document.querySelector(".aside-bottom li:nth-child(4)")
+    return  document.querySelector(".aside-bottom li:nth-child(5)")
     
   }
 }
 
+// active every consult  button 
 function consult(){
   consultButtons= document.querySelectorAll("#consult")
   typeOfTab= document.querySelector("table").getAttribute("type")
-
-
   consultButtons.forEach(consultButton=>{
     consultButton.addEventListener("click",()=>{
       idItem= consultButton.parentNode.getAttribute("id")
@@ -206,7 +203,7 @@ function consult(){
 
 }
 
-
+// load the request , customer, or report profile 
 function axioxProfile(idItem,typeOfTab,page){
   
   axios.get('/dashboard/' +typeOfTab +'/profil/' + idItem+'/'+page)
@@ -229,7 +226,7 @@ function axioxProfile(idItem,typeOfTab,page){
 
 
 
-
+// just to colore the right tab depend on where we are 
 function tabRemoveAddBlue(tabAside) {
   const tabsAside= document.querySelectorAll(".aside-bottom li")
     tabsAside.forEach(tab=>{
@@ -251,7 +248,7 @@ tabAside.classList.add("blue")
 
 
 
-
+// add event istenr on form button 
 function showForm(tabTitleElement,item) {
 
   buttonForm = document.querySelector("#showForm")
@@ -261,6 +258,7 @@ function showForm(tabTitleElement,item) {
 
 }
 
+//load the form page 
 function axioxForm(tabTitleElement,item) {
 
 axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
@@ -280,7 +278,7 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
 
 
 
-
+//send the new item in the database
   function sendFormInfo(tabTitleElement) {
     errorpara= document.querySelector(".formError")
     formButton= document.querySelector("#sendNew")
@@ -306,6 +304,7 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
     })
 }
 
+// animation when a worker get a call
 function getCall(number) {
   console.log("si senor")
   console.log(number)
@@ -326,7 +325,7 @@ function getCall(number) {
 }
 
 
-
+// if we know the caller load his page profile
  function activateClientWeKnow( ){
   customerstab=document.querySelector(".aside-bottom ul li:nth-child(2) ")
   tabRemoveAddBlue(customerstab)
@@ -336,7 +335,7 @@ function getCall(number) {
   axioxProfile(idItem,"customers")
  }
 
-
+// if we don't know the caller load  a form page to register him
 function newClient() {
   
     content = document.querySelector(".MainContent")
@@ -351,14 +350,14 @@ function newClient() {
 
 
 
-
+// just a part of the animation when we get a call
 function fadeIn() {
   centerPart =document.querySelector(".theCenter")
   callPart=document.querySelector(".call")
   callPart.classList.add("show")
   centerPart.classList.add("withcall")
 }
-
+// par a the animation when we close the call
 function fadeOut() {
   centerPart =document.querySelector(".theCenter")
   callPart=document.querySelector(".call")
@@ -366,13 +365,14 @@ function fadeOut() {
   centerPart.classList.remove("withcall")
 
 }
-
+// play a phone sound when we get the call
 function ringPhone() {
   mp3= document.querySelector("#telephoneRing")
   mp3.play()
  
 
 }
+// stop the sound of the phone 
 function stopingPhone() {
   mp3= document.querySelector("#telephoneRing")
   mp3.pause
@@ -380,7 +380,7 @@ function stopingPhone() {
 
 }
 
-
+// all the actions when the phone is answered 
 function answerThePhone() {
   if (getCookie("callerId")=="unknow"){
     console.log("watcha")
@@ -404,6 +404,7 @@ function answerThePhone() {
     activateCloseCall() 
 }
 
+// animation of the phone during the call
 function animationAnswer() {
   card= document.querySelector(".Card")
   cardProfile= document.querySelector(".Card-imageCallEffect")
@@ -415,7 +416,7 @@ function animationAnswer() {
 
 
 
-
+// counter of the call 
 function setCounter() {
 
   insertTimer= document.querySelector(".timer")
@@ -443,7 +444,6 @@ function setCounter() {
 
 }
 
-
 function stopPropagationModal() {
   modalWrapper = document.querySelector(".modal-wrapper")
   modalWrapper.addEventListener("click",(e)=>{
@@ -452,7 +452,7 @@ function stopPropagationModal() {
 }
 
 
-
+// show the modal we use to valid some actions 
 function showModal() {
  buttonsOpenModal= document.querySelectorAll(".Action")
  ValidModal= document.querySelector("#ValidModal")
@@ -475,7 +475,7 @@ function showModal() {
  })
 })
 
-
+// choose the message to load on the modal depends on where we are 
 function chooseModalMessage(action,type){
   if(type =="customers"){
     if (action=="delete"){
@@ -498,6 +498,7 @@ function chooseModalMessage(action,type){
 }
 
 }
+// if we choose to valid the modal is shown
 function eventListenerOnValidModal (action,item,type) {
   ValidModal= document.querySelector("#ValidModal")
   ValidModal.addEventListener("click",()=>{
@@ -506,6 +507,7 @@ function eventListenerOnValidModal (action,item,type) {
   })
  } 
 
+ // ajax when we valid the modal 
 function  axioxModal (action,item,type){
 
   axios.get('/dashboard/' +type +'/'+action +'/' + item)
@@ -534,6 +536,7 @@ new_element = old_element.cloneNode(true);
 old_element.parentNode.replaceChild(new_element, old_element);
 }
 
+// when we choose to close the modal
 function closeModal() {
   modal = document.querySelector(".modal")
   crossModal = document.querySelector(".fa-times-circle")
@@ -557,7 +560,7 @@ cancelModal.addEventListener("click",()=> {
 
 
 
-
+// choose the message to load when we valid the modal
 function DetermineMessage(type,action ) {
 
 if(type =="customers"){
@@ -586,7 +589,7 @@ if(type =="customers"){
 
   
 }
-
+// LOad th e choosen message when we valid the modal
 function alert(message) {
   alertP= document.querySelector(".alertMessage")
 
@@ -598,43 +601,7 @@ function alert(message) {
 }
 
 
-
-
-function makeCall(){
-  callElements = document.querySelectorAll(".makeCall")
-  right= document.querySelector(".call")
-  callElements.forEach(callElement=>{
-    callElement.addEventListener("click",()=>{
-      number=callElement.querySelector(":first-child").innerHTML
-      axios.post('/dashboard/makecall' ,{number})
-        .then( response => {
-          right.innerHTML=response.data
-          fadeIn()
-          activateCloseCall()
-          activateClientWeKnow()
-            setTimeout(function() {clientAnswer()
-      }, 5000)
-          
-        })
-        .catch( err => {
-          console.log(err);
-        })      
-      
-    })
-    
-  })
-
-}
-
-
-function clientAnswer(){
-  animationAnswer()
-  setCounter()
-  callInfo = document.querySelector(".js-callInfo")
-  callInfo.innerHTML="En cours"
-}
-
-
+// When we search a customer
 
 function search(table){
   buttonSearch = document.querySelector(".searchButton")
@@ -652,18 +619,14 @@ function search(table){
       console.log(err);
     }) 
       
-
-
   })
    
 }
 
 
-
+//when we have a lot of datas on changing page 
 function changePage(tabTitleElement){
   pages = document.querySelectorAll(".pagination-page-number")
-
-
   pages.forEach(page=>{
   page.addEventListener("click",()=>{
    
@@ -683,7 +646,7 @@ function changePage(tabTitleElement){
 })
 
 
-}
+} 
 
 
 
@@ -696,10 +659,9 @@ function changePageOnProfile(tabTitleElement){
   })
 })
 
-
 }
 
-
+//listener on the switch button to make you available or not 
 function makeYouAvailable(){
 availableSwitch = document.querySelector(".slider")
 availableSwitch.addEventListener("click",(e)=>{
@@ -710,23 +672,17 @@ availableSwitch.addEventListener("click",(e)=>{
   .catch( err => {
     console.log(err);
   })       
-
 })
-
-
-
-
-
 }
 
 
-
+// When you are are on a call so pass the worker on occupied
 function imOccupied(){
   availibility = document.querySelector(".occupied div")
   availibility.innerHTML=`<span> occupied </span>`
   console.log("occupied")
  }
- 
+ // when the call finish to pass the worker on not occupied 
  function imNotOccupied(){
    availibility = document.querySelector(".occupied div")
    availibility.innerHTML=` <label class="switch" > 
