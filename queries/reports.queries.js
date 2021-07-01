@@ -1,4 +1,3 @@
-const { authorize } = require("passport");
 const Report = require("../database/models/report.model")
 
 exports.findLimitedReports=(limit,skip)=>{
@@ -40,6 +39,12 @@ exports.findLimitedReports=(limit,skip)=>{
       message: array[1],
       author:currentUserId,
     });
-    return   newReport.save();
+    
+    return   newReport.save().then(newReport=>newReport.populate({
+      path : 'request',
+      populate : {
+        path : 'customer'
+      }
+    }).populate('author').execPopulate());
   }
   

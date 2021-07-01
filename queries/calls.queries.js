@@ -15,8 +15,7 @@ exports.countCallsByWorkerId= (workerId)=> {
 
 
 exports.createCall= (array)=> {
-  console.log("le log du calll ")
-  console.log(array)
+
     const newCustomer = new Call({
       customer:array[0],
       number:array[1],

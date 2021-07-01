@@ -17,7 +17,7 @@ const {findAllTheAvailableWorkers,findAllTheOccupiedWorkers} = require ('../quer
       }
         else{
           occupiedWorkers= await findAllTheOccupiedWorkers()
-          console.log(occupiedWorkers)
+         
           if(!occupiedWorkers.length){
             customer=false
           }else{
@@ -31,8 +31,7 @@ const {findAllTheAvailableWorkers,findAllTheOccupiedWorkers} = require ('../quer
       exports.chooseAWorker= async ()=>{
   
           customer =  await waitForWorkers()
-          console.log("waiting")
-          console.log(customer)
+
     
      return customer
     }

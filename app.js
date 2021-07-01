@@ -15,9 +15,9 @@ module.exports = {
 
 app.use(cookieParser());
 require("./config/jwt.config");
-require("./config/socket.config");
+// require("./config/socket.config");
 
-require("./config/asterisk.config")
+// require("./config/asterisk.config")
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");

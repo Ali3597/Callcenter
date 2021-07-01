@@ -84,7 +84,7 @@ exports.createRequest= (array,currentUserId)=> {
     urgencyLevel:array[3],
     deadline:  Date.parse(array[4])
   });
-  return   newRequest.save();
+  return   newRequest.save().then(newRequest=>newRequest.populate("customer").execPopulate());
 }
 
 

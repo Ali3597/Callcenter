@@ -37,7 +37,7 @@ const requestTableFormat= ["customer","message", "type" ,"date","deadline","Nive
      res.render('reports/reportProfile',{
          report,
          requests,
-         titleRequests:"Requetes relié a ce rapport",
+         titleRequests,
          pageNumberRequests,
          requestTableFormat,
          subMessage,
@@ -85,34 +85,49 @@ res.render('reports/formReports', {
 
 
 exports.newReport=  async (req, res, next) => {
-   
     currentUserId= req.user.id
-
     reportArray =req.body.arrayValue
     requestId = reportArray[0];
-    await createReport(reportArray,currentUserId)
-    const [request,reports,reportsNumbers]=await Promise.all([
-            findRequestByIdWithCustomersAssociate(requestId),
-            findLimitedReportsByRequestsId(5,0,requestId),
-            countReportsByRequestId(requestId)],)
-            pageNumberReports= pageCalculator(reportsNumbers,5)
-
-         res.render('requests/requestProfile',{
-            profile:true,
-             request,
-             reports, 
-             titleReports:"Rapport concernant la requete",
-             pageNumberReports,
-             reportsTableFormat,
+    report = await createReport(reportArray,currentUserId)
+    requests= report.request
+    titleRequests=titleMessageOn("request",requests)
+    pageNumberRequests= 1
+         res.render('reports/reportProfile',{
+            report,
+            requests,
+            titleRequests,
+            pageNumberRequests,
+            requestTableFormat,
              subMessage,
-             deadlineTimeCalcul,
-             urgencyColor,
              range,
              properStringDate,
+             urgencyColor,
+             deadlineTimeCalcul
+            
+            
          } )
          
         }
 
+        // exports.reportProfile= async (req, res, next) => { 
+        //     const  reportId=  req.params.reportId;
+        //     const report = await    findReportAndRelatedRequestsByIdAndAuthor(reportId),
+        //     requests= report.request
+        //     titleRequests=titleMessageOn("request",requests)
+        //     pageNumberRequests= 1
+        //  res.render('reports/reportProfile',{
+        //      report,
+        //      requests,
+        //      titleRequests:"Requetes relié a ce rapport",
+        //      pageNumberRequests,
+        //      requestTableFormat,
+        //      subMessage,
+        //      range,
+        //      properStringDate,
+        //      urgencyColor,
+        //      deadlineTimeCalcul
+        //  } )
+        //  }
       
 
 

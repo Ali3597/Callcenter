@@ -12,13 +12,6 @@ const reportSchema = schema({
 
 
 
-reportSchema.post('updateMany', async    function(next) {
-  console.log(this._conditions.customer)
-  console.log("hellooooooo")
-  next()
-  })
- 
-
 const Report = mongoose.model('report', reportSchema);
 
 

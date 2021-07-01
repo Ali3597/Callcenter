@@ -1,17 +1,23 @@
 const Customer = require ("../database/models/customer.model")
+const Call = require ("../database/models/call.model")
+const Request = require("../database/models/request.model");
+const Report = require("../database/models/report.model")
 
 
 
 
-
-exports.createCustomer= (array)=> {
+exports.createCustomer= async (array)=> {
 
     const newCustomer = new Customer({
       name:array[0],
       number:array[1],
       email:array[2]
     });
-    return   newCustomer.save();
+    
+    
+    // Worker.findByIdAndUpdate(userId,{$set:{state : "unavailable"}},{runValidators: true  } ).exec()
+    test= await newCustomer.save()
+    Call.updateMany({number:array[1]},{$set:{customer:test._id}}).exec()
   }
 
 exports.findLimitedCustomers=(limit,skip)=>{
@@ -45,8 +51,16 @@ exports.findCustomerByName= (customerName)=> {
 
 
 
-exports.deleteCustomerById= (customerId)=> {
-  return   Customer.findByIdAndDelete(customerId).exec()
+exports.deleteCustomerById= async  (customerId)=> {
+  Customer.findByIdAndDelete(customerId).exec()
+  Call.updateMany({customer:customerId},{$set:{customer:null}}).exec()
+   requests = await Request.find({customer: customerId})
+Request.deleteMany({customer: customerId }).exec()
+requests.forEach(element => {
+  Report.deleteMany({request:element._id  }).exec()
+});
+  
+
   
 }
 
@@ -61,7 +75,6 @@ exports.findCustomersAlphabeticallySorted=(limit,skip)=>{
 exports.findCustomersLikeNameLimited = (search,limit,skip) => {
   const regExp = `^${ search }`;
   const reg = new RegExp(regExp);
-  console.log(reg)
   return Customer.find({ name: { $regex: reg } }).limit(limit).skip(skip).exec();
 }
 
@@ -69,7 +82,6 @@ exports.findCustomersLikeNameLimited = (search,limit,skip) => {
 exports.countCustomersLikeName = (search) => {
   const regExp = `^${ search }`;
   const reg = new RegExp(regExp);
-  
   return Customer.find({ name: { $regex: reg } }).count().exec();
 }
 

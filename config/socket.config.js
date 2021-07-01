@@ -17,7 +17,7 @@ const {updateAvailableToFalseById}= require ('../queries/workers.queries')
     ns.on("connect", async (nsSocket) => {
               try {
               
-                console.log("okokok")
+               
           
               } catch (e) {
                 throw e;
@@ -27,7 +27,7 @@ const {updateAvailableToFalseById}= require ('../queries/workers.queries')
 
 // not working yet,, if a worker disconnect of his scoket make him unavailable on the database 
   ns.on("disconnect", (socket) => {
-    console.log("on est la")
+    
     workerId =  socket.request.user._id
     socket.disconnect(true);
     updateAvailableToFalseById(workerId)
@@ -48,14 +48,6 @@ module.exports = ios
 
 
 
-
-// ios.on("disconnect",  (nsSocket) => { 
-//   const workerId =  nsSocket.request.user._id
-//   console.log(workerId)
-//   updateAvailableToFalseById(workerId)
-//   console.log("disconnect")
-  
-// })
 
 
  

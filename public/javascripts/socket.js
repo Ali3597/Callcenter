@@ -19,7 +19,7 @@ ioClient.on("workerId", (data) => {
 
   // Wait for the close call event to play the animation when a call is closed
   nsSocket.on("closeCall",(data)=>{
-    console.log("on close le callll")
+    
     closeCall()
     
   })

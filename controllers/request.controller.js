@@ -147,24 +147,24 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         currentUserId= req.user._id
         requestArray =req.body.arrayValue
         customerId = requestArray[0]
-        await createRequest(requestArray,currentUserId)
-        const [customer,requests,requestsNumbers]=await Promise.all([
-        findCustomerById(customerId),
-        findLimitedRequestsByCustomerId(5,0,customerId),
-        countRequestsByCustomerId(customerId)],)           
-    pageNumberRequests= pageCalculator(requestsNumbers,5)
-    res.render('customers/profileCustomer',{
+       request =  await createRequest(requestArray,currentUserId)
+       const [reports,reportsNumbers]=await Promise.all([
+        findLimitedReportsByRequestsId(5,0,request._id),
+        countReportsByRequestId(request._id)],)         
+    pageNumberReports= pageCalculator(reportsNumbers,5)
+    titleReports=titleMessageOn("reports",reports)
+    res.render('requests/requestProfile',{
         profile:true,
-        customer,
-        requests,
-        titleRequests:"Requetes sur le client ",
-        pageNumberRequests,
-        requestTableFormat,
+        request,
+        reports,   
+        titleReports,
+        pageNumberReports,
+        reportsTableFormat,
         subMessage,
-        range,
-        properStringDate,
+        deadlineTimeCalcul,
         urgencyColor,
-        deadlineTimeCalcul
+        range,
+        properStringDate, 
              } )
              }
      catch (e) {
@@ -175,6 +175,30 @@ const reportsTableFormat= ["auteur","Message" ,"Date" ,"action"]
         
     } 
     
+    // exports.requestProfile= async (req, res, next) => { 
+    //     const  requestId=  req.params.requestId;
+    //     const [request,reports,reportsNumbers]=await Promise.all([
+    //     findRequestByIdWithCustomersAssociate(requestId),
+    //     findLimitedReportsByRequestsId(5,0,requestId),
+    //     countReportsByRequestId(requestId)],)
+        
+    //     titleReports=titleMessageOn("reports",reports)
+    //     pageNumberReports= pageCalculator(reportsNumbers,5)
+        
+    //  res.render('requests/requestProfile',{
+    //     profile:true,
+    //      request,
+    //      reports,   
+    //      titleReports,
+    //      pageNumberReports,
+    //      reportsTableFormat,
+    //      subMessage,
+    //      deadlineTimeCalcul,
+    //      urgencyColor,
+    //      range,
+    //      properStringDate,
+    //  } )
+    //  }
 
 
 

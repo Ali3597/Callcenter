@@ -64,7 +64,6 @@ function whichTableActivate( table){
 
 function activateProfileCustomers(item){
   consult()
-  makeCall()
   showModal()
   showForm("requests",item)
   changePageOnProfile("customers")
@@ -74,7 +73,6 @@ function activateProfileCustomers(item){
 
 function activateProfileRequests(item){
   consult()
-  makeCall()
   showModal()
   showForm("reports",item)
   
@@ -103,7 +101,6 @@ function activateTableCalls(){
 
 function activateTableCustomers(){
   consult()
-  makeCall()
   showForm("customers")
   search("customers")
   changePage("customers")
@@ -113,7 +110,6 @@ function activateTableCustomers(){
 
 function activateTableRequests(){
   consult()
-  makeCall()
   showForm("requests")
   
   changePage("requests")
@@ -154,7 +150,7 @@ function tabsCenter() {
             tabRemoveAddBlue(tabAside)
            transitionInnerHtml(response.data,time)
            setTimeout(function() {
-             console.log(tabTitleElement)
+            
             whichTableActivate( tabTitleElement)
               }, time)
             })
@@ -306,8 +302,6 @@ axios.post('/dashboard/' +tabTitleElement +'/form',{item} )
 
 // animation when a worker get a call
 function getCall(number) {
-  console.log("si senor")
-  console.log(number)
   right= document.querySelector(".call")
   axios.post('/dashboard/getcall' ,{number})
         .then( response => {
@@ -315,7 +309,6 @@ function getCall(number) {
           fadeIn()
           ringPhone()
           activateCloseCall()
-          console.log(getCookie("callerId"))
         })
         .catch( err => {
           console.log(err);
@@ -383,10 +376,9 @@ function stopingPhone() {
 // all the actions when the phone is answered 
 function answerThePhone() {
   if (getCookie("callerId")=="unknow"){
-    console.log("watcha")
+ 
     newClient()
   }else{
-    console.log("client we know")
        activateClientWeKnow()
   }
   
@@ -516,6 +508,8 @@ function  axioxModal (action,item,type){
       transitionInnerHtml(response.data)
       setTimeout(function() {
         alert(DetermineMessage(type,action ))
+        console.log("le typeeeeeeeeeee")
+        console.log(type)
         whichProfileActivate(type)
           }, time)
     })
@@ -607,7 +601,6 @@ function search(table){
   buttonSearch = document.querySelector(".searchButton")
  content = document.querySelector(".MainContent")
   buttonSearch.addEventListener("click",()=>{
-    console.log("on cherche ")
     searchValue=  buttonSearch.parentNode.querySelector("input").value
     axios.post('/dashboard/' +table +'/search',{searchValue})
     .then( response => {
@@ -680,7 +673,7 @@ availableSwitch.addEventListener("click",(e)=>{
 function imOccupied(){
   availibility = document.querySelector(".occupied div")
   availibility.innerHTML=`<span> occupied </span>`
-  console.log("occupied")
+  
  }
  // when the call finish to pass the worker on not occupied 
  function imNotOccupied(){
@@ -691,5 +684,5 @@ function imOccupied(){
    
    </label>
            `
-           console.log(" not occupied")
+      
   }
