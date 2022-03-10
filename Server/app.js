@@ -6,16 +6,14 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const server = app.listen(3000);
 
-
 module.exports = {
   server,
   app,
 };
 
-
 app.use(cookieParser());
 require("./config/jwt.config");
-// require("./config/socket.config");
+require("./config/socket.config");
 
 // require("./config/asterisk.config")
 
@@ -25,5 +23,3 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(router);
-
-

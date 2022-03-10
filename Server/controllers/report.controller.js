@@ -109,25 +109,6 @@ exports.newReport=  async (req, res, next) => {
          
         }
 
-        // exports.reportProfile= async (req, res, next) => { 
-        //     const  reportId=  req.params.reportId;
-        //     const report = await    findReportAndRelatedRequestsByIdAndAuthor(reportId),
-        //     requests= report.request
-        //     titleRequests=titleMessageOn("request",requests)
-        //     pageNumberRequests= 1
-        //  res.render('reports/reportProfile',{
-        //      report,
-        //      requests,
-        //      titleRequests:"Requetes relié a ce rapport",
-        //      pageNumberRequests,
-        //      requestTableFormat,
-        //      subMessage,
-        //      range,
-        //      properStringDate,
-        //      urgencyColor,
-        //      deadlineTimeCalcul
-        //  } )
-        //  }
       
 
 

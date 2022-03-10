@@ -445,7 +445,7 @@ function stopPropagationModal() {
 
 
 // show the modal we use to valid some actions 
-function showModal() {
+function xshowModal() {
  buttonsOpenModal= document.querySelectorAll(".Action")
  ValidModal= document.querySelector("#ValidModal")
  modal = document.querySelector(".modal")
@@ -453,7 +453,7 @@ function showModal() {
  buttonsOpenModal.forEach(element=>{
  element.addEventListener("click",(e)=>{
   e.stopPropagation()
-  ValidModal.addEventListener("click",()=> {
+  ValidModal.addEventListener("click",()=>{
     modal.classList.remove("active")
     removeAllEventListeners(ValidModal)
   

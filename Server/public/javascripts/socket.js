@@ -6,8 +6,7 @@ const ioClient = io({
     reconnection: false,
   });
   
-
-  ioClient.on("connect", () => {
+ioClient.on("connect", () => {
     console.log("connexion ok !");
 })
 // create the socket client side  depend on the id of the orker 
