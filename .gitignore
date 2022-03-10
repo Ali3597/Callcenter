@@ -1,4 +1,27 @@
+# Server Side
 Server/node_modules
 Server/package-lock.json
 Server/database/seed.json
 Server/database/seedreport.json
+
+# client Side///////////////////////////////////////
+/client/node_modules
+client/.pnp
+.pnp.js
+
+# testing
+client/coverage
+
+# production
+client/build
+
+# misc
+client/.DS_Store
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*

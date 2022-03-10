@@ -4,7 +4,7 @@ require("./database");
 const router = require("./routes");
 const cookieParser = require("cookie-parser");
 const app = express();
-const server = app.listen(3000);
+const server = app.listen(4000);
 
 module.exports = {
   server,
