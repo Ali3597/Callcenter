@@ -1,4 +1,4 @@
-node_modules
-package-lock.json
-database/seed.json
-database/seedreport.json
+Server/node_modules
+Server/package-lock.json
+Server/database/seed.json
+Server/database/seedreport.json
