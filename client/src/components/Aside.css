@@ -1,0 +1,19 @@
+.aside {
+  background: #d8dcd6;
+  width: 0px;
+  transition: width 0.7s;
+  display: flex;
+  flex-direction: column;
+}
+
+.opened {
+  width: 240px;
+}
+
+.tab {
+  border: 1px solid black;
+  width: 100%;
+  height: 8vh;
+  cursor: pointer;
+  text-align: center;
+}

@@ -1,0 +1,14 @@
+.navbar {
+  height: 9vh;
+  width: 100%;
+  background-color: aqua;
+  display: flex;
+}
+
+.icon {
+  padding: 10px;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
