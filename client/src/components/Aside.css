@@ -4,6 +4,7 @@
   transition: width 0.7s;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .opened {

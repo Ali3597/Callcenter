@@ -3,21 +3,23 @@ import "./Tab.css";
 export const Tab = ({ columns, rows }) => {
   console.log(rows);
   return (
-    <table class="responstable">
-      <tr>
-        {columns.map((column) => (
-          <th key={column}>{column}</th>
-        ))}
-        <th>Action</th>
-      </tr>
-      {rows.map((row, index) => (
-        <tr key={row.id}>
-          {columns.map((column, index) => (
-            <td key={index}>{row[column]}</td>
+    <table className="responstable">
+      <thead>
+        <tr>
+          {columns.map((column) => (
+            <th key={column}>{column}</th>
           ))}
-          <td key={index}>Consultez</td>
         </tr>
-      ))}
+      </thead>
+      <tbody>
+        {rows.map((row, index) => (
+          <tr key={row.id}>
+            {columns.map((column, index) => (
+              <td key={index}>{row[column]}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 };

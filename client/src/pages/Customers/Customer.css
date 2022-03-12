@@ -1,0 +1,4 @@
+.customer {
+  display: flex;
+  flex-direction: column;
+}

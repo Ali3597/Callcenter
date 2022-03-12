@@ -5,10 +5,13 @@ import { LoginForm } from "./LoginForm";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "./pages/Home/Home";
 import { Calls } from "./pages/Calls/Calls";
+import { Customer } from "./pages/Customers/Customer";
 import { Customers } from "./pages/Customers/Customers";
 import { Reports } from "./pages/Reports/Reports";
-import { Requests } from "./pages/Requests/Request";
+import { Requests } from "./pages/Requests/Requests";
 import { Aside } from "./components/Aside";
+import { Request } from "./pages/Requests/Request";
+import { Worker } from "./pages/Workers/Worker";
 
 function App() {
   const [user, setUser] = useState(true);
@@ -33,10 +36,17 @@ function App() {
                 path="/calls"
                 element={user ? <Calls /> : <Navigate to="/login" />}
               />
-
+              <Route
+                path="/customers/:id"
+                element={user ? <Customer /> : <Navigate to="/login" />}
+              />
               <Route
                 path="/customers"
                 element={user ? <Customers /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/requests/:id"
+                element={user ? <Request /> : <Navigate to="/login" />}
               />
               <Route
                 path="/requests"
@@ -45,6 +55,10 @@ function App() {
               <Route
                 path="/reports"
                 element={user ? <Reports /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/worker/:id"
+                element={user ? <Worker /> : <Navigate to="/login" />}
               />
 
               <Route
