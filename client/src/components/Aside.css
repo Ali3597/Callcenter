@@ -15,5 +15,25 @@
   width: 100%;
   height: 8vh;
   cursor: pointer;
-  text-align: center;
+
+  display: flex;
+}
+
+.tab a {
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 21px;
+  font-weight: 700;
+}
+.tab a.active {
+  background-color: red;
+}
+
+.tab a:hover {
+  background-color: red;
 }

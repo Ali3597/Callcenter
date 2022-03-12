@@ -1,21 +1,21 @@
 import './Aside.css'
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 export const Aside = ({isOpened}) => {
     return <div className={`${isOpened ? "opened" : ""} aside`}>
         <div className="tab">
-     <Link to="/">Home</Link>
+     <NavLink to="/">Home</NavLink>
         </div>
         <div className="tab">
-<Link to="/Calls">Calls</Link>
+<NavLink to="/Calls">Calls</NavLink>
         </div>
         <div className="tab">
-<Link to="/customers">Customers</Link>
+<NavLink to="/customers">Customers</NavLink>
         </div>
         <div className="tab">
-<Link to="/requests">Requests</Link>
+<NavLink to="/requests">Requests</NavLink>
         </div>
         <div className="tab">
-<Link to="/reports">Reports</Link>
+<NavLink to="/reports">Reports</NavLink>
         </div>
     </div>
 }
