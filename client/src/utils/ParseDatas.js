@@ -5,7 +5,7 @@ import { FaWindowClose } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Dot } from "../components/Dot";
 
-const urgencyColor = (number) => {
+export const urgencyColor = (number) => {
   switch (number) {
     case 1:
       return "24E34C";

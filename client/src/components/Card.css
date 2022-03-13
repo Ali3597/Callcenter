@@ -1,10 +1,10 @@
-.worker-card {
+.card {
   width: 45%;
   height: 25vh;
   margin-top: 2%;
   border-radius: 5px;
   display: flex;
-  margin-right: 1%;
+  margin-left: 1%;
   text-align: left;
   justify-content: space-around;
   align-items: center;
@@ -12,23 +12,23 @@
   border: 1px solid;
 }
 
-.worker-card img {
+.card img {
   border-radius: 50%;
   margin-right: 3%;
   margin-left: 3%;
 }
 
-.worker-card p {
+.card p {
   margin-right: 3%;
   display: flex;
   font-size: 14px;
   flex: 1;
   font-weight: 700;
 }
-.worker-card p span {
+.card p span {
   padding-left: 5%;
 }
 
-.worker-card p svg {
+.card p svg {
   width: 25px;
 }

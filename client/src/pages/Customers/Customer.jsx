@@ -1,9 +1,9 @@
 import { useParams } from "react-router";
-import { CustomerCard } from "../../components/CustomerCard";
 import "./Customer.css";
 import { Tab } from "../../components/Tab";
 import { useEffect, useState } from "react";
 import { ParseRequest } from "../../utils/ParseDatas";
+import { Card } from "../../components/Card";
 const { faker } = require("@faker-js/faker");
 
 const customer = {
@@ -55,7 +55,7 @@ export const Customer = () => {
   console.log(id);
   return (
     <div className="customer">
-      <CustomerCard customer={customer} />
+      <Card photoURL={customer.url} name={customer.name} email={customer.email} number={customer.number} />
       <h1>Ses Requetes</h1>
       {requestsParsed && <Tab columns={columns} rows={requestsParsed} />}
     </div>

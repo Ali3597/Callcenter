@@ -7,7 +7,7 @@ import { Home } from "./pages/Home/Home";
 import { Calls } from "./pages/Calls/Calls";
 import { Customer } from "./pages/Customers/Customer";
 import { Customers } from "./pages/Customers/Customers";
-import { Reports } from "./pages/Reports/Reports";
+
 import { Requests } from "./pages/Requests/Requests";
 import { Aside } from "./components/Aside";
 import { Request } from "./pages/Requests/Request";
@@ -51,10 +51,6 @@ function App() {
               <Route
                 path="/requests"
                 element={user ? <Requests /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/reports"
-                element={user ? <Reports /> : <Navigate to="/login" />}
               />
               <Route
                 path="/worker/:id"

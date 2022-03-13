@@ -14,8 +14,5 @@ export const Aside = ({isOpened}) => {
         <div className="tab">
 <NavLink to="/requests">Requests</NavLink>
         </div>
-        <div className="tab">
-<NavLink to="/reports">Reports</NavLink>
-        </div>
     </div>
 }
