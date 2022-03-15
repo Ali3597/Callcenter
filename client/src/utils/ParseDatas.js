@@ -27,7 +27,7 @@ export const ParseRequest = (requests) => {
     return {
       ...request,
       done: request.done ? <FaCheck /> : <FaWindowClose />,
-      action: <Link to={request.id}>Consultez</Link>,
+      action: <Link to={`/requests/${request.id}`}>Consultez</Link>,
       message: request.message.slice(0, 200).concat("…"),
       urgencyLevel: <Dot color={urgencyColor(request.urgencyLevel)} />,
       date: request.date.toLocaleString(),

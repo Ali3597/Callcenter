@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { Navbar } from "./components/Navbar";
-import { LoginForm } from "./LoginForm";
+import { Login } from "./Login";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "./pages/Home/Home";
 import { Calls } from "./pages/Calls/Calls";
@@ -14,11 +14,8 @@ import { Request } from "./pages/Requests/Request";
 import { Worker } from "./pages/Workers/Worker";
 
 function App() {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
-  if (user == null) {
-    return null;
-  }
 
   return (
     <div className="App">
@@ -59,12 +56,12 @@ function App() {
 
               <Route
                 path="/login"
-                element={user ? <Navigate to="/" /> : <LoginForm />}
+                element={user ? <Navigate to="/" /> : <Login />}
               />
 
               <Route
                 path="/signup"
-                element={user ? <Navigate to="/" /> : <LoginForm />}
+                element={user ? <Navigate to="/" /> : <Login />}
               />
             </Routes>
           </div>
