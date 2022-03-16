@@ -52,7 +52,6 @@ export const Customer = () => {
     }
   }, [requests]);
   const { id } = useParams();
-  console.log(id);
   return (
     <div className="customer">
       <Card photoURL={customer.url} name={customer.name} email={customer.email} number={customer.number} />

@@ -1,7 +1,6 @@
 import "./Tab.css";
 
 export const Tab = ({ columns, rows }) => {
-  console.log(rows);
   return (
     <table className="responstable">
       <thead>
