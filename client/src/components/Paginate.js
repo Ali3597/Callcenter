@@ -13,24 +13,40 @@ export const Paginate = ({ current, nbrPages }) => {
   return (
     <div className="container-page">
       <ul>
-        <PageLink
-          to={current - 1}
-          children={<FaChevronLeft />}
-          current={current}
-        />
+        {current != 1 ? (
+          <PageLink
+            to={current - 1}
+            children={<FaChevronLeft />}
+            current={current}
+            pages={nbrPages}
+          />
+        ) : (
+          ""
+        )}
         {pages &&
           pages.map((p, index) =>
             p === "..." ? (
               <SpanDot key={index} />
             ) : (
-              <PageLink to={p} key={index} children={p} current={current} />
+              <PageLink
+                to={p}
+                key={index}
+                children={p}
+                current={current}
+                pages={nbrPages}
+              />
             )
           )}
-        <PageLink
-          to={parseInt(current) + 1}
-          children={<FaChevronRight />}
-          current={current}
-        />
+        {current != nbrPages ? (
+          <PageLink
+            to={parseInt(current) + 1}
+            children={<FaChevronRight />}
+            current={current}
+            pages={nbrPages}
+          />
+        ) : (
+          ""
+        )}
       </ul>
     </div>
   );
@@ -88,11 +104,13 @@ const getPages = (currentPage, pages) => {
   return pageArray;
 };
 
-const PageLink = ({ children, current, to }) => {
+const PageLink = ({ children, current, to, pages }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const handleClick = () => {
-    searchParams.set("page", to);
-    setSearchParams(searchParams);
+    if (to <= pages && to >= 1) {
+      searchParams.set("page", to);
+      setSearchParams(searchParams);
+    }
   };
   return (
     <li
