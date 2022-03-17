@@ -8,26 +8,29 @@ export const Paginate = ({ current, nbrPages }) => {
 
   useEffect(() => {
     setPages(getPages(current, nbrPages));
-  }, [nbrPages]);
+  }, [nbrPages, current]);
 
   return (
     <div className="container-page">
       <ul>
-        <li className="page__btn">
-          <FaChevronLeft cursor={"pointer"} />
-        </li>
+        <PageLink
+          to={current - 1}
+          children={<FaChevronLeft />}
+          current={current}
+        />
         {pages &&
           pages.map((p, index) =>
             p === "..." ? (
               <SpanDot key={index} />
             ) : (
-              <PageLink key={index} children={p} current={current} />
+              <PageLink to={p} key={index} children={p} current={current} />
             )
           )}
-
-        <li className="page__btn">
-          <FaChevronRight cursor={"pointer"} />
-        </li>
+        <PageLink
+          to={parseInt(current) + 1}
+          children={<FaChevronRight />}
+          current={current}
+        />
       </ul>
     </div>
   );
@@ -85,10 +88,10 @@ const getPages = (currentPage, pages) => {
   return pageArray;
 };
 
-const PageLink = ({ children, current }) => {
+const PageLink = ({ children, current, to }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const handleClick = () => {
-    searchParams.set("page", children);
+    searchParams.set("page", to);
     setSearchParams(searchParams);
   };
   return (
