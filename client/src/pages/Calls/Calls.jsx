@@ -1,16 +1,14 @@
 import './Calls.css'
-const { faker } = require("@faker-js/faker");
 
-let calls = [];
-for (let i = 0; i < 5; i++) {
-  calls[i] = {
-    id: faker.datatype.uuid(),
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    number: faker.phone.phoneNumber(),
-    url: faker.image.avatar(),
-  };
-}
+import {apiFetch} from '../../utils/api'
+import { useEffect } from 'react';
+
+
+
 export const Calls = () => {
+  useEffect(async() => {
+    const calls = await apiFetch("/calls/1")
+    console.log(calls)
+  },[])
     return <div>Calls</div>
 }

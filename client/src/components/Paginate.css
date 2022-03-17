@@ -1,0 +1,37 @@
+.container-page {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+}
+.container-page > ul {
+  display: flex;
+  list-style: none;
+  width: 40%;
+  height: 7vh;
+  background-color: white;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.container-page > ul > li {
+  font-weight: 700;
+  flex: 1;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: white;
+
+  margin-right: 4%;
+}
+
+.active-page-link {
+  background-color: red !important;
+  color: white;
+}
+
+.page-link {
+  cursor: pointer;
+}

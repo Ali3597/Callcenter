@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, parseISO } from "date-fns";
 import { fr } from "date-fns/esm/locale";
 import { FaCheck } from "react-icons/fa";
 import { FaWindowClose } from "react-icons/fa";
@@ -26,12 +26,17 @@ export const ParseRequest = (requests) => {
   const requestsParsed = requests.map((request) => {
     return {
       ...request,
+      id: request._id,
+      customer: request.customer.email,
+      author: request.author.local.email,
       done: request.done ? <FaCheck /> : <FaWindowClose />,
       action: <Link to={`/requests/${request.id}`}>Consultez</Link>,
-      message: request.message.slice(0, 200).concat("…"),
-      urgencyLevel: <Dot color={urgencyColor(request.urgencyLevel)} />,
+      message: request.message.slice(0, 20).concat("…"),
+      urgencyLevel: (
+        <Dot color={urgencyColor(parseInt(request.urgencyLevel))} />
+      ),
       date: request.date.toLocaleString(),
-      deadline: formatDistanceToNow(request.deadline, {
+      deadline: formatDistanceToNow(parseISO(request.deadline), {
         addSuffix: true,
         locale: fr,
       }),

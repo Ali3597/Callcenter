@@ -2,6 +2,9 @@ import './Requests.css'
 import { ParseRequest } from '../../utils/ParseDatas';
 import { useEffect, useState } from 'react';
 import { Tab } from '../../components/Tab';
+import {apiFetch} from '../../utils/api'
+import { Paginate } from '../../components/Paginate';
+import { useSearchParams } from "react-router-dom";
 const { faker } = require("@faker-js/faker");
 let requests = [];
 for (let i = 0; i < 5; i++) {
@@ -37,14 +40,23 @@ const columns = [
 
 
 export const Requests = () => {
-    const [requestsParsed, setRequestsParsed] = useState(null);
+ const [searchParams, setSearchParams] = useSearchParams();
+  const [requestsParsed, setRequestsParsed] = useState(null);
+  const [order, setOrder] = useState(null)
+  const [flow, setFlow] = useState(null)
+  const [page,setPage] = useState(null)
+  useEffect(async () => {
+    setRequestsParsed(ParseRequest(await apiFetch("/requests/1")))
+  },[])
   useEffect(() => {
-    if (requests) {
-      setRequestsParsed(ParseRequest(requests));
-    }
-  }, [requests]);
+    console.log(searchParams.get('foo'), "les searchs params")
+    setOrder(searchParams.get('order'))
+    setFlow(searchParams.get('flow'))
+    setPage(searchParams.get('page')? searchParams.get('page'): 1 )
+    },[searchParams])
     return <>
         <h1>Requetes</h1>
-         {requestsParsed && <Tab columns={columns} rows={requestsParsed} />}
+      {requestsParsed && <Tab columns={columns} rows={requestsParsed} />}
+      {page && <Paginate current={page} nbrPages={10} />}
         </>
 }
