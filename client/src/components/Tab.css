@@ -68,3 +68,10 @@
     padding: 1em;
   }
 }
+
+.order {
+  cursor: pointer;
+}
+.order:hover {
+  text-decoration: underline;
+}

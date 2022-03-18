@@ -1,4 +1,7 @@
 import "./Tab.css";
+import { useSearchParams } from "react-router-dom";
+import { FaAngleUp } from "react-icons/fa";
+import { FaAngleDown } from "react-icons/fa";
 
 export const Tab = ({ columns, rows }) => {
   return (
@@ -6,7 +9,7 @@ export const Tab = ({ columns, rows }) => {
       <thead>
         <tr>
           {columns.map((column) => (
-            <th key={column}>{column}</th>
+            <TableHeader key={column[0]} column={column} />
           ))}
         </tr>
       </thead>
@@ -14,11 +17,50 @@ export const Tab = ({ columns, rows }) => {
         {rows.map((row, index) => (
           <tr key={row.id}>
             {columns.map((column, index) => (
-              <td key={index}>{row[column]}</td>
+              <td key={index}>{row[column[0]]}</td>
             ))}
           </tr>
         ))}
       </tbody>
     </table>
+  );
+};
+
+const TableHeader = ({ column }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const handleClick = () => {
+    console.log(column[0]);
+    if (searchParams.get("sort") == column[0]) {
+      if (searchParams.get("order") == "ASC") {
+        searchParams.set("order", "DESC");
+      } else {
+        searchParams.set("order", "ASC");
+      }
+    } else {
+      searchParams.set("sort", column[0]);
+      searchParams.set("order", "ASC");
+    }
+
+    setSearchParams(searchParams);
+  };
+  return (
+    <th
+      className={column[1] ? "order" : ""}
+      onClick={column[1] ? handleClick : ""}
+    >
+      {column[0]}
+      {searchParams.get("sort") == column[0] &&
+      searchParams.get("order") == "ASC" ? (
+        <FaAngleUp />
+      ) : (
+        ""
+      )}
+      {searchParams.get("sort") == column[0] &&
+      searchParams.get("order") == "DESC" ? (
+        <FaAngleDown />
+      ) : (
+        ""
+      )}
+    </th>
   );
 };

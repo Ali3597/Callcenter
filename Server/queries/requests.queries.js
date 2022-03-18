@@ -1,12 +1,42 @@
 const Request = require("../database/models/request.model");
 
-exports.findLimitedRequests = (limit, skip) => {
-  return Request.find({})
-    .limit(limit)
-    .skip(skip)
-    .populate("customer")
-    .populate("author", "local.email _id")
-    .exec();
+exports.findLimitedRequests = (limit, skip, order, sort) => {
+  return Request.aggregate([
+    {
+      $lookup: {
+        from: "customers",
+
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+    {
+      $lookup: {
+        from: "workers",
+        localField: "author",
+        foreignField: "_id",
+        as: "author",
+      },
+    },
+    { $limit: limit },
+    { $skip: skip },
+    {
+      $project: {
+        "author.avatar": 0,
+        "author.lastHangUp": 0,
+        "author.state": 0,
+        "author.number": 0,
+        "author.username": 0,
+        "author.local.password": 0,
+        "customer.name": 0,
+        "customer.avatar": 0,
+        "customer.number": 0,
+      },
+    },
+
+    { $sort: { [order]: sort } },
+  ]);
 };
 
 exports.findRequestByIdWithCustomersAssociate = (requestId) => {
@@ -17,7 +47,7 @@ exports.findRequestById = (requestId) => {
 };
 
 exports.countRequests = () => {
-  return Request.find({}).count().exec();
+  return Request.find({}).countDocuments().exec();
 };
 
 exports.findLimitedRequestsByCustomerId = (limit, skip, customerId) => {

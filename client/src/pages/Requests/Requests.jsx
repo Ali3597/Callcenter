@@ -25,15 +25,15 @@ for (let i = 0; i < 5; i++) {
 }
 
 const columns = [
-  "typeof",
-  "author",
-  "customer",
-  "message",
-  "done",
-  "deadline",
-  "date",
-  "urgencyLevel",
-  "action",
+  ["typeof",true],
+  ["author",true],
+  ["customer",true],
+  ["message",false],
+  ["done",true],
+  ["deadline",true],
+  ["date",true],
+  ["urgencyLevel",true],
+  ["action",false],
 ];
 
 
@@ -43,15 +43,14 @@ export const Requests = () => {
  const [searchParams, setSearchParams] = useSearchParams();
   const [requestsParsed, setRequestsParsed] = useState(null);
   const [order, setOrder] = useState(null)
-  const [flow, setFlow] = useState(null)
+  const [sort, setSort] = useState(null)
   const [page,setPage] = useState(null)
   useEffect(async () => {
     setRequestsParsed(ParseRequest(await apiFetch("/requests/1")))
   },[])
   useEffect(() => {
-    console.log(searchParams.get('foo'), "les searchs params")
     setOrder(searchParams.get('order'))
-    setFlow(searchParams.get('flow'))
+    setSort(searchParams.get('sort'))
     setPage(searchParams.get('page')? searchParams.get('page'): 1 )
     },[searchParams])
     return <>

@@ -39,18 +39,21 @@ const requestTableFormat = [
 ];
 const reportsTableFormat = ["auteur", "Message", "Date", "action"];
 
-exports.requestsDashboard = async (req, res, next) => {
-  console.log("allooooooooo");
-  page = req.params.page;
+exports.requests = async (req, res, next) => {
+  let { page, order, sort } = req.body;
+  if (sort == "DESC") {
+    sort = -1;
+  } else {
+    sort = 1;
+  }
+
   skip = 5 * page - 5;
+  console.log(sort);
   const [requests, requestsNumbers] = await Promise.all([
-    findLimitedRequests(5, skip),
+    findLimitedRequests(5, skip, order, sort),
     countRequests(),
   ]);
-  pageNumberRequests = pageCalculator(requestsNumbers, 5);
-  titleRequests = titleMessage("requests", requests);
-  console.log(requests);
-  res.send(requests);
+  res.send({ requests, requestsNumbers });
 };
 
 exports.requestProfile = async (req, res, next) => {

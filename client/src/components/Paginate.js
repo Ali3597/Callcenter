@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 export const Paginate = ({ current, nbrPages }) => {
   const [pages, setPages] = useState(null);
-
+  console.log("hello");
   useEffect(() => {
     setPages(getPages(current, nbrPages));
   }, [nbrPages, current]);

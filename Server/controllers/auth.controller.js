@@ -3,19 +3,10 @@ const {
   updateAvailableToFalseById,
 } = require("../queries/workers.queries");
 
-exports.signinForm = (req, res, next) => {
-  res.render("auth/auth-form", {
-    errors: null,
-    isAuthenticated: req.isAuthenticated(),
-    currentUser: req.user,
-  });
-};
-
-exports.signin = async (req, res, next) => {
+exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const worker = await findWorkerPerEmail(email);
-
     if (worker) {
       const match = await worker.comparePassword(password);
       if (match) {
@@ -33,7 +24,6 @@ exports.signin = async (req, res, next) => {
 };
 
 exports.me = async (req, res) => {
-  console.log(req.user, "papap");
   if (req.user) {
     res.send({ user: req.user });
   } else {
