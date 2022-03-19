@@ -1,11 +1,10 @@
 const Request = require("../database/models/request.model");
 
-exports.findLimitedRequests = (limit, skip, order, sort) => {
+exports.findLimitedRequests = (limit, skip, order, sort, search = "") => {
   return Request.aggregate([
     {
       $lookup: {
         from: "customers",
-
         localField: "customer",
         foreignField: "_id",
         as: "customer",
@@ -19,8 +18,7 @@ exports.findLimitedRequests = (limit, skip, order, sort) => {
         as: "author",
       },
     },
-    { $limit: limit },
-    { $skip: skip },
+
     {
       $project: {
         "author.avatar": 0,
@@ -34,9 +32,11 @@ exports.findLimitedRequests = (limit, skip, order, sort) => {
         "customer.number": 0,
       },
     },
-
+    { $match: { "customer.email": { $regex: search } } },
     { $sort: { [order]: sort } },
-  ]);
+  ])
+    .skip(skip)
+    .limit(limit);
 };
 
 exports.findRequestByIdWithCustomersAssociate = (requestId) => {
@@ -46,8 +46,30 @@ exports.findRequestById = (requestId) => {
   return Request.findOne({ _id: requestId }).exec();
 };
 
-exports.countRequests = () => {
-  return Request.find({}).countDocuments().exec();
+exports.countRequests = (search = "") => {
+  return Request.aggregate([
+    {
+      $lookup: {
+        from: "customers",
+
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+
+    {
+      $project: {
+        _id: 1,
+        "customer.email": 1,
+      },
+    },
+    { $match: { "customer.email": { $regex: search } } },
+
+    {
+      $count: "totalCount",
+    },
+  ]);
 };
 
 exports.findLimitedRequestsByCustomerId = (limit, skip, customerId) => {
@@ -68,22 +90,6 @@ exports.findLimitedRequestsByCustomerIdWithCustomersAssociate = (
 
 exports.countRequestsByCustomerId = (customerId) => {
   return Request.find({ customer: customerId }).count().exec();
-};
-
-exports.getDoneRequest = (requestId) => {
-  return Request.findByIdAndUpdate(
-    requestId,
-    { $set: { done: true } },
-    { runValidators: true }
-  );
-};
-
-exports.getUndoneRequest = (requestId) => {
-  return Request.findByIdAndUpdate(
-    requestId,
-    { $set: { done: false } },
-    { runValidators: true }
-  );
 };
 
 exports.getLimitedAlertRequestsWhithCustomers = (limit, skip) => {
@@ -117,16 +123,19 @@ exports.DeleteRequestById = (requestId) => {
   return Request.findByIdAndDelete(requestId).exec();
 };
 
-exports.createRequest = (array, currentUserId) => {
+exports.createRequest = (body, currentUserId) => {
   const newRequest = new Request({
+    ...body,
+    deadline: Date.parse(body.deadline),
     author: currentUserId,
-    customer: array[0],
-    message: array[1],
-    typeof: array[2],
-    urgencyLevel: array[3],
-    deadline: Date.parse(array[4]),
   });
   return newRequest
     .save()
     .then((newRequest) => newRequest.populate("customer").execPopulate());
+};
+
+exports.getToggleRequest = async (requestId) => {
+  const request = await Request.findById(requestId);
+  request.done = !request.done;
+  return await request.save();
 };

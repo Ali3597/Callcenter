@@ -2,22 +2,16 @@ const router = require("express").Router();
 
 const {
   requests,
-  requestProfile,
-  formNewRequest,
+  request,
   deleteRequest,
-  doneRequest,
-  undoneRequest,
+  toggleRequest,
   newRequest,
 } = require("../controllers/request.controller");
 
 router.get("/", requests);
-router.get("/profil/:requestId/:page", requestProfile);
-router.get("/delete/:requestId", deleteRequest);
-router.get("/done/:requestId", doneRequest);
-router.get("/undone/:requestId", undoneRequest);
-router.post("/form", formNewRequest);
+router.get("/:requestId", request);
+router.delete("/delete/:requestId", deleteRequest);
+router.get("/toggle/:requestId", toggleRequest);
 router.post("/new", newRequest);
-
-// router.get('/newreport/:requestId',newReportOnRequest)
 
 module.exports = router;
