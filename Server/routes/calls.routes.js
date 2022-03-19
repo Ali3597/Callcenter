@@ -1,13 +1,7 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
+const { calls } = require("../controllers/call.controller");
 
-const {callsDashboard}= require ("../controllers/call.controller")
-
-
-
-
-router.get('/:page', callsDashboard)
-
-
+router.get("/", calls);
 
 module.exports = router;

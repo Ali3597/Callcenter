@@ -10,8 +10,6 @@ exports.findLimitedCallsByWorkerId = (limit, skip, workerId) => {
     .exec();
 };
 
-//   .sort({"created_at": 1})
-
 exports.countCallsByWorkerId = (workerId) => {
   return Call.find({ destination: workerId }).count().exec();
 };
