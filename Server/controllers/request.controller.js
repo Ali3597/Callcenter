@@ -9,13 +9,13 @@ const {
 
 exports.requests = async (req, res, next) => {
   let { page, order, sort, search } = req.body;
-  if (sort == "DESC") {
-    sort = -1;
+  if (order == "DESC") {
+    order = -1;
   } else {
-    sort = 1;
+    order = 1;
   }
   skip = 5 * page - 5;
-  console.log(skip, "voila le kip");
+
   const [requests, requestsNumbers] = await Promise.all([
     findLimitedRequests(5, skip, order, sort, search),
     countRequests(search),

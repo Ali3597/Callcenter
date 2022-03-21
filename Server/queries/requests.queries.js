@@ -33,7 +33,7 @@ exports.findLimitedRequests = (limit, skip, order, sort, search = "") => {
       },
     },
     { $match: { "customer.email": { $regex: search } } },
-    { $sort: { [order]: sort } },
+    { $sort: { [sort]: order } },
   ])
     .skip(skip)
     .limit(limit);

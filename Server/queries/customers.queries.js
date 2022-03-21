@@ -2,23 +2,25 @@ const Customer = require("../database/models/customer.model");
 const Call = require("../database/models/call.model");
 const Request = require("../database/models/request.model");
 
-exports.createCustomer = async (array) => {
+exports.createCustomer = async (newCUstomer) => {
   const newCustomer = new Customer({
-    name: array[0],
-    number: array[1],
-    email: array[2],
+    ...newCUstomer,
   });
-
-  // Worker.findByIdAndUpdate(userId,{$set:{state : "unavailable"}},{runValidators: true  } ).exec()
-  test = await newCustomer.save();
+  newCustomerSave = await newCustomer.save();
+  // update all unknow call with this number
   Call.updateMany(
-    { number: array[1] },
-    { $set: { customer: test._id } }
+    { number: newCUstomer.number },
+    { $set: { customer: newCustomerSave._id } }
   ).exec();
+  return newCustomerSave;
 };
 
-exports.findLimitedCustomers = (limit, skip) => {
-  return Customer.find({}).limit(limit).skip(skip).exec();
+exports.findLimitedCustomers = (limit, skip, order, sort, search = "") => {
+  return Customer.find({ email: { $regex: search } })
+    .skip(skip)
+    .limit(limit)
+    .sort({ [sort]: order })
+    .exec();
 };
 
 exports.findCustomerById = (customerId) => {
@@ -29,8 +31,10 @@ exports.getCustomeByNumber = (customerNumber) => {
   return Customer.findOne({ number: customerNumber }).exec();
 };
 
-exports.countCustomers = () => {
-  return Customer.find({}).count().exec();
+exports.countCustomers = (search = "") => {
+  return Customer.find({ email: { $regex: search } })
+    .count()
+    .exec();
 };
 
 exports.doWeKnowThisNumber = (customerNumber) => {
@@ -43,15 +47,16 @@ exports.findCustomerByName = (customerName) => {
 
 exports.deleteCustomerById = async (customerId) => {
   Customer.findByIdAndDelete(customerId).exec();
+  // update all it calls by unknow
   Call.updateMany(
     { customer: customerId },
     { $set: { customer: null } }
   ).exec();
-  requests = await Request.find({ customer: customerId });
-  Request.deleteMany({ customer: customerId }).exec();
-  // requests.forEach(element => {
-  //   Report.deleteMany({request:element._id  }).exec()
-  // });
+  // update all it requests by null
+  Request.updateMany(
+    { customer: customerId },
+    { $set: { customer: null } }
+  ).exec();
 };
 
 exports.findCustomersAlphabeticallySorted = (limit, skip) => {

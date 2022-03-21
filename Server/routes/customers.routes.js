@@ -1,18 +1,16 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const {customersDashboard,newCustomers,formNewCustomer,customerProfile,deleteCustomer,searchCustomers} = require('../controllers/customer.controller')
+const {
+  customers,
+  newCustomer,
+  oneCustomer,
+  deleteCustomer,
+} = require("../controllers/customer.controller");
 
-router.get('/:page', customersDashboard)
-router.post('/form', formNewCustomer)
-router.post('/new', newCustomers)
-router.get('/profil/:customerId/:page', customerProfile)
-router.get('/delete/:customerId', deleteCustomer)
-router.post('/search',searchCustomers)
+router.get("/", customers);
+router.get("/:customerId", oneCustomer);
 
-
-
-
-
-
+router.post("/new", newCustomer);
+router.delete("/delete/:customerId", deleteCustomer);
 
 module.exports = router;

@@ -9,7 +9,7 @@ const requestSchema = schema({
   date: { type: Date, default: Date.now },
   done: { type: Boolean, default: false },
   author: { type: schema.Types.ObjectId, ref: "worker", required: true },
-  customer: { type: schema.Types.ObjectId, ref: "customer", required: true },
+  customer: { type: schema.Types.ObjectId, ref: "customer", required: false },
   workerDone: { type: schema.Types.ObjectId, ref: "worker" },
 });
 

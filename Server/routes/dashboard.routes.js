@@ -16,6 +16,5 @@ router.post("/makecall", makeCall);
 router.use("/home/:page", homeDashboard);
 router.use("/customers", customers);
 router.use("/calls", calls);
-router.use("/requests", requests);
 
 module.exports = router;
