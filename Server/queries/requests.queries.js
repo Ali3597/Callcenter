@@ -1,4 +1,6 @@
+const { Mongoose } = require("mongoose");
 const Request = require("../database/models/request.model");
+const mongoose = require("mongoose");
 
 exports.findLimitedRequests = (limit, skip, order, sort, search = "") => {
   return Request.aggregate([
@@ -39,6 +41,59 @@ exports.findLimitedRequests = (limit, skip, order, sort, search = "") => {
     .limit(limit);
 };
 
+exports.findLimitedRequestsOfACustomer = (
+  limit,
+  skip,
+  order,
+  sort,
+  search = "",
+  customerId
+) => {
+  return Request.aggregate([
+    {
+      $lookup: {
+        from: "customers",
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+    {
+      $lookup: {
+        from: "workers",
+        localField: "author",
+        foreignField: "_id",
+        as: "author",
+      },
+    },
+    {
+      $match: {
+        $and: [
+          { "customer._id": new mongoose.Types.ObjectId(customerId) },
+          { "customer.email": { $regex: search } },
+        ],
+      },
+    },
+    {
+      $project: {
+        "author.avatar": 0,
+        "author.lastHangUp": 0,
+        "author.state": 0,
+        "author.number": 0,
+        "author.username": 0,
+        "author.local.password": 0,
+        "customer.name": 0,
+        "customer.avatar": 0,
+        "customer.number": 0,
+      },
+    },
+
+    { $sort: { [sort]: order } },
+  ])
+    .skip(skip)
+    .limit(limit);
+};
+
 exports.findRequestByIdWithCustomersAssociate = (requestId) => {
   return Request.findOne({ _id: requestId }).populate("customer").exec();
 };
@@ -65,6 +120,36 @@ exports.countRequests = (search = "") => {
       },
     },
     { $match: { "customer.email": { $regex: search } } },
+
+    {
+      $count: "totalCount",
+    },
+  ]);
+};
+exports.countRequestsOfACustomer = (search = "", customerId) => {
+  return Request.aggregate([
+    {
+      $lookup: {
+        from: "customers",
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+    {
+      $match: {
+        $and: [
+          { "customer._id": new mongoose.Types.ObjectId(customerId) },
+          { "customer.email": { $regex: search } },
+        ],
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        "customer.email": 1,
+      },
+    },
 
     {
       $count: "totalCount",

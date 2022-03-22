@@ -1,6 +1,8 @@
 const {
   findLimitedRequests,
+  findLimitedRequestsOfACustomer,
   countRequests,
+  countRequestsOfACustomer,
   findRequestByIdWithCustomersAssociate,
   getToggleRequest,
   DeleteRequestById,
@@ -8,20 +10,28 @@ const {
 } = require("../queries/requests.queries");
 
 exports.requests = async (req, res, next) => {
-  let { page, order, sort, search } = req.body;
+  let { page, order, sort, search, customerId } = req.body;
   if (order == "DESC") {
     order = -1;
   } else {
     order = 1;
   }
   skip = 5 * page - 5;
-
-  const [requests, requestsNumbers] = await Promise.all([
-    findLimitedRequests(5, skip, order, sort, search),
-    countRequests(search),
-  ]);
-  console.log(requests, "on est la");
-  res.send({ requests, requestsNumbers });
+  if (customerId) {
+    console.log("ici on a un id", customerId);
+    const [requests, requestsNumbers] = await Promise.all([
+      findLimitedRequestsOfACustomer(5, skip, order, sort, search, customerId),
+      countRequestsOfACustomer(search, customerId),
+    ]);
+    console.log(requests);
+    res.send({ requests, requestsNumbers });
+  } else {
+    const [requests, requestsNumbers] = await Promise.all([
+      findLimitedRequests(5, skip, order, sort, search),
+      countRequests(search),
+    ]);
+    res.send({ requests, requestsNumbers });
+  }
 };
 
 exports.request = async (req, res, next) => {
