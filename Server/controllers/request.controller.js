@@ -7,6 +7,8 @@ const {
   getToggleRequest,
   DeleteRequestById,
   createRequest,
+  getLimitedAlertRequestsWhithCustomers,
+  countAlertedRequest,
 } = require("../queries/requests.queries");
 
 exports.requests = async (req, res, next) => {
@@ -42,6 +44,20 @@ exports.request = async (req, res, next) => {
   res.send({ request });
 };
 
+exports.alertRequests = async (req, res, next) => {
+  let { page, order, sort, search } = req.body;
+  if (order == "DESC") {
+    order = -1;
+  } else {
+    order = 1;
+  }
+  skip = 5 * page - 5;
+  const [request, requestCount] = await Promise.all([
+    getLimitedAlertRequestsWhithCustomers(5, skip, order, sort, search),
+    countAlertedRequest(search),
+  ]);
+  res.send({ request, requestCount });
+};
 exports.toggleRequest = async (req, res, next) => {
   const requestId = req.params.requestId;
   console.log(requestId);

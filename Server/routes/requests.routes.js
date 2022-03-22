@@ -6,9 +6,11 @@ const {
   deleteRequest,
   toggleRequest,
   newRequest,
+  alertRequests,
 } = require("../controllers/request.controller");
 
 router.get("/", requests);
+router.get("/alert", alertRequests);
 router.get("/:requestId", request);
 router.delete("/delete/:requestId", deleteRequest);
 router.get("/toggle/:requestId", toggleRequest);

@@ -177,31 +177,100 @@ exports.countRequestsByCustomerId = (customerId) => {
   return Request.find({ customer: customerId }).count().exec();
 };
 
-exports.getLimitedAlertRequestsWhithCustomers = (limit, skip) => {
-  return Request.find({
-    $and: [
-      {
-        $where: function () {
-          return Date.parse(this.deadline) - Date.now() < 1000 * 60 * 60 * 24;
-        },
+exports.getLimitedAlertRequestsWhithCustomers = (
+  limit,
+  skip,
+  order,
+  sort,
+  search = ""
+) => {
+  return Request.aggregate([
+    {
+      $lookup: {
+        from: "customers",
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
       },
-      { done: false },
-    ],
-  })
-    .limit(limit)
+    },
+    {
+      $lookup: {
+        from: "workers",
+        localField: "author",
+        foreignField: "_id",
+        as: "author",
+      },
+    },
+    {
+      $project: {
+        "author.avatar": 0,
+        "author.lastHangUp": 0,
+        "author.state": 0,
+        "author.number": 0,
+        "author.username": 0,
+        "author.local.password": 0,
+        "customer.name": 0,
+        "customer.avatar": 0,
+        "customer.number": 0,
+      },
+    },
+    {
+      $match: {
+        $and: [
+          {
+            $where: function () {
+              return (
+                Date.parse(this.deadline) - Date.now() < 1000 * 60 * 60 * 24
+              );
+            },
+          },
+          { "customer.email": { $regex: search } },
+          { done: false },
+        ],
+      },
+    },
+    { $sort: { [sort]: order } },
+  ])
     .skip(skip)
-    .populate("customer")
-    .exec();
+    .limit(limit);
 };
 
-exports.countAlertedRequest = () => {
-  return Request.find({
-    $where: function () {
-      return this.deadline - Date.now() < 1000 * 60 * 60 * 24;
+exports.countAlertedRequest = (search = "") => {
+  return Request.aggregate([
+    {
+      $lookup: {
+        from: "customers",
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
     },
-  })
-    .count()
-    .exec();
+    {
+      $project: {
+        _id: 1,
+        "customer.email": 1,
+        done: 1,
+      },
+    },
+    {
+      $match: {
+        $and: [
+          {
+            $where: function () {
+              return (
+                Date.parse(this.deadline) - Date.now() < 1000 * 60 * 60 * 24
+              );
+            },
+          },
+          { "customer.email": { $regex: search } },
+          { done: false },
+        ],
+      },
+    },
+    {
+      $count: "totalCount",
+    },
+  ]);
 };
 
 exports.DeleteRequestById = (requestId) => {

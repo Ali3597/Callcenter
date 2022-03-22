@@ -15,7 +15,7 @@ router.use("/requests", requests);
 router.use("/customers", customers);
 
 // router.get('/',(req,res) => {
-// res.redirect('/dashboard');
+// res.red irect('/dashboard');
 // })
 
 // router.get("/", (req, res) => {
