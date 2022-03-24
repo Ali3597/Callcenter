@@ -4,13 +4,15 @@ const {
   customers,
   newCustomer,
   oneCustomer,
-  deleteCustomer,
+  updateCustomerAvatar,
 } = require("../controllers/customer.controller");
+const {
+  uploadProfilePictureCustomer,
+} = require("../controllers/upload.controller");
 
 router.get("/", customers);
 router.get("/:customerId", oneCustomer);
-
+router.post("/updateAvatar", updateCustomerAvatar);
 router.post("/new", newCustomer);
-router.delete("/delete/:customerId", deleteCustomer);
 
 module.exports = router;

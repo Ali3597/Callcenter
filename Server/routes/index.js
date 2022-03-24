@@ -18,8 +18,10 @@ router.use("/customers", customers);
 // res.red irect('/dashboard');
 // })
 
-// router.get("/", (req, res) => {
-//   req.isAuthenticated() ? res.redirect("/dashboard") : res.redirect("/home");
-// });
+router.get("/", (req, res) => {
+  req.isAuthenticated()
+    ? res.status(404).send({ message: "You are not authenticated" })
+    : "";
+});
 
 module.exports = router;

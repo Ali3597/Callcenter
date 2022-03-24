@@ -79,3 +79,19 @@ exports.countCustomersLikeName = (search) => {
     .count()
     .exec();
 };
+
+exports.UpdateCustomerAvatar = async (filepath, customerId) => {
+  try {
+    return await Customer.findByIdAndUpdate(
+      customerId,
+      {
+        $set: {
+          avatar: filepath,
+        },
+      },
+      { runValidators: true }
+    ).exec();
+  } catch (e) {
+    throw e;
+  }
+};

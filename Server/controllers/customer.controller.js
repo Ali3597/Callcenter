@@ -7,6 +7,7 @@ const {
   findCustomersLikeNameLimited,
   countCustomersLikeName,
   deleteCustomerById,
+  UpdateCustomerAvatar,
 } = require("../queries/customers.queries");
 const {
   findLimitedRequestsByCustomerId,
@@ -14,6 +15,8 @@ const {
   createRequestOnCustomerId,
   findLimitedRequestsByCustomerIdWithCustomersAssociate,
 } = require("../queries/requests.queries");
+
+fs = require("fs");
 
 exports.customers = async (req, res, next) => {
   let { page, order, sort, search } = req.body;
@@ -35,14 +38,14 @@ exports.oneCustomer = async (req, res, next) => {
   res.send({ customer });
 };
 
-exports.deleteCustomer = async (req, res, next) => {
-  const customerId = req.params.customerId;
-  try {
-    await deleteCustomerById(customerId);
-    res.status(204).send();
-  } catch (error) {
-    res.status(404).send();
+exports.updateCustomerAvatar = async (req, res, next) => {
+  if (!req.file) {
+    res.status(404).send("No Avatar updated");
   }
+  const customerId = req.params.customerId;
+  const customer = await UpdateCustomerAvatar(req.file.path, customerId);
+  //  fs.unlinkSync(worker.avatar);
+  res.status(204).send();
 };
 
 exports.newCustomer = async (req, res, next) => {
@@ -53,29 +56,4 @@ exports.newCustomer = async (req, res, next) => {
   } catch (e) {
     res.status(404).send();
   }
-};
-
-exports.newRequestOnCustomer = async (req, res, next) => {
-  const customerId = req.params.customerId;
-  await createRequestOnCustomerId(customerId);
-  const [customer, requests, requestsNumbers] = await Promise.all([
-    findCustomerById(customerId),
-    findLimitedRequestsByCustomerIdWithCustomersAssociate(3, 0, customerId),
-    countRequestsByCustomerId(customerId),
-  ]);
-  titleRequests = titleMessageOn("requests", requests);
-  pageNumberRequests = pageCalculator(requestsNumbers, 3);
-  res.render("customers/profileCustomer", {
-    profile: true,
-    customer,
-    requests,
-    titleRequests,
-    pageNumberRequests,
-    requestTableFormat,
-    subMessage,
-    range,
-    properStringDate,
-    urgencyColor,
-    deadlineTimeCalcul,
-  });
 };

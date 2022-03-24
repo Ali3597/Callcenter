@@ -1,14 +1,37 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const {signupForm, signup,updateAvailable} = require('../controllers/worker.controller');
+const {
+  requireAuth,
+  requireAuthAdmin,
+  notRequireAuth,
+} = require("../middleware/AuthMiddleware");
 
+const {
+  signup,
+  updateWorker,
+  updateWorkerToAdmin,
+  getWorkers,
+  getOneWorker,
+  updateWorkerPassword,
+  updateWorkerAvatar,
+  deleteWorker,
+} = require("../controllers/worker.controller");
 
-router.get('/signup/form', signupForm)
-router.post('/signup', signup)
-router.post('/availableUpdate',updateAvailable)
+const {
+  uploadProfilePictureWorker,
+} = require("../controllers/upload.controller");
 
-// router.post('/update/image',ensureAuthenticated, uploadImage)
-
-
+router.get("/", requireAuth, getWorkers);
+router.get("/:workerId", requireAuth, getOneWorker);
+router.post("/signup", requireAuthAdmin, signup);
+router.post("/update", requireAuth, updateWorker);
+router.post("/updatePassword", requireAuth, updateWorkerPassword);
+router.delete("/delete/:workerId", requireAuthAdmin, deleteWorker);
+router.post("/passadmin/:workerId", requireAuthAdmin, updateWorkerToAdmin);
+router.post(
+  "/updateAvatar",
+  uploadProfilePictureWorker.single("profile"),
+  updateWorkerAvatar
+);
 
 module.exports = router;

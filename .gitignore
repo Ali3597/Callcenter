@@ -3,6 +3,7 @@ Server/node_modules
 Server/package-lock.json
 Server/database/seed.json
 Server/database/seedreport.json
+Server/public/profil
 
 # client Side///////////////////////////////////////
 /client/node_modules
