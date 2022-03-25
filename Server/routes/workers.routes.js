@@ -29,7 +29,7 @@ router.post("/updatePassword", requireAuth, updateWorkerPassword);
 router.delete("/delete/:workerId", requireAuthAdmin, deleteWorker);
 router.post("/passadmin/:workerId", requireAuthAdmin, updateWorkerToAdmin);
 router.post(
-  "/updateAvatar",
+  "/avatar",
   uploadProfilePictureWorker.single("profile"),
   updateWorkerAvatar
 );

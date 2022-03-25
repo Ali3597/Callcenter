@@ -9,13 +9,19 @@ exports.createCustomer = async (newCUstomer) => {
   newCustomerSave = await newCustomer.save();
   // update all unknow call with this number
   Call.updateMany(
-    { number: newCUstomer.number },
+    { number: newCustomer.number },
     { $set: { customer: newCustomerSave._id } }
   ).exec();
   return newCustomerSave;
 };
 
-exports.findLimitedCustomers = (limit, skip, order, sort, search = "") => {
+exports.findLimitedCustomers = (
+  limit,
+  skip,
+  order,
+  sort = "email",
+  search = ""
+) => {
   return Customer.find({ email: { $regex: search } })
     .skip(skip)
     .limit(limit)

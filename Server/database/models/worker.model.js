@@ -12,7 +12,7 @@ const workerSchema = schema({
   },
   avatar: { type: String, default: null },
   number: { type: String, required: true, unique: true },
-  state: { type: String, default: "unavailable" },
+  state: { type: String, default: "unavailable", select: false },
 
   lastHangUp: { type: Date, default: null },
 });

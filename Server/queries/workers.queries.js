@@ -1,4 +1,6 @@
 const Worker = require("../database/models/worker.model");
+const Request = require("../database/models/request.model");
+const Call = require("../database/models/call.model");
 
 exports.findWorkerPerEmail = (email) => {
   return Worker.findOne({ "local.email": email }).exec();
@@ -18,14 +20,16 @@ exports.createWorker = async (user) => {
     // to create number
     const newWorker = new Worker({
       username: user.username,
-      number: "PJSIP/workeddddr25",
+      number: "PJSIP/ddddd",
       local: {
         email: user.email,
         password: hashedPassword,
       },
     });
-    const toreturn = newWorker.save();
-    return { ...toreturn.toObject(), "local.password": null };
+    const toreturn = await newWorker.save();
+    let userObject = toreturn.toObject();
+    delete userObject.local.password;
+    return userObject;
   } catch (e) {
     throw e;
   }
@@ -201,4 +205,10 @@ exports.deleteWorkerById = async (workerId) => {
     { customer: customerId },
     { $set: { customer: null } }
   ).exec();
+};
+
+exports.deleteWorkerById = async (workerId) => {
+  await Call.deleteMany({ destination: workerId }).exec();
+  await Request.deleteMany({ author: workerId }).exec();
+  await Worker.findByIdAndDelete(workerId).exec();
 };

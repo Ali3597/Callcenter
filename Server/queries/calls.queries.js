@@ -14,11 +14,12 @@ exports.countCallsByWorkerId = (workerId) => {
   return Call.find({ destination: workerId }).count().exec();
 };
 
-exports.createCall = (array) => {
+exports.createCallq = (call) => {
+  // add time , date state
   const newCustomer = new Call({
-    customer: array[0],
-    number: array[1],
-    destination: array[2],
+    customer: call.customer,
+    number: call.number,
+    destination: call.destination,
   });
   return newCustomer.save();
 };

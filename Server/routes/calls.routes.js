@@ -1,8 +1,22 @@
 const router = require("express").Router();
 
-const { calls, getCaller } = require("../controllers/call.controller");
+const {
+  requireAuth,
+  requireAuthAdmin,
+  notRequireAuth,
+} = require("../middleware/AuthMiddleware");
+
+const {
+  calls,
+  getCaller,
+  callsWorker,
+  createCall,
+} = require("../controllers/call.controller");
 
 router.post("/getcaller", getCaller);
-router.get("/", calls);
+// to delete after
+router.post("/create", createCall);
+router.get("/", requireAuth, calls);
+router.get("/:workerId", requireAuth, callsWorker);
 
 module.exports = router;

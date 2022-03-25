@@ -8,6 +8,7 @@ const {
   UpdateWorkerAvatar,
   countWorkers,
   passBasicToAdmin,
+  deleteWorkerById,
 } = require("../queries/workers.queries");
 fs = require("fs");
 const limit = 5;
@@ -16,7 +17,7 @@ exports.signup = async (req, res, next) => {
   try {
     const body = req.body;
     const user = await createWorker(body);
-    res.send({ user });
+    res.send(user);
   } catch (e) {
     res.status(404).send();
   }
@@ -35,7 +36,8 @@ exports.getWorkers = async (req, res, next) => {
       findAllWorkers(5, skip, order, sort, search),
       countWorkers(search),
     ]);
-    res.send({ workers, count });
+
+    res.send({ items: workers, count: count[0].totalCount });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
   }
@@ -44,8 +46,8 @@ exports.getWorkers = async (req, res, next) => {
 exports.getOneWorker = async (req, res, next) => {
   try {
     const workerId = req.params.workerId;
-    workers = await findOneWorker(workerId);
-    res.send(workers);
+    const worker = await findOneWorker(workerId);
+    res.send(worker);
   } catch (error) {
     res.status(404).send({ message: "This user doesnt exist" });
   }
@@ -82,8 +84,8 @@ exports.updateWorkerToAdmin = async (req, res, next) => {
 };
 exports.deleteWorker = async (req, res, next) => {
   try {
-    const { password } = req.body;
-    await UpdateWorkerPassword(password, req.user.id);
+    const workerId = req.params.workerId;
+    await deleteWorkerById(workerId);
     res.status(204).send();
   } catch (e) {
     res.status(404).send();
@@ -105,9 +107,12 @@ exports.updateWorkerAvatar = async (req, res, next) => {
     if (!req.file) {
       res.status(404).send("No Avatar updated");
     }
-    worker = await UpdateWorkerAvatar(req.file.path, req.user._id);
-    fs.unlinkSync(worker.avatar);
-    res.send({ avatar: req.file.path });
+    const cutPath = req.file.path.substring(7);
+    worker = await UpdateWorkerAvatar(cutPath, req.user._id);
+    if (worker.avatar) {
+      fs.unlinkSync("public\\" + worker.avatar);
+    }
+    res.send({ avatar: cutPath });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
   }

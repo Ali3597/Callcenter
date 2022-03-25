@@ -1,6 +1,7 @@
 const {
   findLimitedCallsByWorkerId,
   countCallsByWorkerId,
+  createCallq,
 } = require("../queries/calls.queries");
 
 const {
@@ -13,6 +14,24 @@ exports.calls = async (req, res, next) => {
   skip = 10 * page - 10;
   workerId = req.user._id;
   console.log(workerId);
+  const [calls, callsNumbers] = await Promise.all([
+    findLimitedCallsByWorkerId(10, skip, workerId),
+    countCallsByWorkerId(workerId),
+  ]);
+
+  res.send({ calls, callsNumbers });
+};
+
+exports.createCall = async (req, res, next) => {
+  const newCall = await createCallq(req.body);
+
+  res.send({ newCall });
+};
+
+exports.callsWorker = async (req, res, next) => {
+  const workerId = req.params.workerId;
+  const { page } = req.body;
+  skip = 10 * page - 10;
   const [calls, callsNumbers] = await Promise.all([
     findLimitedCallsByWorkerId(10, skip, workerId),
     countCallsByWorkerId(workerId),
