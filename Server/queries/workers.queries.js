@@ -80,33 +80,37 @@ exports.findAllWorkers = (
   skip = 0,
   order,
   sort = "local.email",
-  search = ""
+  search
 ) => {
-  return Worker.aggregate([
+  aggragateArray = [
     {
       $project: {
         "local.password": 0,
         "local.role": 0,
       },
     },
-    {
-      $match: { "local.email": { $regex: search } },
-    },
     { $sort: { [sort]: order } },
-  ])
-    .skip(skip)
-    .limit(limit);
+  ];
+  if (search) {
+    aggragateArray.push({
+      $match: { "local.email": { $regex: search } },
+    });
+  }
+  return Worker.aggregate(aggragateArray).skip(skip).limit(limit);
 };
 
-exports.countWorkers = (search = "") => {
-  return Worker.aggregate([
-    {
+exports.countWorkers = (search) => {
+  aggregateArray = [];
+  if (search) {
+    aggregateArray.push({
       $match: { "local.email": { $regex: search } },
-    },
-    {
-      $count: "totalCount",
-    },
-  ]);
+    });
+  }
+  aggregateArray.push({
+    $count: "totalCount",
+  });
+  console.log(aggregateArray);
+  return Worker.aggregate(aggregateArray);
 };
 
 exports.findOneWorker = async (workerId) => {

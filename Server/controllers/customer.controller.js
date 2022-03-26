@@ -21,17 +21,20 @@ fs = require("fs");
 exports.customers = async (req, res, next) => {
   try {
     let { page, order, sort, search } = req.body;
-    if (order == "DESC") {
-      order = -1;
-    } else {
+    if (order == "ASC") {
       order = 1;
+    } else {
+      order = -1;
     }
     skip = 5 * page - 5;
     const [customers, customersNumbers] = await Promise.all([
       findLimitedCustomers(5, skip, order, sort, search),
       countCustomers(search),
     ]);
-    res.send({ items: customers, count: customersNumbers });
+    res.send({
+      items: customers.length > 0 ? customers : null,
+      count: customersNumbers,
+    });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
   }

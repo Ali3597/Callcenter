@@ -31,13 +31,17 @@ exports.getWorkers = async (req, res, next) => {
     } else {
       order = -1;
     }
+    console.log(search);
     skip = page ? limit * page - limit : 0;
     const [workers, count] = await Promise.all([
       findAllWorkers(5, skip, order, sort, search),
       countWorkers(search),
     ]);
 
-    res.send({ items: workers, count: count[0].totalCount });
+    res.send({
+      items: workers.length > 0 ? workers : null,
+      count: count.length > 0 ? count[0].totalCount : 0,
+    });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
   }

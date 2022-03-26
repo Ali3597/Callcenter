@@ -1,22 +1,26 @@
 const router = require("express").Router();
 
 const {
+  calls,
+  getCaller,
+  callsCustomer,
+  callsWorker,
+  createCall,
+  myCalls,
+} = require("../controllers/call.controller");
+const {
   requireAuth,
   requireAuthAdmin,
   notRequireAuth,
 } = require("../middleware/AuthMiddleware");
 
-const {
-  calls,
-  getCaller,
-  callsWorker,
-  createCall,
-} = require("../controllers/call.controller");
-
-router.post("/getcaller", getCaller);
+// router.post("/getcaller", getCaller);
 // to delete after
 router.post("/create", createCall);
-router.get("/", requireAuth, calls);
-router.get("/:workerId", requireAuth, callsWorker);
+////////////
+router.get("/me", requireAuth, myCalls);
+router.get("/", requireAuthAdmin, calls);
+router.get("/worker/:workerId", requireAuthAdmin, callsWorker);
+router.get("/customer/:customerId", requireAuth, callsCustomer);
 
 module.exports = router;

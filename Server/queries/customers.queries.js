@@ -15,18 +15,14 @@ exports.createCustomer = async (newCUstomer) => {
   return newCustomerSave;
 };
 
-exports.findLimitedCustomers = (
-  limit,
-  skip,
-  order,
-  sort = "email",
-  search = ""
-) => {
-  return Customer.find({ email: { $regex: search } })
-    .skip(skip)
-    .limit(limit)
-    .sort({ [sort]: order })
-    .exec();
+exports.findLimitedCustomers = (limit, skip, order, sort = "email", search) => {
+  aggregateArray = [{ $sort: { [sort]: order } }];
+  if (search) {
+    aggregateArray.push({
+      $match: { email: { $regex: search } },
+    });
+  }
+  return Customer.aggregate(aggregateArray).skip(skip).limit(limit);
 };
 
 exports.findCustomerById = (customerId) => {
