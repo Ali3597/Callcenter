@@ -19,19 +19,23 @@ exports.login = async (req, res, next) => {
       res.status(404).send({ errors: "Wrong Credentials" });
     }
   } catch (e) {
-    next(e);
+    res.status(404).send({ message: "error" });
   }
 };
 
 exports.me = async (req, res) => {
-  if (req.user) {
-    res.send({ user: req.user });
-  } else {
-    res.send({ user: null });
+  try {
+    if (req.user) {
+      res.send({ user: req.user });
+    } else {
+      res.send({ user: null });
+    }
+  } catch (error) {
+    res.status(404).send({ message: "error" });
   }
 };
 
 exports.signout = async (req, res, next) => {
   req.logout();
-  res.send({ message: "User Logged Out" });
+  res.status(204).send();
 };
