@@ -1,5 +1,9 @@
 const router = require("express").Router();
-
+const {
+  requireAuth,
+  requireAuthAdmin,
+  notRequireAuth,
+} = require("../middleware/AuthMiddleware");
 const {
   requests,
   request,
@@ -7,13 +11,17 @@ const {
   toggleRequest,
   newRequest,
   alertRequests,
+  requestsWorker,
+  requestsCustomer,
 } = require("../controllers/request.controller");
-
-router.get("/", requests);
+router.get("/", requireAuth, requests);
+router.get("/worker/:workerId", requireAuth, requestsWorker);
+router.get("/customer/:customerId", requireAuth, requestsCustomer);
 router.get("/alert", alertRequests);
-router.get("/:requestId", request);
+
+router.get("/:requestId", requireAuth, request);
 router.delete("/delete/:requestId", deleteRequest);
-router.get("/toggle/:requestId", toggleRequest);
-router.post("/new", newRequest);
+router.get("/toggle/:requestId", requireAuth, toggleRequest);
+router.post("/new", requireAuth, newRequest);
 
 module.exports = router;

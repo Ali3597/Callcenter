@@ -2,8 +2,8 @@ const { Mongoose } = require("mongoose");
 const Request = require("../database/models/request.model");
 const mongoose = require("mongoose");
 
-exports.findLimitedRequests = (limit, skip, order, sort, search = "") => {
-  return Request.aggregate([
+exports.findLimitedRequests = (limit, skip, order, sort, search) => {
+  aggregateArray = [
     {
       $lookup: {
         from: "customers",
@@ -34,22 +34,23 @@ exports.findLimitedRequests = (limit, skip, order, sort, search = "") => {
         "customer.number": 0,
       },
     },
-    { $match: { "customer.email": { $regex: search } } },
     { $sort: { [sort]: order } },
-  ])
-    .skip(skip)
-    .limit(limit);
+  ];
+  if (search) {
+    aggregateArray.push({ $match: { "customer.email": { $regex: search } } });
+  }
+  return Request.aggregate(aggregateArray).skip(skip).limit(limit);
 };
 
-exports.findLimitedRequestsOfACustomer = (
+exports.findLimitedRequestsByWorkerId = (
   limit,
   skip,
   order,
   sort,
-  search = "",
-  customerId
+  search,
+  workerId
 ) => {
-  return Request.aggregate([
+  aggregateArray = [
     {
       $lookup: {
         from: "customers",
@@ -66,14 +67,7 @@ exports.findLimitedRequestsOfACustomer = (
         as: "author",
       },
     },
-    {
-      $match: {
-        $and: [
-          { "customer._id": new mongoose.Types.ObjectId(customerId) },
-          { "customer.email": { $regex: search } },
-        ],
-      },
-    },
+    { $match: { "author._id": workerId } },
     {
       $project: {
         "author.avatar": 0,
@@ -87,22 +81,57 @@ exports.findLimitedRequestsOfACustomer = (
         "customer.number": 0,
       },
     },
-
     { $sort: { [sort]: order } },
-  ])
-    .skip(skip)
-    .limit(limit);
+  ];
+  if (search) {
+    aggregateArray.push({ $match: { "customer.email": { $regex: search } } });
+  }
+  return Request.aggregate(aggregateArray).skip(skip).limit(limit);
 };
+exports.findLimitedRequestsByCustomerId = (
+  limit,
+  skip,
+  order,
+  sort,
+  customerId
+) => {
+  aggregateArray = [
+    {
+      $lookup: {
+        from: "workers",
+        localField: "author",
+        foreignField: "_id",
+        as: "author",
+      },
+    },
+    { $match: { customer: customerId } },
+    {
+      $project: {
+        "author.avatar": 0,
+        "author.lastHangUp": 0,
+        "author.state": 0,
+        "author.number": 0,
+        "author.username": 0,
+        "author.local.password": 0,
+      },
+    },
+    { $sort: { [sort]: order } },
+  ];
 
-exports.findRequestByIdWithCustomersAssociate = (requestId) => {
-  return Request.findOne({ _id: requestId }).populate("customer").exec();
+  return Request.aggregate(aggregateArray).skip(skip).limit(limit);
+};
+exports.findRequestByIdWithCustomersAndWorkerAssociate = (requestId) => {
+  return Request.findOne({ _id: requestId })
+    .populate("customer")
+    .populate("author", { "local.password": 0, "local.role": 0 })
+    .exec();
 };
 exports.findRequestById = (requestId) => {
   return Request.findOne({ _id: requestId }).exec();
 };
 
-exports.countRequests = (search = "") => {
-  return Request.aggregate([
+exports.countRequests = (search) => {
+  aggregateArray = [
     {
       $lookup: {
         from: "customers",
@@ -119,62 +148,68 @@ exports.countRequests = (search = "") => {
         "customer.email": 1,
       },
     },
-    { $match: { "customer.email": { $regex: search } } },
+  ];
+  if (search) {
+    aggregateArray.push({ $match: { "customer.email": { $regex: search } } });
+  }
+  aggregateArray.push({
+    $count: "totalCount",
+  });
 
-    {
-      $count: "totalCount",
-    },
-  ]);
+  return Request.aggregate(aggregateArray);
 };
-exports.countRequestsOfACustomer = (search = "", customerId) => {
-  return Request.aggregate([
+
+exports.countRequestsByWorkerId = (search, workerId) => {
+  aggregateArray = [
     {
       $lookup: {
         from: "customers",
+
         localField: "customer",
         foreignField: "_id",
         as: "customer",
       },
     },
     {
-      $match: {
-        $and: [
-          { "customer._id": new mongoose.Types.ObjectId(customerId) },
-          { "customer.email": { $regex: search } },
-        ],
+      $lookup: {
+        from: "workers",
+        localField: "author",
+        foreignField: "_id",
+        as: "author",
       },
     },
+    { $match: { "author._id": workerId } },
     {
       $project: {
         _id: 1,
         "customer.email": 1,
       },
     },
+  ];
+  if (search) {
+    aggregateArray.push({ $match: { "customer.email": { $regex: search } } });
+  }
+  aggregateArray.push({
+    $count: "totalCount",
+  });
 
-    {
-      $count: "totalCount",
-    },
-  ]);
-};
-
-exports.findLimitedRequestsByCustomerId = (limit, skip, customerId) => {
-  return Request.find({ customer: customerId }).limit(limit).skip(skip).exec();
-};
-
-exports.findLimitedRequestsByCustomerIdWithCustomersAssociate = (
-  limit,
-  skip,
-  customerId
-) => {
-  return Request.find({ customer: customerId })
-    .limit(limit)
-    .skip(skip)
-    .populate("customer")
-    .exec();
+  return Request.aggregate(aggregateArray);
 };
 
 exports.countRequestsByCustomerId = (customerId) => {
-  return Request.find({ customer: customerId }).count().exec();
+  aggregateArray = [
+    { $match: { customer: customerId } },
+    {
+      $project: {
+        _id: 1,
+      },
+    },
+    {
+      $count: "totalCount",
+    },
+  ];
+
+  return Request.aggregate(aggregateArray);
 };
 
 exports.getLimitedAlertRequestsWhithCustomers = (
@@ -182,9 +217,9 @@ exports.getLimitedAlertRequestsWhithCustomers = (
   skip,
   order,
   sort,
-  search = ""
+  search
 ) => {
-  return Request.aggregate([
+  aggregateArray = [
     {
       $lookup: {
         from: "customers",
@@ -224,19 +259,20 @@ exports.getLimitedAlertRequestsWhithCustomers = (
               );
             },
           },
-          { "customer.email": { $regex: search } },
           { done: false },
         ],
       },
     },
     { $sort: { [sort]: order } },
-  ])
-    .skip(skip)
-    .limit(limit);
+  ];
+  if (search) {
+    aggregateArray.push({ $match: { "customer.email": { $regex: search } } });
+  }
+  return Request.aggregate(aggregateArray).skip(skip).limit(limit);
 };
 
-exports.countAlertedRequest = (search = "") => {
-  return Request.aggregate([
+exports.countAlertedRequest = (search) => {
+  aggregateArray = [
     {
       $lookup: {
         from: "customers",
@@ -262,15 +298,18 @@ exports.countAlertedRequest = (search = "") => {
               );
             },
           },
-          { "customer.email": { $regex: search } },
           { done: false },
         ],
       },
     },
-    {
-      $count: "totalCount",
-    },
-  ]);
+  ];
+  if (search) {
+    aggregateArray.push({ $match: { "customer.email": { $regex: search } } });
+  }
+  aggregateArray.push({
+    $count: "totalCount",
+  });
+  return Request.aggregate(aggregateArray);
 };
 
 exports.DeleteRequestById = (requestId) => {
