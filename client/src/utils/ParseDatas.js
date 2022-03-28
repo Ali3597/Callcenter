@@ -24,11 +24,15 @@ export const urgencyColor = (number) => {
 
 export const ParseRequest = (requests) => {
   const requestsParsed = requests.map((request) => {
+    console.log(request.author);
+    console.log(request.customer);
     return {
       ...request,
       id: request._id,
-      customer: request.customer.email,
-      author: request.author.local.email,
+      customer:
+        request.customer.length > 0 ? request.customer[0].email : "Aucun",
+      author:
+        request.author.length > 0 ? request.author[0].local.email : "Aucun",
       done: request.done ? <FaCheck /> : <FaWindowClose />,
       action: <Link to={`/requests/${request.id}`}>Consultez</Link>,
       message: request.message.slice(0, 20).concat("…"),

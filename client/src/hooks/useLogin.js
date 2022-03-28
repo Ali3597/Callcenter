@@ -17,7 +17,7 @@ export const useLogin = () => {
     };
 
     try {
-      const user = await apiFetch("/auth/signin", {
+      const user = await apiFetch("/auth/login", {
         method: "POST",
         body: data,
       });

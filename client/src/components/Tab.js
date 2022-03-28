@@ -46,7 +46,7 @@ const TableHeader = ({ column }) => {
   return (
     <th
       className={column[1] ? "order" : ""}
-      onClick={column[1] ? handleClick : ""}
+      onClick={column[1] ? handleClick : null}
     >
       {column[0]}
       {searchParams.get("sort") == column[0] &&

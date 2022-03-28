@@ -5,12 +5,17 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 export const Paginate = ({ current, nbrPages }) => {
   const [pages, setPages] = useState(null);
-  console.log("hello");
+  console.log("hello bababba");
   useEffect(() => {
-    setPages(getPages(current, nbrPages));
+    console.log(nbrPages, "maitre simona");
+    if (nbrPages > 0) {
+      setPages(getPages(current, nbrPages));
+    }
   }, [nbrPages, current]);
 
-  return (
+  return nbrPages == 0 ? (
+    ""
+  ) : (
     <div className="container-page">
       <ul>
         {current != 1 ? (

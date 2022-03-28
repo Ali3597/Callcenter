@@ -19,6 +19,7 @@ export class ApiErrors {
  * @param {object} options
  */
 export async function apiFetch(endpoint, options = {}) {
+  console.log(options, "options");
   options = {
     credentials: "include",
     headers: {
@@ -31,6 +32,8 @@ export async function apiFetch(endpoint, options = {}) {
     typeof options.body == "object" &&
     !(options.body instanceof FormData)
   ) {
+    console.log("on est la en fait ");
+    console.log(options.body);
     options.body = JSON.stringify(options.body);
     options.headers["Content-type"] = "application/json";
   }
