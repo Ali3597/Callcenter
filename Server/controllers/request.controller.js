@@ -16,6 +16,7 @@ const {
 } = require("../queries/requests.queries");
 const limit = 5;
 const mongoose = require("mongoose");
+const { response } = require("express");
 exports.requests = async (req, res, next) => {
   console.log("isis la famille");
   try {
@@ -104,9 +105,10 @@ exports.request = async (req, res, next) => {
     const request = await findRequestByIdWithCustomersAndWorkerAssociate(
       requestId
     );
-    res.send(request);
+    console.log(response, "oui baba");
+    res.send({ item: request });
   } catch (error) {
-    res.status(404).send({ message: "Wrong Request" });
+    res.send({ item: null });
   }
 };
 
@@ -149,14 +151,10 @@ exports.deleteRequest = async (req, res, next) => {
     const request = await findRequestByIdWithCustomersAndWorkerAssociate(
       requestId
     );
-    if (req.user._id == request.author._id || req.user.local.role == "admin") {
+   
       await DeleteRequestById(requestId);
       res.status(204).send();
-    } else {
-      res
-        .status(404)
-        .send({ message: "You have not the right to delete this request" });
-    }
+    
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
   }
@@ -165,9 +163,10 @@ exports.deleteRequest = async (req, res, next) => {
 exports.newRequest = async (req, res, next) => {
   try {
     currentUserId = req.user._id;
+    console.log(req.body,"voilllaa le body")
     request = await createRequest(req.body, currentUserId);
     res.send({ request });
   } catch (e) {
-    res.status(404).send({ message: "Wrong Request" });
+    res.status(400).send({ errors: [{field:"message",message:"erreur dans le message"},{field:"title",message:"erreur dans le titre"},{field:"typeof",message:"erreur dans le typeof"}] });
   }
 };

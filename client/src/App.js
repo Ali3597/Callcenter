@@ -14,6 +14,7 @@ import { Request } from "./pages/Requests/Request";
 import { Worker } from "./pages/Workers/Worker";
 import { apiFetch } from "./utils/api";
 import { useAuthContext } from "./hooks/useAuthContext";
+import { NewRequest } from "./pages/Requests/NewRequest";
 
 function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -50,6 +51,9 @@ function App() {
                 <Route
                   path="/requests"
                   element={user ? <Requests /> : <Navigate to="/login" />}
+                />
+                <Route
+                  path="/newrequest" element={user ? <NewRequest /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/worker/:id"

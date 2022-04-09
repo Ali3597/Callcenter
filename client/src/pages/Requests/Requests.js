@@ -3,6 +3,7 @@ import { ParseRequest } from "../../utils/ParseDatas";
 import { useEffect, useState } from "react";
 import { Tab } from "../../components/Tab";
 import { apiFetch } from "../../utils/api";
+import { Link } from "react-router-dom";
 import { Paginate } from "../../components/Paginate";
 import { useSearchParams } from "react-router-dom";
 const { faker } = require("@faker-js/faker");
@@ -74,6 +75,7 @@ export const Requests = () => {
   return (
     <>
       <h1>Requetes</h1>
+      <button><Link to={'/newrequest'}>Nouvelle requete</Link></button>
       {requestsParsed && <Tab columns={columns} rows={requestsParsed} />}
       {page && <Paginate current={page} nbrPages={nbrPages} />}
     </>

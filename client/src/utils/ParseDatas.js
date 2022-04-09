@@ -34,7 +34,7 @@ export const ParseRequest = (requests) => {
       author:
         request.author.length > 0 ? request.author[0].local.email : "Aucun",
       done: request.done ? <FaCheck /> : <FaWindowClose />,
-      action: <Link to={`/requests/${request.id}`}>Consultez</Link>,
+      action: <Link to={`/requests/${request._id}`}>Consultez</Link>,
       message: request.message.slice(0, 20).concat("…"),
       urgencyLevel: (
         <Dot color={urgencyColor(parseInt(request.urgencyLevel))} />

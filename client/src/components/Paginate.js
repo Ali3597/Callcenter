@@ -13,7 +13,7 @@ export const Paginate = ({ current, nbrPages }) => {
     }
   }, [nbrPages, current]);
 
-  return nbrPages == 0 ? (
+  return nbrPages < 2 ? (
     ""
   ) : (
     <div className="container-page">

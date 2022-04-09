@@ -20,7 +20,7 @@ router.get("/customer/:customerId", requireAuth, requestsCustomer);
 router.get("/alert", alertRequests);
 
 router.get("/:requestId", requireAuth, request);
-router.delete("/delete/:requestId", deleteRequest);
+router.delete("/delete/:requestId",requireAuthAdmin, deleteRequest);
 router.get("/toggle/:requestId", requireAuth, toggleRequest);
 router.post("/new", requireAuth, newRequest);
 

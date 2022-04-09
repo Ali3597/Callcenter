@@ -43,10 +43,11 @@ export async function apiFetch(endpoint, options = {}) {
   }
 
   const responseData = await response.json();
-
+console.log(responseData)
   if (response.ok) {
     return responseData;
   } else {
+    console.log("alloooo")
     if (responseData.errors) {
       throw new ApiErrors(responseData.errors);
     }

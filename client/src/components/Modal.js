@@ -1,9 +1,9 @@
 import React from "react";
 import "./Modal.css";
 import { createPortal } from "react-dom";
-import { FaWindowClose } from "react-icons/fa";
 
-export function Modal({ onClose, title }) {
+
+export function Modal({ onClose, title ,message, onClick  , buttonMessage}) {
   return createPortal(
     <>
       <div className="modal ">
@@ -14,7 +14,8 @@ export function Modal({ onClose, title }) {
               <span aria-hidden="true">x</span>
             </button>
           </div>
-          <div className="modal-body">alooooo</div>
+          <div className="modal-body">{message}</div>
+          <button onClick={onClick}>{buttonMessage}</button>
         </div>
       </div>
     </>,
