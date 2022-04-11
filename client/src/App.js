@@ -7,7 +7,6 @@ import { Home } from "./pages/Home/Home";
 import { Calls } from "./pages/Calls/Calls";
 import { Customer } from "./pages/Customers/Customer";
 import { Customers } from "./pages/Customers/Customers";
-
 import { Requests } from "./pages/Requests/Requests";
 import { Aside } from "./components/Aside";
 import { Request } from "./pages/Requests/Request";
@@ -15,6 +14,7 @@ import { Worker } from "./pages/Workers/Worker";
 import { apiFetch } from "./utils/api";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { NewRequest } from "./pages/Requests/NewRequest";
+import { NewCustomer } from "./pages/Customers/NewCustomer";
 
 function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -44,6 +44,10 @@ function App() {
                   path="/customers"
                   element={user ? <Customers /> : <Navigate to="/login" />}
                 />
+                 <Route
+                  path="/customers/new"
+                  element={user ? <NewCustomer /> : <Navigate to="/login" />}
+                />
                 <Route
                   path="/requests/:id"
                   element={user ? <Request /> : <Navigate to="/login" />}
@@ -53,7 +57,7 @@ function App() {
                   element={user ? <Requests /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/newrequest" element={user ? <NewRequest /> : <Navigate to="/login" />}
+                  path="/requests/new" element={user ? <NewRequest /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/worker/:id"

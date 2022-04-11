@@ -48,3 +48,29 @@ export const ParseRequest = (requests) => {
   });
   return requestsParsed;
 };
+
+
+export const ParseCustomer = (customers) => {
+  const customersParsed = customers.map((customer) => {
+    return {
+      ...customer,
+      id: customer._id,
+      action: <Link to={`/customers/${customer._id}`}>Consultez</Link>,
+    };
+  });
+  return customersParsed;
+};
+
+
+export const ParseCall = (calls) => {
+  const callsParsed = calls.map((call) => {
+    return {
+      ...call,
+      id: call._id,
+      customer:
+      call.customer.length > 0 ? call.customer[0].email : "Inconnu",
+      date: call.date.toLocaleString(),
+    };
+  });
+  return callsParsed;
+};

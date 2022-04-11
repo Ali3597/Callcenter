@@ -4,6 +4,7 @@ import { Field } from "../../components/Field";
 import { Select } from "../../components/Select";
 import { ApiErrors, apiFetch } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import "./NewRequest.css";
 
 const allUrgencyLevel= [
@@ -20,6 +21,7 @@ const allTypeOf= [
     {value:"Other", title:"Other"},
 ]
 export const NewRequest = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [errors,setErrors] =  useState([])
     const [customers,SetCustomers] = useState([])
     const [message,setMessage] = useState("")
@@ -29,13 +31,16 @@ export const NewRequest = () => {
     const [deadline,setDeadline] = useState("")
     const navigate = useNavigate()
     useEffect( async()=>{
-        console.log("aaaa")
-        
-      const response =  await apiFetch('/customers')
+        const customerEffect = searchParams.get("customer");
+        console.log(customerEffect,"t la")
+         setCustomer(customerEffect)
+      const response =  await apiFetch('/customers',{
+          method: 'POST'
+      })
       SetCustomers(response.items.map((item)=>{
        return {"value": item._id,"title":item.name }
       }))
-      
+   
     },[])
     const errorFor = function(field){
         const error =  errors.find(e => e.field == field)
@@ -56,7 +61,7 @@ export const NewRequest = () => {
                 method: 'POST',
                 body: {message,urgencyLevel,typeof:typeOf,deadline,customer},
             })
-            navigate("/requests/"+response.request._id);
+            navigate("/requests/"+response._id);
         } catch (e) {
             if (e instanceof ApiErrors){
                
@@ -72,7 +77,6 @@ export const NewRequest = () => {
   return ( 
   <div className="form-request">
       <h1>Ma nouvelle requete</h1>
-      {urgencyLevel && <h1>{urgencyLevel}</h1>}
       <form onSubmit={handleSubmit} >
           <Field type="textarea" name={'message'} error={errorFor('message')} placeholder={'Message'} value={message} setValue={setMessage}/>
           {customers && <Select error={errorFor('customer')} name={"customers"} title={"Choisissez un client"} items={customers} value={customer} setValue={setCustomer} />}

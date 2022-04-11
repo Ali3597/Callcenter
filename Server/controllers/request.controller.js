@@ -165,7 +165,7 @@ exports.newRequest = async (req, res, next) => {
     currentUserId = req.user._id;
     console.log(req.body,"voilllaa le body")
     request = await createRequest(req.body, currentUserId);
-    res.send({ request });
+    res.send(request );
   } catch (e) {
     res.status(400).send({ errors: [{field:"message",message:"erreur dans le message"},{field:"title",message:"erreur dans le titre"},{field:"typeof",message:"erreur dans le typeof"}] });
   }

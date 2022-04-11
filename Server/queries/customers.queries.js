@@ -17,7 +17,9 @@ exports.createCustomer = async (newCUstomer) => {
 
 exports.findLimitedCustomers = (limit, skip, order, sort = "email", search) => {
   aggregateArray = [{ $sort: { [sort]: order } }];
+  console.log(search,"voillllllllllllla")
   if (search) {
+    console.log("pk t la")
     aggregateArray.push({
       $match: { email: { $regex: search } },
     });
@@ -33,10 +35,17 @@ exports.getCustomeByNumber = (customerNumber) => {
   return Customer.findOne({ number: customerNumber }).exec();
 };
 
-exports.countCustomers = (search = "") => {
-  return Customer.find({ email: { $regex: search } })
-    .count()
-    .exec();
+exports.countCustomers = (search) => {
+  aggregateArray = [];
+  if (search) {
+    aggregateArray.push({
+      $match: { email: { $regex: search } },
+    });
+  }
+  aggregateArray.push({
+    $count: "totalCount",
+  });
+  return Customer.aggregate(aggregateArray);
 };
 
 exports.doWeKnowThisNumber = (customerNumber) => {

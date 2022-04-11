@@ -13,6 +13,7 @@ import { FaCheck } from "react-icons/fa";
 import { FaWindowClose } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { apiFetch } from "../../utils/api";
+import { Link } from "react-router-dom";
 const { faker } = require("@faker-js/faker");
 
 const customerfake = {
@@ -79,12 +80,14 @@ export const Request = () => {
           {request.done ? <FaCheck /> : <FaWindowClose />}
         </div>
         <div className="request-high">
+      
           <Card
             photoURL={customerfake.url}
-            name={request.customer.name}
+            name={<Link to={'/customers/'+request.customer._id}>{request.customer.name} </Link>}
             email={request.customer.email}
             number={request.customer.number}
           />
+        
           <Card
             photoURL={workerfake.avatar}
             name={request.author.username}

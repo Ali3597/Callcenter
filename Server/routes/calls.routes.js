@@ -18,8 +18,8 @@ const {
 // to delete after
 router.post("/create", createCall);
 ////////////
-router.get("/me", requireAuth, myCalls);
-router.get("/", requireAuthAdmin, calls);
+router.post("/me", requireAuth, myCalls);
+router.post("/", requireAuthAdmin, calls);
 router.get("/worker/:workerId", requireAuthAdmin, callsWorker);
 router.get("/customer/:customerId", requireAuth, callsCustomer);
 

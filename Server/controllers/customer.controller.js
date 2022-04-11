@@ -20,7 +20,9 @@ fs = require("fs");
 
 exports.customers = async (req, res, next) => {
   try {
+
     let { page, order, sort, search } = req.body;
+    console.log(req.body,"aaaaaaaaaaaaaa")
     if (order == "ASC") {
       order = 1;
     } else {
@@ -33,7 +35,7 @@ exports.customers = async (req, res, next) => {
     ]);
     res.send({
       items: customers.length > 0 ? customers : null,
-      count: customersNumbers,
+      count: customersNumbers.length>0 ? customersNumbers[0].totalCount :0,
     });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
@@ -72,7 +74,7 @@ exports.newCustomer = async (req, res, next) => {
     newCustomer = await createCustomer(req.body);
     res.send(newCustomer);
   } catch (e) {
-    res.status(404).send({ message: "Wrong Request" });
+    res.status(400).send({ errors: [{field:"number",message:"erreur dans le message"},{field:"email",message:"erreur dans le titre"},{field:"name",message:"erreur dans le typeof"}] });
   }
 };
 

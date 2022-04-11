@@ -16,7 +16,7 @@ const {
   notRequireAuth,
 } = require("../middleware/AuthMiddleware");
 
-router.get("/", requireAuth, customers);
+router.post("/", requireAuth, customers);
 router.get("/:customerId", requireAuth, oneCustomer);
 router.post(
   "/avatar/:customerId",

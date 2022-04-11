@@ -2,41 +2,60 @@ import "./Customers.css";
 import { Tab } from "../../components/Tab";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-const { faker } = require("@faker-js/faker");
+import { apiFetch } from "../../utils/api";
+import { ParseCustomer } from "../../utils/ParseDatas";
+import { Paginate } from "../../components/Paginate";
+import { useSearchParams } from "react-router-dom";
 
-let customers = [];
-for (let i = 0; i < 5; i++) {
-  customers[i] = {
-    id: faker.datatype.uuid(),
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    number: faker.phone.phoneNumber(),
-    url: faker.image.avatar(),
-  };
-}
+
+
+const columns = [
+  ["name", true],
+  ["email", true],
+  ["number", true],
+  ["action", false],
+];
 
 export const Customers = () => {
-  const [parsedCustomers, setParsedCustomers] = useState(null);
-  useEffect(() => {
-    if (customers) {
-      setParsedCustomers(
-        customers.map((customer) => {
-          return {
-            ...customer,
-            action: <Link to={customer.id}>Consultez</Link>,
-          };
-        })
-      );
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [customers, setCustomers] = useState(null);
+  const [order, setOrder] = useState(null);
+  const [sort, setSort] = useState(null);
+  const [search, setSearch] = useState(null);
+  const [page, setPage] = useState(null);
+  const [nbrPages, setNbrPages] = useState(null);
+  useEffect(async () => {
+    if (searchParams) {
+      const orderEffect = searchParams.get("order");
+      const sortEffect = searchParams.get("sort");
+      const pageEffect = searchParams.get("page")
+        ? searchParams.get("page")
+        : 1;
+      const searchEffect = searchParams.get("search");
+      setOrder(orderEffect);
+      setSort(sortEffect);
+      setPage(pageEffect);
+      setSearch(searchEffect);
+      const response = await apiFetch("/customers", {
+        method: "POST",
+        body: {
+          page: pageEffect,
+          order: orderEffect,
+          sort: sortEffect,
+          search: searchEffect,
+        },
+      });
+      setCustomers(ParseCustomer(response.items));
+
+      setNbrPages(Math.ceil(response.count / 5));
     }
-  }, [customers]);
+  }, [searchParams]);
   return (
     <>
-      {parsedCustomers && (
-        <Tab
-          rows={parsedCustomers}
-          columns={["name", "email", "number", "action"]}
-        />
-      )}
+    <h1>Les Clients</h1>
+    <button><Link to={'/customers/new'}>Nouveau client</Link></button>
+      {customers && <Tab columns={columns} rows={customers} />}
+      {page && <Paginate current={page} nbrPages={nbrPages} />}
     </>
   );
 };
