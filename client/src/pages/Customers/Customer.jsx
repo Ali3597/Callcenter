@@ -8,15 +8,8 @@ import { apiFetch } from "../../utils/api";
 import { Link } from "react-router-dom";
 import { Paginate } from "../../components/Paginate";
 import { useSearchParams } from "react-router-dom";
-const { faker } = require("@faker-js/faker");
+import { InputFile } from "../../components/inputFile";
 
-const customerFake = {
-  id: faker.datatype.uuid(),
-  name: faker.name.findName(),
-  email: faker.internet.email(),
-  number: faker.phone.phoneNumber(),
-  url: faker.image.avatar(),
-};
 
 const columns = [
   ["typeof", true],
@@ -34,10 +27,9 @@ const columns = [
 export const Customer = () => {
   const [customer,setCustomer]= useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [avatar,setAvatar] = useState(null);
   const { id } = useParams();
   const [requestsParsed, setRequestsParsed] = useState(null);
-  const [order, setOrder] = useState(null);
-  const [sort, setSort] = useState(null);
   const [search, setSearch] = useState(null);
   const [page, setPage] = useState(null);
   const [nbrPages, setNbrPages] = useState(null);
@@ -53,8 +45,6 @@ export const Customer = () => {
         ? searchParams.get("page")
         : 1;
       const searchEffect = searchParams.get("search");
-      setOrder(orderEffect);
-      setSort(sortEffect);
       setPage(pageEffect);
       setSearch(searchEffect);
       const response = await apiFetch("/requests/customer/"+id, {
@@ -66,15 +56,29 @@ export const Customer = () => {
           search: searchEffect,
         },
       });
-      console.log(response.items);
+  if (response.items){
       setRequestsParsed(ParseRequest(response.items));
       setNbrPages(Math.ceil(response.count / 5));
+  }else{
+    setRequestsParsed(null);
+      setNbrPages(0);
+  }
     }
   }, [searchParams]);
+
+  useEffect(()=>{
+    console.log("usefecctavatar")
+    if(avatar){
+      console.log("usefecctavatardedans")
+      console.log(avatar)
+      setCustomer({...customer,avatar:avatar})
+    }
+  },[avatar])
+
   return (
     <div className="customer">
       <h1>Page client</h1>
-      {customer && <Card photoURL={customerFake.url} name={customer.name} email={customer.email} number={customer.number} />}
+      {customer && <Card input={<InputFile setFile={setAvatar} link={'/customers/avatar/'+customer._id} />} photoURL={customer.avatar } name={customer.name} email={customer.email} number={customer.number} />}
       <h1>Ses Requetes</h1>
       <button><Link to={'/requests/new?customer='+id}>Lui créer une nouvelle requete</Link></button>
       {requestsParsed  && <Tab columns={columns} rows={requestsParsed} />}

@@ -25,7 +25,7 @@ const filters = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    resizeBy.send(404);
+    res.send(404);
     cb(null, false);
   }
 };

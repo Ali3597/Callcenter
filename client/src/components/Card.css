@@ -16,6 +16,8 @@
   border-radius: 50%;
   margin-right: 3%;
   margin-left: 3%;
+  width: 30%;
+  height: 80%;
 }
 
 .card p {
