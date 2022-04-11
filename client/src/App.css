@@ -46,3 +46,11 @@
   flex: 1;
   background: #f7f5f5;
 }
+.beetween{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+.beetween > div {
+  display: flex;
+}

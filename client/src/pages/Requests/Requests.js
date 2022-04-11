@@ -6,6 +6,7 @@ import { apiFetch } from "../../utils/api";
 import { Link } from "react-router-dom";
 import { Paginate } from "../../components/Paginate";
 import { useSearchParams } from "react-router-dom";
+import { FcSearch } from "react-icons/fc";
 
 
 
@@ -24,12 +25,11 @@ const columns = [
 export const Requests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [requestsParsed, setRequestsParsed] = useState(null);
-  const [order, setOrder] = useState(null);
-  const [sort, setSort] = useState(null);
-  const [search, setSearch] = useState(null);
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(null);
   const [nbrPages, setNbrPages] = useState(null);
   useEffect(async () => {
+    
     if (searchParams) {
       const orderEffect = searchParams.get("order");
       const sortEffect = searchParams.get("sort");
@@ -37,10 +37,8 @@ export const Requests = () => {
         ? searchParams.get("page")
         : 1;
       const searchEffect = searchParams.get("search");
-      setOrder(orderEffect);
-      setSort(sortEffect);
       setPage(pageEffect);
-      setSearch(searchEffect);
+      setSearch(searchEffect? searchEffect : "");
       const response = await apiFetch("/requests", {
         method: "POST",
         body: {
@@ -51,16 +49,28 @@ export const Requests = () => {
         },
       });
       console.log(response.items);
+      if(response.items){
       setRequestsParsed(ParseRequest(response.items));
       setNbrPages(Math.ceil(response.count / 5));
+      }else{
+setRequestsParsed(null)
+setNbrPages(0)
+      }
+      
     }
   }, [searchParams]);
 
+  const handleSearch= (e)=>{
+    e.preventDefault()
+ setSearchParams({"search":search})
+  
+  }
   return (
     <>
       <h1>Requetes</h1>
-      <button><Link to={'/requests/new'}>Nouvelle requete</Link></button>
-      {requestsParsed && <Tab columns={columns} rows={requestsParsed} />}
+      <div className="beetween"><form  onSubmit={handleSearch}><input onChange={(e)=>(setSearch(e.target.value))} value={search} placeholder={"recerche"}></input> <button><FcSearch/></button>         </form>  <button><Link to={'/requests/new'}>Nouvelle requete</Link></button></div>
+    
+      {requestsParsed ?  <Tab columns={columns} rows={requestsParsed} /> : <p>Aucune requete ne correspond</p>}
       {page && <Paginate current={page} nbrPages={nbrPages} />}
     </>
   );

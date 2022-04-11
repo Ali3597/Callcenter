@@ -6,6 +6,7 @@ import { Tab } from "../../components/Tab";
 import { ParseCall } from '../../utils/ParseDatas';
 import { Paginate } from "../../components/Paginate";
 import { useSearchParams } from "react-router-dom";
+import { FcSearch } from "react-icons/fc";
 
 
 const columns = [
@@ -22,9 +23,8 @@ export const Calls = () => {
   const [calls,setCalls] = useState(null)
   const [page, setPage] = useState(null);
   const [nbrPages, setNbrPages] = useState(null);
-  const [order, setOrder] = useState(null);
-  const [sort, setSort] = useState(null);
-  const [search, setSearch] = useState(null);
+
+  const [search, setSearch] = useState("");
   useEffect(async() => {
     const orderEffect = searchParams.get("order");
     const sortEffect = searchParams.get("sort");
@@ -32,10 +32,8 @@ export const Calls = () => {
       ? searchParams.get("page")
       : 1;
     const searchEffect = searchParams.get("search");
-      setOrder(orderEffect);
-      setSort(sortEffect);
       setPage(pageEffect);
-      setSearch(searchEffect);
+      setSearch(searchEffect? searchEffect :"");
     const dataCalls = await apiFetch("/calls/me",{
       method:"POST",
       body: {
@@ -46,12 +44,24 @@ export const Calls = () => {
       },
     })
     console.log(dataCalls)
+    if(dataCalls.items){
     setCalls(ParseCall(dataCalls.items))
     setNbrPages(Math.ceil(dataCalls.count / 5));
-  },[])
+    }else{
+      setCalls(null)
+      setNbrPages(0)
+    }
+  },[searchParams])
+  const handleSearch= (e)=>{
+    e.preventDefault()
+ setSearchParams({"search":search})
+  
+  }
     return <>
     <h1>Mon journal d'appel</h1>
-    {calls && <Tab columns={columns} rows={calls} />}
+    <div className="beetween"><form  onSubmit={handleSearch}><input onChange={(e)=>(setSearch(e.target.value))} value={search} placeholder={"recherche"}></input> <button><FcSearch/></button>         </form></div>
+
+    {calls ? <Tab columns={columns} rows={calls} /> : <p>Aucucn appel ne correspond</p>}
       {page && <Paginate current={page} nbrPages={nbrPages} />}
     </>
 }

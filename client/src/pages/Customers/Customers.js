@@ -6,6 +6,7 @@ import { apiFetch } from "../../utils/api";
 import { ParseCustomer } from "../../utils/ParseDatas";
 import { Paginate } from "../../components/Paginate";
 import { useSearchParams } from "react-router-dom";
+import { FcSearch } from "react-icons/fc";
 
 
 
@@ -19,8 +20,7 @@ const columns = [
 export const Customers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [customers, setCustomers] = useState(null);
-  const [order, setOrder] = useState(null);
-  const [sort, setSort] = useState(null);
+
   const [search, setSearch] = useState(null);
   const [page, setPage] = useState(null);
   const [nbrPages, setNbrPages] = useState(null);
@@ -32,10 +32,8 @@ export const Customers = () => {
         ? searchParams.get("page")
         : 1;
       const searchEffect = searchParams.get("search");
-      setOrder(orderEffect);
-      setSort(sortEffect);
       setPage(pageEffect);
-      setSearch(searchEffect);
+      setSearch(searchEffect?searchEffect :"");
       const response = await apiFetch("/customers", {
         method: "POST",
         body: {
@@ -45,16 +43,26 @@ export const Customers = () => {
           search: searchEffect,
         },
       });
+      if(response.items){
       setCustomers(ParseCustomer(response.items));
-
       setNbrPages(Math.ceil(response.count / 5));
+      }else{
+        setCustomers(null)
+        setNbrPages(0)
+      }
     }
   }, [searchParams]);
+  const handleSearch= (e)=>{
+    e.preventDefault()
+ setSearchParams({"search":search})
+  
+  }
   return (
     <>
     <h1>Les Clients</h1>
-    <button><Link to={'/customers/new'}>Nouveau client</Link></button>
-      {customers && <Tab columns={columns} rows={customers} />}
+    <div className="beetween"><form  onSubmit={handleSearch}><input onChange={(e)=>(setSearch(e.target.value))} value={search} placeholder={"recherche"}></input> <button><FcSearch/></button>         </form>  <button><Link to={'/customers/new'}>Nouveau client</Link></button></div>
+
+      {customers ?  <Tab columns={columns} rows={customers}/> : <p>Aucun client ne correspond </p> }
       {page && <Paginate current={page} nbrPages={nbrPages} />}
     </>
   );
