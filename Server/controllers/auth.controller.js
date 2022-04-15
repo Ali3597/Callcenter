@@ -26,6 +26,7 @@ exports.login = async (req, res, next) => {
 exports.me = async (req, res) => {
   try {
     if (req.user) {
+      console.log(req.user._doc);
       let user = { ...req.user._doc };
       delete user.local.password;
       res.send({ user });

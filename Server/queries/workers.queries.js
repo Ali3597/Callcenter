@@ -117,49 +117,33 @@ exports.findOneWorker = async (workerId) => {
   return Worker.findOne({ _id: workerId }).exec();
 };
 
-// exports.updateAvailableWorkerById = async (userId) => {
-//   value = await Worker.findOne({ _id: userId }).exec();
-//   if (value.state == "available") {
-//     return Worker.findByIdAndUpdate(
-//       userId,
-//       { $set: { state: "unavailable" } },
-//       { runValidators: true }
-//     ).exec();
-//   } else if (value.state == "unavailable") {
-//     return Worker.findByIdAndUpdate(
-//       userId,
-//       { $set: { state: "available" } },
-//       { runValidators: true }
-//     ).exec();
-//   } else {
-//     return Worker.findByIdAndUpdate(
-//       userId,
-//       { $set: { state: "occupied" } },
-//       { runValidators: true }
-//     ).exec();
-//   }
-// };
-
-exports.updateAvailableToFalseById = async (userId) => {
-  return Worker.findByIdAndUpdate(
-    userId,
-    { $set: { state: "unavailable" } },
-    { runValidators: true }
-  ).exec();
+exports.updateAvailableWorkerById = async (userId) => {
+  value = await Worker.findOne({ _id: userId }).exec();
+  if (value.state == "available") {
+    return await Worker.findByIdAndUpdate(
+      userId,
+      { $set: { state: "unavailable" } },
+      { runValidators: true, new: true }
+    ).exec();
+  } else if (value.state == "unavailable") {
+    return await Worker.findByIdAndUpdate(
+      userId,
+      { $set: { state: "available" } },
+      { runValidators: true, new: true }
+    ).exec();
+  } else {
+    return await Worker.findByIdAndUpdate(
+      userId,
+      { $set: { state: "occupied" } },
+      { runValidators: true, new: true }
+    ).exec();
+  }
 };
 
 exports.updateAvailableToOccupiedById = async (userId) => {
   return Worker.findByIdAndUpdate(
     userId,
     { $set: { state: "occupied" } },
-    { runValidators: true }
-  ).exec();
-};
-
-exports.updateAvailableToTrueById = async (userId) => {
-  return Worker.findByIdAndUpdate(
-    userId,
-    { $set: { state: "available" } },
     { runValidators: true }
   ).exec();
 };

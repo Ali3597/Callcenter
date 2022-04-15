@@ -134,3 +134,13 @@ exports.updateWorkerAvatar = async (req, res, next) => {
     res.status(404).send({ message: "Wrong Request" });
   }
 };
+
+exports.toggleState = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const worker = await updateAvailableWorkerById(userId);
+    res.send({ state: worker.state });
+  } catch (error) {
+    res.status(404).send({ message: "error" });
+  }
+};
