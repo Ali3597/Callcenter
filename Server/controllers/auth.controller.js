@@ -26,7 +26,9 @@ exports.login = async (req, res, next) => {
 exports.me = async (req, res) => {
   try {
     if (req.user) {
-      res.send({ user: req.user });
+      let user = { ...req.user._doc };
+      delete user.local.password;
+      res.send({ user });
     } else {
       res.send({ user: null });
     }
@@ -36,6 +38,7 @@ exports.me = async (req, res) => {
 };
 
 exports.signout = async (req, res, next) => {
+  console.log("a");
   req.logout();
   res.status(204).send();
 };

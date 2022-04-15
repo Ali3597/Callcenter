@@ -16,6 +16,8 @@ const {
   findLimitedRequestsByCustomerIdWithCustomersAssociate,
 } = require("../queries/requests.queries");
 
+const {customerValidation} = require('../database/validation/customer.validation')
+
 fs = require("fs");
 
 exports.customers = async (req, res, next) => {
@@ -71,11 +73,19 @@ exports.updateCustomerAvatar = async (req, res, next) => {
 
 exports.newCustomer = async (req, res, next) => {
   try {
+    await customerValidation.validateAsync(req.body,{  abortEarly: false })
     newCustomer = await createCustomer(req.body);
     res.send(newCustomer);
   } catch (e) {
-    res.status(400).send({ errors: [{field:"number",message:"erreur dans le message"},{field:"email",message:"erreur dans le titre"},{field:"name",message:"erreur dans le typeof"}] });
-  }
+    const errorsMessage = []
+    console.log(e)
+    if(e.isJoi){
+      e.details.map((error)=>{
+        errorsMessage.push({field:error.path[0],message:error.message})
+      })
+    }
+    res.status(400).send({ errors: errorsMessage});
+ }
 };
 
 exports.deleteCustomer = async (req, res, next) => {

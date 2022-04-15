@@ -7,6 +7,7 @@ import { useLogout } from '../hooks/useLogout';
 
 
 
+
 export const Navbar = ({ isOpened, setIsOpened, user }) => {
     const { logout, isPending } = useLogout();
     return <div className="navbar">
@@ -25,7 +26,7 @@ export const Navbar = ({ isOpened, setIsOpened, user }) => {
           </>
         }
 
-       {user && (
+       {user && (<>
           <li>
             {!isPending && (
               <button onClick={logout} className="btn">
@@ -39,6 +40,10 @@ export const Navbar = ({ isOpened, setIsOpened, user }) => {
               </button>
             )}
           </li>
+           <li>
+           <Link to="/profile">Profile</Link>
+         </li>
+         </>
         )}
     </div>
 }

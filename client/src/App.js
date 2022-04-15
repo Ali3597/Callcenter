@@ -15,6 +15,7 @@ import { apiFetch } from "./utils/api";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { NewRequest } from "./pages/Requests/NewRequest";
 import { NewCustomer } from "./pages/Customers/NewCustomer";
+import { Profile } from "./pages/Workers/Profile";
 
 function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -62,6 +63,10 @@ function App() {
                 <Route
                   path="/worker/:id"
                   element={user ? <Worker /> : <Navigate to="/login" />}
+                />
+                <Route
+                  path="/profile"
+                  element={user ? <Profile user={user} /> : <Navigate to="/login" />}
                 />
 
                 <Route

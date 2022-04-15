@@ -10,7 +10,14 @@ const {
   passBasicToAdmin,
   deleteWorkerById,
 } = require("../queries/workers.queries");
+
+const {
+  workerInfoValidation,
+  workerPasswordValidation,
+} = require("../database/validation/worker.validation");
+
 fs = require("fs");
+
 const limit = 5;
 
 exports.signup = async (req, res, next) => {
@@ -60,20 +67,17 @@ exports.getOneWorker = async (req, res, next) => {
 exports.updateWorker = async (req, res, next) => {
   try {
     const { email, username } = req.body;
+    await workerInfoValidation.validateAsync(req.body, { abortEarly: false });
     const user = await updateWorker(req.user.id, username, email);
     res.send(user);
-  } catch (error) {
-    res.status(404).send({ message: "Wrong Request" });
-  }
-};
-
-exports.updateWorkerPassword = async (req, res, next) => {
-  try {
-    const { password } = req.body;
-    await UpdateWorkerPassword(password, req.user.id);
-    res.status(204).send();
   } catch (e) {
-    res.status(404).send();
+    const errorsMessage = [];
+    if (e.isJoi) {
+      e.details.map((error) => {
+        errorsMessage.push({ field: error.path[0], message: error.message });
+      });
+    }
+    res.status(400).send({ errors: errorsMessage });
   }
 };
 
@@ -99,10 +103,19 @@ exports.deleteWorker = async (req, res, next) => {
 exports.updateWorkerPassword = async (req, res, next) => {
   try {
     const { password } = req.body;
+    await workerPasswordValidation.validateAsync(req.body, {
+      abortEarly: false,
+    });
     await UpdateWorkerPassword(password, req.user.id);
     res.status(204).send();
   } catch (e) {
-    res.status(404).send();
+    const errorsMessage = [];
+    if (e.isJoi) {
+      e.details.map((error) => {
+        errorsMessage.push({ field: error.path[0], message: error.message });
+      });
+    }
+    res.status(400).send({ errors: errorsMessage });
   }
 };
 

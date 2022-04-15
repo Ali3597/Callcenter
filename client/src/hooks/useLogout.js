@@ -13,7 +13,7 @@ export const useLogout = () => {
     setIsPending(true);
 
     try {
-      await apiFetch("/auth/signout");
+      await apiFetch("/auth/logout");
       dispatch({ type: "LOGOUT" });
       if (!isCancelled) {
         setIsPending(false);

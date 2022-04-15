@@ -14,6 +14,8 @@ const {
   findLimitedRequestsByCustomerId,
   countRequestsByCustomerId,
 } = require("../queries/requests.queries");
+
+const {requestValidation} = require('../database/validation/request.validation')
 const limit = 5;
 const mongoose = require("mongoose");
 const { response } = require("express");
@@ -163,10 +165,16 @@ exports.deleteRequest = async (req, res, next) => {
 exports.newRequest = async (req, res, next) => {
   try {
     currentUserId = req.user._id;
-    console.log(req.body,"voilllaa le body")
+   await requestValidation.validateAsync(req.body,{  abortEarly: false })
     request = await createRequest(req.body, currentUserId);
     res.send(request );
   } catch (e) {
-    res.status(400).send({ errors: [{field:"message",message:"erreur dans le message"},{field:"title",message:"erreur dans le titre"},{field:"typeof",message:"erreur dans le typeof"}] });
+    const errorsMessage = []
+    if(e.isJoi){
+      e.details.map((error)=>{
+        errorsMessage.push({field:error.path[0],message:error.message})
+      })
+    }
+    res.status(400).send({ errors: errorsMessage});
   }
 };
