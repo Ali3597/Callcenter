@@ -15,7 +15,7 @@ const {
   requestsCustomer,
 } = require("../controllers/request.controller");
 router.post("/", requireAuth, requests);
-router.get("/worker/:workerId", requireAuth, requestsWorker);
+router.post("/worker/:workerId", requireAuth, requestsWorker);
 router.post("/customer/:customerId", requireAuth, requestsCustomer);
 router.post("/alert", alertRequests);
 

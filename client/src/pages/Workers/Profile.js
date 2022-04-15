@@ -3,9 +3,21 @@ import { Card } from "../../components/Card";
 import { InputFile } from "../../components/inputFile";
 import { Field } from "../../components/Field";
 import { useEffect, useState } from "react";
-import { Tab } from "../../components/Tab";
 import { ApiErrors, apiFetch } from "../../utils/api";
-import { Paginate } from "../../components/Paginate";
+import { ParseRequest } from "../../utils/ParseDatas";
+import { FetchTab } from "../../components/FetchTab";
+
+const columns = [
+  ["typeof", true],
+  ["author", true],
+  ["customer", true],
+  ["message", false],
+  ["done", true],
+  ["deadline", true],
+  ["date", true],
+  ["urgencyLevel", true],
+  ["action", false],
+];
 
 export const Profile = ({ user }) => {
   const [avatar, setAvatar] = useState(null);
@@ -150,6 +162,13 @@ export const Profile = ({ user }) => {
         </form>
       </div>
       <h1>Mes dernieres requetes</h1>
+      <FetchTab
+        linkFetch={"/requests/worker/" + user._id}
+        linkNew={"/requests/new"}
+        titleNew={"Ajoutez une nouvelle requete"}
+        parser={ParseRequest}
+        columns={columns}
+      />
     </div>
   );
 };
