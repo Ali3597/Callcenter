@@ -219,6 +219,8 @@ exports.getLimitedAlertRequestsWhithCustomers = (
   sort,
   search
 ) => {
+  const limitDate = new Date();
+  limitDate.setDate(limitDate.getDate() + 1);
   aggregateArray = [
     {
       $lookup: {
@@ -251,16 +253,7 @@ exports.getLimitedAlertRequestsWhithCustomers = (
     },
     {
       $match: {
-        $and: [
-          {
-            $where: function () {
-              return (
-                Date.parse(this.deadline) - Date.now() < 1000 * 60 * 60 * 24
-              );
-            },
-          },
-          { done: false },
-        ],
+        $and: [{ deadline: { $lte: limitDate } }, { done: false }],
       },
     },
     { $sort: { [sort]: order } },
@@ -272,6 +265,8 @@ exports.getLimitedAlertRequestsWhithCustomers = (
 };
 
 exports.countAlertedRequest = (search) => {
+  const limitDate = new Date();
+  limitDate.setDate(limitDate.getDate() + 1);
   aggregateArray = [
     {
       $lookup: {
@@ -290,16 +285,7 @@ exports.countAlertedRequest = (search) => {
     },
     {
       $match: {
-        $and: [
-          {
-            $where: function () {
-              return (
-                Date.parse(this.deadline) - Date.now() < 1000 * 60 * 60 * 24
-              );
-            },
-          },
-          { done: false },
-        ],
+        $and: [{ deadline: { $lte: limitDate } }, { done: false }],
       },
     },
   ];

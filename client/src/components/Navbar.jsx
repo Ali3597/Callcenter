@@ -9,8 +9,9 @@ import { useLogout } from '../hooks/useLogout';
 
 
 export const Navbar = ({ isOpened, setIsOpened, user }) => {
-    const { logout, isPending } = useLogout();
-    return <div className="navbar">
+  const { logout, isPending } = useLogout();
+  console.log(user)
+  return <div className="navbar">
         {user && <div className="icon" onClick={() => setIsOpened(!isOpened)}>
             {isOpened ? <FaChevronLeft /> : <FaAlignJustify />}
         </div>
@@ -42,8 +43,25 @@ export const Navbar = ({ isOpened, setIsOpened, user }) => {
           </li>
            <li>
            <Link to="/profile">Profile</Link>
-         </li>
+        </li>
+        <SwitchAvalaible />
          </>
-        )}
+      )}
+      
     </div>
+}
+
+
+
+const SwitchAvalaible = () => {
+  const handleChange = (e) => {
+    console.log(e.target.checked)
+  }
+return (
+  <label className="switch">
+    <input type="checkbox" onChange={handleChange}/>
+  <span className="slider round"></span>
+</label>
+  )
+
 }

@@ -15,7 +15,9 @@ const {
   countRequestsByCustomerId,
 } = require("../queries/requests.queries");
 
-const {requestValidation} = require('../database/validation/request.validation')
+const {
+  requestValidation,
+} = require("../database/validation/request.validation");
 const limit = 5;
 const mongoose = require("mongoose");
 const { response } = require("express");
@@ -123,6 +125,7 @@ exports.alertRequests = async (req, res, next) => {
       order = -1;
     }
     skip = limit * page - limit;
+    console.log("papapapappapa");
     const [requests, requestsNumbers] = await Promise.all([
       getLimitedAlertRequestsWhithCustomers(limit, skip, order, sort, search),
       countAlertedRequest(search),
@@ -153,10 +156,9 @@ exports.deleteRequest = async (req, res, next) => {
     const request = await findRequestByIdWithCustomersAndWorkerAssociate(
       requestId
     );
-   
-      await DeleteRequestById(requestId);
-      res.status(204).send();
-    
+
+    await DeleteRequestById(requestId);
+    res.status(204).send();
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
   }
@@ -165,16 +167,16 @@ exports.deleteRequest = async (req, res, next) => {
 exports.newRequest = async (req, res, next) => {
   try {
     currentUserId = req.user._id;
-   await requestValidation.validateAsync(req.body,{  abortEarly: false })
+    await requestValidation.validateAsync(req.body, { abortEarly: false });
     request = await createRequest(req.body, currentUserId);
-    res.send(request );
+    res.send(request);
   } catch (e) {
-    const errorsMessage = []
-    if(e.isJoi){
-      e.details.map((error)=>{
-        errorsMessage.push({field:error.path[0],message:error.message})
-      })
+    const errorsMessage = [];
+    if (e.isJoi) {
+      e.details.map((error) => {
+        errorsMessage.push({ field: error.path[0], message: error.message });
+      });
     }
-    res.status(400).send({ errors: errorsMessage});
+    res.status(400).send({ errors: errorsMessage });
   }
 };

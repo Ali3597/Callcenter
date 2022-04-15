@@ -17,10 +17,10 @@ const {
 router.post("/", requireAuth, requests);
 router.get("/worker/:workerId", requireAuth, requestsWorker);
 router.post("/customer/:customerId", requireAuth, requestsCustomer);
-router.get("/alert", alertRequests);
+router.post("/alert", alertRequests);
 
 router.get("/:requestId", requireAuth, request);
-router.delete("/delete/:requestId",requireAuthAdmin, deleteRequest);
+router.delete("/delete/:requestId", requireAuthAdmin, deleteRequest);
 router.get("/toggle/:requestId", requireAuth, toggleRequest);
 router.post("/new", requireAuth, newRequest);
 
