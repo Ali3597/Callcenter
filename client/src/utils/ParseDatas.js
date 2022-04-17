@@ -49,7 +49,6 @@ export const ParseRequest = (requests) => {
   return requestsParsed;
 };
 
-
 export const ParseCustomer = (customers) => {
   const customersParsed = customers.map((customer) => {
     return {
@@ -61,16 +60,25 @@ export const ParseCustomer = (customers) => {
   return customersParsed;
 };
 
-
 export const ParseCall = (calls) => {
   const callsParsed = calls.map((call) => {
     return {
       ...call,
       id: call._id,
-      customer:
-      call.customer.length > 0 ? call.customer[0].email : "Inconnu",
+      customer: call.customer.length > 0 ? call.customer[0].email : "Inconnu",
       date: call.date.toLocaleString(),
     };
   });
   return callsParsed;
+};
+
+export const ParseTime = (seconds, separator = null) => {
+  return [
+    parseInt(seconds / 60 / 60),
+    parseInt((seconds / 60) % 60),
+    parseInt(seconds % 60),
+  ]
+    .join(separator ? separator : ":")
+    .replace(/\b(\d)\b/g, "0$1")
+    .replace(/^00\:/, "");
 };

@@ -1,0 +1,27 @@
+.call-right {
+  background: peru;
+  width: 0px;
+  transition: width 0.7s;
+  display: flex;
+  flex-direction: column;
+
+  z-index: 1000;
+  align-items: center;
+  box-sizing: border-box;
+  visibility: hidden;
+}
+
+.call-right > img {
+  width: 40%;
+}
+
+.opened-call {
+  width: 350px;
+  visibility: visible;
+}
+
+.link-call {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}

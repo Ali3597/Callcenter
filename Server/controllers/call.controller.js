@@ -64,9 +64,13 @@ exports.myCalls = async (req, res, next) => {
 };
 
 exports.createCall = async (req, res, next) => {
-  const newCall = await createCallq(req.body);
-
-  res.send({ newCall });
+  try {
+    const workerId = req.user._id;
+    const newCall = await createCallq(req.body, workerId);
+    res.send({ call });
+  } catch (error) {
+    res.status(404).send({ message: "Wrong Request" });
+  }
 };
 
 exports.callsWorker = async (req, res, next) => {
@@ -130,7 +134,12 @@ exports.callsCustomer = async (req, res, next) => {
   }
 };
 exports.getCaller = async (req, res, next) => {
-  customerNumber = req.body.number;
-  customer = await doWeKnowThisNumber(customerNumber);
-  res.send({ customer });
+  try {
+    console.group("sisisilafamile");
+    customerNumber = req.body.number;
+    customer = await doWeKnowThisNumber(customerNumber);
+    res.send({ customer });
+  } catch (error) {
+    res.status(404).send({ message: "Wrong Request" });
+  }
 };

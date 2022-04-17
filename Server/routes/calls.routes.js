@@ -14,9 +14,9 @@ const {
   notRequireAuth,
 } = require("../middleware/AuthMiddleware");
 
-// router.post("/getcaller", getCaller);
+router.post("/getcaller", requireAuth, getCaller);
 // to delete after
-router.post("/create", createCall);
+router.post("/create", requireAuth, createCall);
 ////////////
 router.post("/me", requireAuth, myCalls);
 router.post("/", requireAuthAdmin, calls);

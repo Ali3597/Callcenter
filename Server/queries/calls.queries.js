@@ -188,12 +188,14 @@ exports.countCallsByCustomerId = (customerId) => {
 
   return Call.aggregate(aggregateArray);
 };
-exports.createCallq = (call) => {
+exports.createCallq = (call, workerId) => {
   // add time , date state
   const newCustomer = new Call({
     customer: call.customer,
     number: call.number,
-    destination: call.destination,
+    time: call.time,
+    state: call.state,
+    destination: workerId,
   });
   return newCustomer.save();
 };

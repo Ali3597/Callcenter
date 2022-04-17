@@ -10,16 +10,18 @@ import { Customers } from "./pages/Customers/Customers";
 import { Requests } from "./pages/Requests/Requests";
 import { Aside } from "./components/Aside";
 import { Request } from "./pages/Requests/Request";
-import { Worker } from "./pages/Workers/Worker";
-import { apiFetch } from "./utils/api";
+
 import { useAuthContext } from "./hooks/useAuthContext";
 import { NewRequest } from "./pages/Requests/NewRequest";
 import { NewCustomer } from "./pages/Customers/NewCustomer";
 import { Profile } from "./pages/Workers/Profile";
+import { Call } from "./components/Call";
 
 function App() {
   const [isOpened, setIsOpened] = useState(false);
+
   const { user, authIsReady } = useAuthContext();
+
   return (
     <div className="App">
       {authIsReady && (
@@ -45,7 +47,7 @@ function App() {
                   path="/customers"
                   element={user ? <Customers /> : <Navigate to="/login" />}
                 />
-                 <Route
+                <Route
                   path="/customers/new"
                   element={user ? <NewCustomer /> : <Navigate to="/login" />}
                 />
@@ -58,15 +60,15 @@ function App() {
                   element={user ? <Requests /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/requests/new" element={user ? <NewRequest /> : <Navigate to="/login" />}
+                  path="/requests/new"
+                  element={user ? <NewRequest /> : <Navigate to="/login" />}
                 />
-                <Route
-                  path="/worker/:id"
-                  element={user ? <Worker /> : <Navigate to="/login" />}
-                />
+
                 <Route
                   path="/profile"
-                  element={user ? <Profile user={user} /> : <Navigate to="/login" />}
+                  element={
+                    user ? <Profile user={user} /> : <Navigate to="/login" />
+                  }
                 />
 
                 <Route
@@ -79,6 +81,7 @@ function App() {
                 />
               </Routes>
             </div>
+            {user && <Call />}
           </div>
         </BrowserRouter>
       )}
