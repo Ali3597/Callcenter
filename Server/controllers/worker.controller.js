@@ -38,7 +38,12 @@ exports.getWorkers = async (req, res, next) => {
     } else {
       order = -1;
     }
-    console.log(search);
+    if (sort == "email") {
+      sort = "local.email";
+    }
+    if (sort == "role") {
+      sort = "local.role";
+    }
     skip = page ? limit * page - limit : 0;
     const [workers, count] = await Promise.all([
       findAllWorkers(5, skip, order, sort, search),

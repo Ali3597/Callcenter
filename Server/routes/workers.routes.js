@@ -22,8 +22,9 @@ const {
   uploadProfilePictureWorker,
 } = require("../controllers/upload.controller");
 
-router.get("/", requireAuth, getWorkers);
-router.get("/:workerId", requireAuth, getOneWorker);
+router.post("/", requireAuthAdmin, getWorkers);
+router.get("/:workerId", requireAuthAdmin, getOneWorker);
+/// to do me
 router.post("/signup", requireAuthAdmin, signup);
 router.post("/update", requireAuth, updateWorker);
 router.post("/updatePassword", requireAuth, updateWorkerPassword);

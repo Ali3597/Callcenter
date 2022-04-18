@@ -10,7 +10,7 @@ const columns = [
   ["time", true],
   ["state", true],
   ["customer", true],
-  ["number", false],
+  ["number", true],
   ["date", true],
 ];
 

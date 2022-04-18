@@ -60,12 +60,29 @@ export const ParseCustomer = (customers) => {
   return customersParsed;
 };
 
+export const ParseWorker = (workers) => {
+  const workersParsed = workers.map((worker) => {
+    return {
+      ...worker,
+      id: worker._id,
+      role: worker.local.role,
+      email: worker.local.email,
+      lastHangUp: worker.lastHangUp
+        ? worker.lastHangUp.toLocaleString()
+        : "Aucune donnée",
+      action: <Link to={`/admin/workers/${worker._id}`}>Consultez</Link>,
+    };
+  });
+  return workersParsed;
+};
+
 export const ParseCall = (calls) => {
   const callsParsed = calls.map((call) => {
     return {
       ...call,
       id: call._id,
       customer: call.customer.length > 0 ? call.customer[0].email : "Inconnu",
+      time: ParseTime(call.time),
       date: call.date.toLocaleString(),
     };
   });

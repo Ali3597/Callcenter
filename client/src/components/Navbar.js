@@ -49,6 +49,12 @@ export const Navbar = ({ isOpened, setIsOpened, user }) => {
             <Link to="/profile">Profile</Link>
           </li>
           {worker && <SwitchAvalaible user={worker} setUser={setWorker} />}
+
+          {worker && worker.local.role == "admin" ? (
+            <Link to="/admin">Admin</Link>
+          ) : (
+            ""
+          )}
         </>
       )}
     </div>

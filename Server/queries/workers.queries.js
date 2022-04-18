@@ -20,7 +20,7 @@ exports.createWorker = async (user) => {
     // to create number
     const newWorker = new Worker({
       username: user.username,
-      number: "PJSIP/ddddd",
+      number: user.number,
       local: {
         email: user.email,
         password: hashedPassword,
@@ -86,7 +86,6 @@ exports.findAllWorkers = (
     {
       $project: {
         "local.password": 0,
-        "local.role": 0,
       },
     },
     { $sort: { [sort]: order } },

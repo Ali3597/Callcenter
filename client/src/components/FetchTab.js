@@ -6,7 +6,13 @@ import { Paginate } from "./Paginate";
 import { useSearchParams } from "react-router-dom";
 import { FcSearch } from "react-icons/fc";
 
-export const FetchTab = ({ linkFetch, columns, parser, linkNew, titleNew }) => {
+export const FetchTab = ({
+  linkFetch,
+  columns,
+  parser,
+  linkNew = null,
+  titleNew = null,
+}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [elementParsed, setElementParsed] = useState(null);
   const [search, setSearch] = useState("");

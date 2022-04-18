@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import "./Customer.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ParseRequest } from "../../utils/ParseDatas";
 import { Card } from "../../components/Card";
 import { apiFetch } from "../../utils/api";
@@ -25,15 +26,20 @@ export const Customer = () => {
   const [customer,setCustomer]= useState(null);
   const [avatar,setAvatar] = useState(null);
   const { id } = useParams();
+   const navigate = useNavigate()
 
   useEffect(async ()=>{
-    const response = await apiFetch("/customers/"+id)
-    setCustomer(response)
+    const response = await apiFetch("/customers/" + id)
+    if (response) {
+      setCustomer(response)
+    }else{
+navigate("/customers");
+    }
   },[])
 
 
   useEffect(()=>{
-    console.log("usefecctavatar")
+    
     if(avatar){
       console.log("usefecctavatardedans")
       console.log(avatar)
