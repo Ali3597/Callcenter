@@ -16,6 +16,7 @@ const {
   updateWorkerAvatar,
   deleteWorker,
   toggleState,
+  updateWorkerToBasic,
 } = require("../controllers/worker.controller");
 
 const {
@@ -30,6 +31,7 @@ router.post("/update", requireAuth, updateWorker);
 router.post("/updatePassword", requireAuth, updateWorkerPassword);
 router.delete("/delete/:workerId", requireAuthAdmin, deleteWorker);
 router.post("/passadmin/:workerId", requireAuthAdmin, updateWorkerToAdmin);
+router.post("/passbasic/:workerId", requireAuthAdmin, updateWorkerToBasic);
 router.post("/toggleState", requireAuth, toggleState);
 router.post(
   "/avatar",

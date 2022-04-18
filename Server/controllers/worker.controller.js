@@ -9,6 +9,7 @@ const {
   countWorkers,
   passBasicToAdmin,
   deleteWorkerById,
+  passAdminToBasic,
 } = require("../queries/workers.queries");
 
 const {
@@ -95,6 +96,16 @@ exports.updateWorkerToAdmin = async (req, res, next) => {
     res.status(404).send();
   }
 };
+exports.updateWorkerToBasic = async (req, res, next) => {
+  try {
+    const workerId = req.params.workerId;
+    await passAdminToBasic(workerId);
+    res.status(204).send();
+  } catch (e) {
+    res.status(404).send();
+  }
+};
+
 exports.deleteWorker = async (req, res, next) => {
   try {
     const workerId = req.params.workerId;

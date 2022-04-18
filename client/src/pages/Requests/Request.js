@@ -14,47 +14,15 @@ import { FaWindowClose } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { apiFetch } from "../../utils/api";
 import { Link } from "react-router-dom";
-const { faker } = require("@faker-js/faker");
-
-const customerfake = {
-  id: faker.datatype.uuid(),
-  name: faker.name.findName(),
-  email: faker.internet.email(),
-  number: faker.phone.phoneNumber(),
-  url: faker.image.avatar(),
-};
-
-const workerfake = {
-  id: faker.datatype.uuid(),
-  username: faker.name.findName(),
-  email: faker.internet.email(),
-  number: faker.phone.phoneNumber(),
-  avatar: faker.image.avatar(),
-};
-
-const requestfake = {
-  id: faker.datatype.uuid(),
-  typeof: faker.lorem.word(),
-  author: faker.internet.userName(),
-  customer: faker.internet.userName(),
-  message: faker.lorem.paragraphs(),
-  date: faker.date.recent(),
-  deadline: faker.date.soon(),
-  done: faker.datatype.boolean(),
-  urgencyLevel: faker.datatype.number({
-    min: 1,
-    max: 5,
-  }),
-};
 
 export const Request = () => {
   const { id } = useParams();
   const [request, setRequest] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(async () => {
     if (id) {
       const response = await apiFetch("/requests/" + id);
-      if ( !response.item) {
+      if (!response.item) {
         navigate("/requests");
       }
       setRequest(response.item);
@@ -62,15 +30,16 @@ export const Request = () => {
   }, [id]);
 
   const [deleting, toggleDeleting] = useToggle(false);
-  const handleClick = async () =>{
+  const handleClick = async () => {
     const responseDone = await apiFetch("/requests/toggle/" + id);
-    setRequest({...request,done:responseDone.done})
-  }
-  const handleDelete = async()=>{
-     await apiFetch('/requests/delete/'+id, {method: "DELETE"})
-     navigate("/requests");
-
-  }
+    setRequest({ ...request, done: responseDone.done });
+  };
+  const handleDelete = async () => {
+    try {
+      await apiFetch("/requests/delete/" + id, { method: "DELETE" });
+      navigate("/requests");
+    } catch (error) {}
+  };
   return (
     request && (
       <div className="request">
@@ -80,16 +49,19 @@ export const Request = () => {
           {request.done ? <FaCheck /> : <FaWindowClose />}
         </div>
         <div className="request-high">
-      
           <Card
-            photoURL={customerfake.url}
-            name={<Link to={'/customers/'+request.customer._id}>{request.customer.name} </Link>}
+            photoURL={request.customer.avatar}
+            name={
+              <Link to={"/customers/" + request.customer._id}>
+                {request.customer.name}{" "}
+              </Link>
+            }
             email={request.customer.email}
             number={request.customer.number}
           />
-        
+
           <Card
-            photoURL={workerfake.avatar}
+            photoURL={request.author.avatar}
             name={request.author.username}
             email={request.author.local.email}
             number={request.author.number}
@@ -109,10 +81,22 @@ export const Request = () => {
           </div>
           <div className="request-buttons">
             <button onClick={toggleDeleting}>Supprimer</button>
-            <button onClick={handleClick}>{request.done ?'Invalider' : 'Valider'} la requette</button>
+            <button onClick={handleClick}>
+              {request.done ? "Invalider" : "Valider"} la requette
+            </button>
           </div>
         </div>
-        {deleting && <Modal onClose={toggleDeleting} title={"aaaaaaaaaa"} message={"Etes vous sure de votre choix , cette requete sera supprimé a mais ?"} onClick={handleDelete} buttonMessage={'Supprimer'}/>}
+        {deleting && (
+          <Modal
+            onClose={toggleDeleting}
+            title={"aaaaaaaaaa"}
+            message={
+              "Etes vous sure de votre choix , cette requete sera supprimé a mais ?"
+            }
+            onClick={handleDelete}
+            buttonMessage={"Supprimer"}
+          />
+        )}
       </div>
     )
   );

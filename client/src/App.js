@@ -110,7 +110,7 @@ function App() {
                   path="/admin/workers/:id"
                   element={
                     user.local.role == "admin" ? (
-                      <WorkerAdmin />
+                      <WorkerAdmin user={user} />
                     ) : (
                       <Navigate to="/login" />
                     )

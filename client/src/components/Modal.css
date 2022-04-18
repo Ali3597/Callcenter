@@ -5,7 +5,7 @@
 
 /* _modal.scss:18 */
 .modal {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -32,19 +32,19 @@
 }
 
 .modal-wrapper > button {
- width: 40%;
- height: 80px;
- border-radius: 5px;
- cursor: pointer;
- margin-bottom: 5%;
- align-self: center;
+  width: 40%;
+  height: 80px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5%;
+  align-self: center;
 }
 .modal-wrapper > button:hover {
- transform: scale(1.05);
- }
+  transform: scale(1.05);
+}
 .modal-header {
   display: flex;
- 
+
   align-items: flex-start;
 }
 .modal-header button {
@@ -52,11 +52,9 @@
   border-radius: 5px;
   border: none;
   cursor: pointer;
-
 }
 .modal-header button:hover {
- transform: scale(1.01);
-
+  transform: scale(1.01);
 }
 
 .modal-title {
@@ -65,10 +63,10 @@
   justify-content: center;
 }
 
-.modal-body{
- display: flex;
- align-items: center;
-padding: 5%;
-font-size: 17px;
+.modal-body {
+  display: flex;
+  align-items: center;
+  padding: 5%;
+  font-size: 17px;
   height: 80%;
 }

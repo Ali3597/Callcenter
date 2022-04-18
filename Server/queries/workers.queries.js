@@ -163,6 +163,13 @@ exports.passBasicToAdmin = async (userId) => {
     },
   }).exec();
 };
+exports.passAdminToBasic = async (userId) => {
+  return Worker.findByIdAndUpdate(userId, {
+    $set: {
+      "local.role": "basic",
+    },
+  }).exec();
+};
 
 exports.findAllTheAvailableWorkers = () => {
   return Worker.find({

@@ -1,0 +1,23 @@
+.worker-buttons {
+  margin-top: 2%;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.worker-buttons button {
+  width: 20%;
+  background-color: red;
+  height: 8vh;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+}
+
+.worker-buttons button:hover {
+  transform: scale(1.03);
+}
