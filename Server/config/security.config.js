@@ -1,4 +1,3 @@
-
 // Ce package est utilisé par cookie-parser d’Express
 // Nous pouvons donc directement l’utiliser :
 const cookieParser = require("cookie");
@@ -16,6 +15,7 @@ exports.ensureAuthenticated = (req, res, next) => {
 };
 
 exports.ensureAuthenticatedOnSocketHandshake = async (request, success) => {
+  console.log("handshake la ");
   try {
     // Nous récupérons le cookie depuis les headers de la requête et nous
     // le parsons pour l’avoir sur un object JavaScript :
@@ -24,15 +24,15 @@ exports.ensureAuthenticatedOnSocketHandshake = async (request, success) => {
     if (cookies && cookies.jwt) {
       // Nous vérifions et décodons le token :
       const decodedToken = decodeJwtToken(cookies.jwt);
-      // Nous pouvons alors récupérer l’id de l’utilisateur sur le token 
+      // Nous pouvons alors récupérer l’id de l’utilisateur sur le token
       // et l’utiliser pour récupérer l’utilisateur entier depuis la DB :
       const user = await findWorkerPerId(decodedToken.sub);
       // Si nous récupérons un utilisateur de la DB :
       if (user) {
-        // Nous le plaçons sur l’objet requête : 
+        // Nous le plaçons sur l’objet requête :
         request.user = user;
         // Et nous appelons la fonction de rappel en lui passant aucune erreur,
-        // et true pour autoriser le handshake :   
+        // et true pour autoriser le handshake :
         success(null, true);
       } else {
         // Sinon nous retournons un code d’erreur car aucun utilisateur
@@ -41,12 +41,12 @@ exports.ensureAuthenticatedOnSocketHandshake = async (request, success) => {
       }
     } else {
       // Si nous n’avons pas de cookie, alors la requête n’est
-      // pas authentifiée et nous refusons le handshake :  
+      // pas authentifiée et nous refusons le handshake :
       success(403, false);
     }
   } catch (e) {
-      // Si il y a une erreur lors de la vérification du token JWT
-      // par exemple en cas d’expiration, nous refusons le handshake :
+    // Si il y a une erreur lors de la vérification du token JWT
+    // par exemple en cas d’expiration, nous refusons le handshake :
     success(400, false);
   }
 };

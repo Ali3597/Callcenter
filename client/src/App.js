@@ -22,11 +22,31 @@ import { WorkersAdmin } from "./pages/admin/Workers/WorkersAdmin";
 import { CallsAdmin } from "./pages/admin/Calls/CallsAdmin";
 import { NewWorker } from "./pages/admin/Workers/NewWorker";
 import { WorkerAdmin } from "./pages/admin/Workers/WorkerAdmin";
+import io from "socket.io-client";
 
 function App() {
   const [isOpened, setIsOpened] = useState(false);
-
+  const [socket, setSocket] = useState(null);
   const { user, authIsReady } = useAuthContext();
+  const [admin, setAdmin] = useState(false);
+  useEffect(() => {
+    if (user) {
+      if (user.local) {
+        if (user.local.role) {
+          setAdmin(true);
+        }
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const newSocket = io(`http://localhost:4000`, {
+      withCredentials: true,
+    });
+    console.log("papapa");
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [setSocket]);
 
   return (
     <div className="App">
@@ -78,38 +98,20 @@ function App() {
                 />
                 <Route
                   path="/admin"
-                  element={
-                    user.local.role == "admin" ? (
-                      <Admin />
-                    ) : (
-                      <Navigate to="/login" />
-                    )
-                  }
+                  element={admin ? <Admin /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/admin/workers"
-                  element={
-                    user.local.role == "admin" ? (
-                      <WorkersAdmin />
-                    ) : (
-                      <Navigate to="/login" />
-                    )
-                  }
+                  element={admin ? <WorkersAdmin /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/admin/workers/new"
-                  element={
-                    user.local.role == "admin" ? (
-                      <NewWorker />
-                    ) : (
-                      <Navigate to="/login" />
-                    )
-                  }
+                  element={admin ? <NewWorker /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/admin/workers/:id"
                   element={
-                    user.local.role == "admin" ? (
+                    admin ? (
                       <WorkerAdmin user={user} />
                     ) : (
                       <Navigate to="/login" />
@@ -118,13 +120,7 @@ function App() {
                 />
                 <Route
                   path="/admin/calls"
-                  element={
-                    user.local.role == "admin" ? (
-                      <CallsAdmin />
-                    ) : (
-                      <Navigate to="/login" />
-                    )
-                  }
+                  element={admin ? <CallsAdmin /> : <Navigate to="/login" />}
                 />
 
                 <Route

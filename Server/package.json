@@ -4,8 +4,6 @@
   "description": "stage ali arc sn",
   "main": "app.js",
   "dependencies": {
-    "@types/socket.io": "^3.0.2",
-    "@types/socket.io-client": "^3.0.0",
     "ari-client": "^2.2.0",
     "asterisk-manager": "^0.1.16",
     "awry": "^8.1.0",
@@ -14,6 +12,7 @@
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
     "cookies-js": "^1.2.3",
+    "cors": "^2.8.5",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "joi": "^17.6.0",
@@ -27,7 +26,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pug": "^3.0.2",
-    "socket.io": "^4.4.1",
+    "socket.io": "^4.5.1",
     "util": "^0.10.4"
   },
   "devDependencies": {
