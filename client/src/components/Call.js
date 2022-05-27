@@ -6,6 +6,8 @@ import { apiFetch } from "../utils/api";
 import { useAutoIncrement } from "../hooks/useAutoIncrement";
 import { ParseTime } from "../utils/ParseDatas";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+import io from "socket.io-client";
 
 export const Call = () => {
   const [inCall, setInCall] = useState(false);
@@ -13,6 +15,32 @@ export const Call = () => {
   const [time, setTime] = useState(null);
   const [answered, setAnswered] = useState(false);
   const [number, setNumber] = useState("064347985642789999frferfe");
+  const [socket, setSocket] = useState(null);
+  const [nsSocket, setNsSocket] = useState(null);
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    if (user) {
+      setSocket(
+        io(`http://localhost:4000`, {
+          withCredentials: true,
+          reconnection: false,
+        })
+      );
+    }
+  }, [user]);
+  useEffect(() => {
+    if (socket) {
+      socket.on("workerId", (data) => {
+        setNsSocket(io(`/${data}`));
+        console.log("connection maitrisé baby");
+        nsSocket.on("call", (data) => {
+          CallFunction();
+        });
+      });
+    }
+  }, [socket]);
+
   const CallFunction = async () => {
     const caller = await apiFetch("/calls/getcaller", {
       method: "POST",
@@ -41,10 +69,10 @@ export const Call = () => {
     // });
   };
 
-  useEffect(() => {
-    // setTimeout(() => CallFunction(), 2000);
-    // setTimeout(() => AnswerPhone(), 5000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => CallFunction(), 2000);
+  //   setTimeout(() => AnswerPhone(), 5000);
+  // }, []);
   const handleHangUp = () => {
     CloseCall();
   };

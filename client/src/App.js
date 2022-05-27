@@ -39,14 +39,15 @@ function App() {
     }
   }, [user]);
 
-  useEffect(() => {
-    const newSocket = io(`http://localhost:4000`, {
-      withCredentials: true,
-    });
-    console.log("papapa");
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, [setSocket]);
+  // useEffect(() => {
+  //   const newSocket = io(`http://localhost:4000`, {
+  //     withCredentials: true,
+  //     reconnection: false,
+  //   });
+  //   console.log("papapa");
+  //   setSocket(newSocket);
+  //   return () => newSocket.close();
+  // }, [setSocket]);
 
   return (
     <div className="App">
