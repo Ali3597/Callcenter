@@ -4,15 +4,15 @@ import { FetchTab } from "../../components/FetchTab";
 
 
 const columns = [
-  ["typeof", true],
-  ["author", true],
-  ["customer", true],
-  ["message", false],
-  ["done", true],
-  ["deadline", true],
-  ["date", true],
-  ["urgencyLevel", true],
-  ["action", false],
+  ["typeof", true,"Type"],
+  ["author", true,"Auteur"],
+  ["customer", true,"Client"],
+  ["message", false,"Message"],
+  ["done", true,"Valider"],
+  ["deadline", true,"Deadline"],
+  ["date", true,"Date"],
+  ["urgencyLevel", true,"Niveau d'urgence"],
+  ["action", false,"Action"],
 ];
 
 export const Home = () => {

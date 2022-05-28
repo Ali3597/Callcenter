@@ -1,10 +1,26 @@
 .navbar {
-  height: 9vh;
+  height: 10vh;
+  box-shadow: 0 0.125rem 0.25rem 0 rgb(0 0 0 / 11%);
+  box-sizing: border-box;
+  background-color: #00559a;
   width: 100%;
-  background-color: aqua;
+  list-style: none;
   display: flex;
+  align-items: center;
+
+  text-decoration: none;
+  color: white;
 }
 
+.navbar a {
+  text-decoration: none;
+  font-size: 21px;
+  color: white;
+  font-weight: bold;
+}
+.navbar a:hover {
+  text-decoration: underline;
+}
 .icon {
   padding: 10px;
 }
@@ -52,11 +68,11 @@
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #2cfa1f;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+  box-shadow: 0 0 1px #2cfa1f;
 }
 
 input:checked + .slider:before {
@@ -72,4 +88,31 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.navbar button {
+  background-color: red;
+  border-radius: 5px;
+  height: 6vh;
+  color: white;
+  font-size: larger;
+  border-color: none;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  transform: scale(1.05);
+}
+
+.end-navbar {
+  flex: 1;
+  justify-content: end;
+  display: flex;
+
+  align-items: center;
+  height: 100%;
+}
+
+.end-navbar * {
+  margin-right: 2%;
 }

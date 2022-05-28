@@ -20,7 +20,9 @@ var Call = function (caller, holdingBridge) {
   };
   this.originate();
 
-  this.startTimer((this.start = Date.now()));
+  this.startTimer = function () {
+    this.start = Date.now();
+  };
 
   this.isThisAnswered = function () {
     if (!this.start) {
@@ -33,7 +35,7 @@ var Call = function (caller, holdingBridge) {
     if (!this.isThisAnswered()) {
       return 0;
     }
-    let milliDiff = Date.now() - this.start();
+    let milliDiff = Date.now() - this.start;
     return Math.floor(milliDiff / 1000);
   };
 

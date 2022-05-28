@@ -29,7 +29,6 @@ export const Tab = ({ columns, rows }) => {
 const TableHeader = ({ column }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const handleClick = () => {
-    console.log(column[0]);
     if (searchParams.get("sort") == column[0]) {
       if (searchParams.get("order") == "ASC") {
         searchParams.set("order", "DESC");
@@ -48,7 +47,7 @@ const TableHeader = ({ column }) => {
       className={column[1] ? "order" : ""}
       onClick={column[1] ? handleClick : null}
     >
-      {column[0]}
+      {column[2]}
       {searchParams.get("sort") == column[0] &&
       searchParams.get("order") == "ASC" ? (
         <FaAngleUp />

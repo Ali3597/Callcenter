@@ -16,7 +16,6 @@ ari
     var system;
 
     function onStasisStart(event, channel) {
-      console.log("sisis la famille");
       system.onStasisStart(event, channel);
     }
 

@@ -3,13 +3,13 @@ import { FetchTab } from "../../../components/FetchTab";
 import { ParseWorker } from "../../../utils/ParseDatas";
 
 const columns = [
-  ["email", true],
-  ["role", true],
-  ["state", true],
-  ["lastHangUp", true],
-  ["username", true],
-  ["number", true],
-  ["action", false],
+  ["email", true, "Email"],
+  ["role", true, "Role"],
+  ["state", true, "Disponible"],
+  ["lastHangUp", true, "Dernier Appel"],
+  ["username", true, "Pseudo"],
+  ["number", true, "Numero"],
+  ["action", false, "Action"],
 ];
 
 export const WorkersAdmin = () => {

@@ -3,10 +3,10 @@ import { ParseCustomer } from "../../utils/ParseDatas";
 import { FetchTab } from "../../components/FetchTab";
 
 const columns = [
-  ["name", true],
-  ["email", true],
-  ["number", true],
-  ["action", false],
+  ["name", true, "Nom"],
+  ["email", true, "Email"],
+  ["number", true, "Numero"],
+  ["action", false, "Action"],
 ];
 
 export const Customers = () => {

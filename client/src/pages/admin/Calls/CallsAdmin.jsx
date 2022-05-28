@@ -5,11 +5,11 @@ import "./Call.css";
 
 
 const columns = [
-  ["time", true],
-  ["state", true],
-  ["customer", true],
-  ["number", true],
-  ["date", true],
+  ["time", true,"Temps"],
+  ["state", true,"Etat"],
+  ["customer", true,"Email"],
+  ["number", true,"Numero"],
+  ["date", true,"Date"],
 ];
 
 

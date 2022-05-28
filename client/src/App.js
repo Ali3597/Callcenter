@@ -63,36 +63,36 @@ function App() {
                   element={user ? <Home /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/calls"
+                  path="/mes-appels"
                   element={user ? <Calls /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/customers/:id"
+                  path="/clients/:id"
                   element={user ? <Customer /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/customers"
+                  path="/clients"
                   element={user ? <Customers /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/customers/new"
+                  path="/clients/nouveau"
                   element={user ? <NewCustomer /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/requests/:id"
+                  path="/clients/:id"
                   element={user ? <Request /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/requests"
+                  path="/requetes"
                   element={user ? <Requests /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/requests/new"
+                  path="/requetes/new"
                   element={user ? <NewRequest /> : <Navigate to="/login" />}
                 />
 
                 <Route
-                  path="/profile"
+                  path="/profil"
                   element={
                     user ? <Profile user={user} /> : <Navigate to="/login" />
                   }
@@ -102,15 +102,15 @@ function App() {
                   element={admin ? <Admin /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/admin/workers"
+                  path="/admin/employes"
                   element={admin ? <WorkersAdmin /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/admin/workers/new"
+                  path="/admin/employes/nouveau"
                   element={admin ? <NewWorker /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/admin/workers/:id"
+                  path="/admin/eployes/:id"
                   element={
                     admin ? (
                       <WorkerAdmin user={user} />
@@ -120,16 +120,12 @@ function App() {
                   }
                 />
                 <Route
-                  path="/admin/calls"
+                  path="/admin/appels"
                   element={admin ? <CallsAdmin /> : <Navigate to="/login" />}
                 />
 
                 <Route
-                  path="/login"
-                  element={user ? <Navigate to="/" /> : <Login />}
-                />
-                <Route
-                  path="/signup"
+                  path="/connexion"
                   element={user ? <Navigate to="/" /> : <Login />}
                 />
               </Routes>

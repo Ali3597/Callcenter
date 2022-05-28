@@ -33,8 +33,6 @@ export const Call = () => {
     if (socket) {
       console.log("on est  la", socket);
       socket.on("call", (data) => {
-        setTime(0);
-        console.log("mamamamamamamamamam");
         CallFunction(data);
       });
 
@@ -52,11 +50,13 @@ export const Call = () => {
   }, [socket]);
 
   const CallFunction = async (numberCaller) => {
+    console.log("on call al vreume");
     setNumber(numberCaller);
     const caller = await apiFetch("/calls/getcaller", {
       method: "POST",
-      body: { numberCaller },
+      body: { number: numberCaller },
     });
+    console.log(caller, "mama mia la cosa   la");
     setCustomer(caller.customer);
 
     setInCall(true);
@@ -71,21 +71,12 @@ export const Call = () => {
     console.log("on evoi ça ", customer, number, time, answered);
     console.log("coila l'user id", user);
     socket.emit("closeCall", user._id);
-    // await apiFetch("/calls/create", {
-    //   method: "POST",
-    //   body: {
-    //     customer: customer ? customer._id : null,
-    //     number,
-    //     time: time ? time : 0,
-    //     state: answered ? "Appel pris" : "Appel manqué",
-    //   },
-    // });
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => CallFunction(), 2000);
-  //   setTimeout(() => AnswerPhone(), 5000);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => CallFunction(5000), 2000);
+    setTimeout(() => AnswerPhone(), 5000);
+  }, []);
   const handleHangUp = () => {
     CloseCall();
   };

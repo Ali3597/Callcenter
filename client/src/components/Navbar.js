@@ -16,45 +16,41 @@ export const Navbar = ({ isOpened, setIsOpened, user }) => {
     <div className="navbar">
       {user && (
         <div className="icon" onClick={() => setIsOpened(!isOpened)}>
-          {isOpened ? <FaChevronLeft /> : <FaAlignJustify />}
+          {isOpened ? (
+            <FaChevronLeft size={30} color={"white"} />
+          ) : (
+            <FaAlignJustify size={30} color={"white"} />
+          )}
         </div>
       )}
-      Navbar
+
       {!user && (
         <>
-          <li>
-            <Link to="/login">login</Link>
-          </li>
-          <li>
-            <Link to="/signup">signup</Link>
-          </li>
+          <Link to="/connexion">Connexion</Link>
         </>
       )}
       {user && (
         <>
-          <li>
+          {worker && <SwitchAvalaible user={worker} setUser={setWorker} />}
+          <div className="end-navbar">
+            {worker && worker.local.role == "admin" ? (
+              <Link to="/admin">Administration</Link>
+            ) : (
+              ""
+            )}
+
             {!isPending && (
               <button onClick={logout} className="btn">
-                Logout
+                Deconnexion
               </button>
             )}
 
             {isPending && (
               <button disabled className="btn">
-                Logout...
+                Deconnexion...
               </button>
             )}
-          </li>
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
-          {worker && <SwitchAvalaible user={worker} setUser={setWorker} />}
-
-          {worker && worker.local.role == "admin" ? (
-            <Link to="/admin">Admin</Link>
-          ) : (
-            ""
-          )}
+          </div>
         </>
       )}
     </div>

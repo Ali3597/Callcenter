@@ -39,14 +39,15 @@
 
 .container {
   display: flex;
-  flex: 1;
+
   height: 100%;
+  overflow-x: hidden;
 }
 .main {
   flex: 1;
   background: #f7f5f5;
 }
-.beetween{
+.beetween {
   display: flex;
   width: 100%;
   justify-content: space-around;

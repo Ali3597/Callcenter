@@ -25,10 +25,10 @@ const AsideAdmin = ({isOpened}) => {
         return <div className={`${isOpened ? "opened" : ""} aside`}>
   
         <div className="tab">
-     <NavLink to="/admin/workers">Worker</NavLink>
+     <NavLink to="/admin/employes">Employes</NavLink>
         </div>
         <div className="tab">
-        <NavLink to="/admin/calls">Calls</NavLink>
+        <NavLink to="/admin/appels">Appels</NavLink>
         </div>
     
     </div>
@@ -37,16 +37,19 @@ const AsideAdmin = ({isOpened}) => {
 const AsideUser = ({isOpened}) => {
         return <div className={`${isOpened ? "opened" : ""} aside`}>
         <div className="tab">
-     <NavLink to="/">Home</NavLink>
+     <NavLink to="/">Accueil</NavLink>
+                </div>
+        <div className="tab">
+     <NavLink to="/profil">Mon profil</NavLink>
         </div>
         <div className="tab">
-<NavLink to="/Calls">Calls</NavLink>
+<NavLink to="/mes-appels">Mon journal d'appel</NavLink>
         </div>
         <div className="tab">
-<NavLink to="/customers">Customers</NavLink>
+<NavLink to="/clients">Clients</NavLink>
         </div>
         <div className="tab">
-<NavLink to="/requests">Requests</NavLink>
+<NavLink to="/requetes">Requetes</NavLink>
         </div>
     </div>
 }
