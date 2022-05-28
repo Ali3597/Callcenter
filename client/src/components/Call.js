@@ -33,6 +33,7 @@ export const Call = () => {
     if (socket) {
       console.log("on est  la", socket);
       socket.on("call", (data) => {
+        setTime(0);
         console.log("mamamamamamamamamam");
         CallFunction(data);
       });

@@ -6,6 +6,8 @@ const {
 const {
   updateAvailableToTrueAndLastHangUp,
 } = require("../queries/workers.queries");
+
+const { createCallq } = require("../queries/calls.queries");
 const ios = require("../config/socket.config");
 
 var System = function (client) {
@@ -86,7 +88,7 @@ var System = function (client) {
             this.socket
               .in(nextCall.worker._id.toHexString())
               .emit("closeCall", "ok");
-            // nextCall.socket.emit("closeCall", "ok");
+
             //close the worker phone too
             this.safeHangup(dialed);
           }.bind(this)
@@ -104,6 +106,13 @@ var System = function (client) {
       async function () {
         // WHen the worker phone is closed pass it to available and updtae the date of his las hang up
         await updateAvailableToTrueAndLastHangUp(call.worker._id);
+        // cretae the call in database
+        await createCallq(
+          call.caller.caller.number,
+          call.timeOfCall(),
+          call.worker._id
+        );
+
         // now that he is available verify if tere is a customer on the queue
         this.nextOnQueue();
         // close the customer phone
@@ -115,7 +124,7 @@ var System = function (client) {
       async function (event, dialed) {
         // socket to tell on the client side that the worker have respons
         this.socket.in(call.worker._id.toHexString()).emit("respond");
-        // call.socket.emit("respond");
+        call.startTimer();
         // connect the customer and the worker phone
         this.joinMixingBridge(call);
       }.bind(this)
@@ -172,29 +181,11 @@ var System = function (client) {
     // console.log(this.socket.sockets.sockets.fo);
     this.socket.sockets.sockets.forEach((element) => {
       element.on("closeCall", (data) => {
-        console.log("la data ezst bien la en fait", data);
         if (data === call.worker.id) {
           this.safeHangup(call.caller);
         }
       });
     });
-
-    //   .on(
-    //   "closeCall",
-    //   function (data) {
-    //     console.log("on close vraiment le call");
-    //     if (data == call.worker._id.toHexString()) {
-    //       this.safeHangup(call.caller);
-    //     }
-    //   }.bind(this)
-    // );
-    // call.socket.emit("call", call.caller.number);
-    // listen if the worker close the call by the the web interface on the client side
-    // call.socket.sockets.forEach((element) => {
-    //   element.on("closeCall", () => {
-    //     this.safeHangup(call.caller);
-    //   });
-    // });
   };
 
   // handler for the dialed channel leaving Stasis

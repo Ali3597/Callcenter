@@ -1,5 +1,6 @@
 const Call = require("../database/models/call.model");
 const Customer = require("../database/models/customer.model");
+const { doWeKnowThisNumber } = require("./customers.queries");
 
 exports.findLimitedCallsByWorkerId = (
   limit,
@@ -188,28 +189,27 @@ exports.countCallsByCustomerId = (customerId) => {
 
   return Call.aggregate(aggregateArray);
 };
-exports.createCallq = (call, workerId) => {
+exports.createCallq = async (number, time, workerId) => {
   // add time , date state
-  const newCustomer = new Call({
-    customer: call.customer,
-    number: call.number,
-    time: call.time,
-    state: call.state,
+  const customer = await doWeKnowThisNumber(number);
+  const newCall = new Call({
+    customer: customer ? customer._id : null,
+    number,
+    time,
     destination: workerId,
   });
-  return newCustomer.save();
+  return newCall.save();
 };
 
-exports.updateCallToAnsweredANdTimeById = async (callId, timeCall) => {
-  console.log("on a update le callllll");
-  return Call.findByIdAndUpdate(
-    callId,
-    {
-      $set: {
-        state: "answered",
-        time: timeCall,
-      },
-    },
-    { runValidators: true }
-  ).exec();
-};
+// exports.updateCallToAnsweredANdTimeById = async (callId, timeCall) => {
+//   console.log("on a update le callllll");
+//   return Call.findByIdAndUpdate(
+//     callId,
+//     {
+//       $set: {
+//         time: timeCall,
+//       },
+//     },
+//     { runValidators: true }
+//   ).exec();
+// };

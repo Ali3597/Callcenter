@@ -83,6 +83,7 @@ export const ParseCall = (calls) => {
       id: call._id,
       customer: call.customer.length > 0 ? call.customer[0].email : "Inconnu",
       time: ParseTime(call.time),
+      state: call.time == 0 ? "Appel manqué" : "Appel pris",
       date: call.date.toLocaleString(),
     };
   });
