@@ -14,9 +14,9 @@ export const Call = () => {
   const [customer, setCustomer] = useState(null);
   const [time, setTime] = useState(null);
   const [answered, setAnswered] = useState(false);
-  const [number, setNumber] = useState("064347985642789999frferfe");
+  const [number, setNumber] = useState(null);
   const [socket, setSocket] = useState(null);
-  const [nsSocket, setNsSocket] = useState(null);
+
   const { user } = useAuthContext();
 
   useEffect(() => {
@@ -31,20 +31,30 @@ export const Call = () => {
   }, [user]);
   useEffect(() => {
     if (socket) {
-      socket.on("workerId", (data) => {
-        setNsSocket(io(`/${data}`));
-        console.log("connection maitrisé baby");
-        nsSocket.on("call", (data) => {
-          CallFunction();
-        });
+      console.log("on est  la", socket);
+      socket.on("call", (data) => {
+        console.log("mamamamamamamamamam");
+        CallFunction(data);
+      });
+
+      // Wait for the close call event to play the animation when a call is closed
+      socket.on("closeCall", (data) => {
+        console.log("on close le callll");
+        CloseCall();
+      });
+
+      socket.on("respond", () => {
+        console.log("papa");
+        AnswerPhone();
       });
     }
   }, [socket]);
 
-  const CallFunction = async () => {
+  const CallFunction = async (numberCaller) => {
+    setNumber(numberCaller);
     const caller = await apiFetch("/calls/getcaller", {
       method: "POST",
-      body: { number },
+      body: { numberCaller },
     });
     setCustomer(caller.customer);
 
@@ -58,6 +68,8 @@ export const Call = () => {
   const CloseCall = async () => {
     setInCall(false);
     console.log("on evoi ça ", customer, number, time, answered);
+    console.log("coila l'user id", user);
+    socket.emit("closeCall", user._id);
     // await apiFetch("/calls/create", {
     //   method: "POST",
     //   body: {
