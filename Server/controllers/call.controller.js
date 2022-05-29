@@ -13,7 +13,7 @@ const {
   getCustomeByNumber,
 } = require("../queries/customers.queries");
 const mongoose = require("mongoose");
-const limit = 10;
+const limit = 5;
 
 exports.calls = async (req, res, next) => {
   try {

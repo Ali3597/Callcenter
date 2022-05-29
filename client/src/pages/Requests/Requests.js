@@ -6,7 +6,6 @@ const columns = [
   ["typeof", true, "Type"],
   ["author", true, "Auteur"],
   ["customer", true, "Client"],
-  ["message", false, "Message"],
   ["done", true, "Valider"],
   ["deadline", true, "Deadline"],
   ["date", true, "Date"],
@@ -24,6 +23,8 @@ export const Requests = () => {
         linkFetch={"/requests"}
         linkNew={"/requests/new"}
         titleNew={"Ajoutez une nouvelle requete"}
+        placeholder={"Recherchez par email de client"}
+        sizeTab={475}
       />
     </>
   );

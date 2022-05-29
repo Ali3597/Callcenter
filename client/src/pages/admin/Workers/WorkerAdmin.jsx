@@ -15,7 +15,7 @@ const columns = [
   ["typeof", true,"Type"],
   ["author", true,"Auteur"],
   ["customer", true,"Client"],
-  ["message", false,"Message"],
+
   ["done", true,"Valider"],
   ["deadline", true,"Deadline"],
   ["date", true,"Date"],
@@ -74,7 +74,7 @@ export const WorkerAdmin = ({ user }) => {
       </button>
     </div>:""}
       <h1>Ses dernieres requetes</h1>
-      <FetchTab columns={columns} linkFetch={"/requests/worker/" + worker._id} parser={ParseRequest} />
+      <FetchTab sizeTab={475} placeholder={"Rechercher par email de client"} columns={columns} linkFetch={"/requests/worker/" + worker._id} parser={ParseRequest} />
       {deleting && (
         <Modal
           onClose={toggleDeleting}

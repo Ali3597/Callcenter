@@ -33,9 +33,12 @@ export const ParseRequest = (requests) => {
         request.customer.length > 0 ? request.customer[0].email : "Aucun",
       author:
         request.author.length > 0 ? request.author[0].local.email : "Aucun",
-      done: request.done ? <FaCheck /> : <FaWindowClose />,
-      action: <Link to={`/requests/${request._id}`}>Consultez</Link>,
-      message: request.message.slice(0, 20).concat("…"),
+      done: request.done ? (
+        <FaCheck size={20} color={"green"} />
+      ) : (
+        <FaWindowClose size={20} color={"red"} />
+      ),
+      action: <Link to={`/requetes/${request._id}`}>Consultez</Link>,
       urgencyLevel: (
         <Dot color={urgencyColor(parseInt(request.urgencyLevel))} />
       ),
@@ -54,7 +57,7 @@ export const ParseCustomer = (customers) => {
     return {
       ...customer,
       id: customer._id,
-      action: <Link to={`/customers/${customer._id}`}>Consultez</Link>,
+      action: <Link to={`/clients/${customer._id}`}>Consultez</Link>,
     };
   });
   return customersParsed;
@@ -70,7 +73,7 @@ export const ParseWorker = (workers) => {
       lastHangUp: worker.lastHangUp
         ? worker.lastHangUp.toLocaleString()
         : "Aucune donnée",
-      action: <Link to={`/admin/workers/${worker._id}`}>Consultez</Link>,
+      action: <Link to={`/admin/employes/${worker._id}`}>Consultez</Link>,
     };
   });
   return workersParsed;

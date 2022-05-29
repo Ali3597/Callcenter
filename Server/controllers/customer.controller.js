@@ -16,15 +16,15 @@ const {
   findLimitedRequestsByCustomerIdWithCustomersAssociate,
 } = require("../queries/requests.queries");
 
-const {customerValidation} = require('../database/validation/customer.validation')
+const {
+  customerValidation,
+} = require("../database/validation/customer.validation");
 
 fs = require("fs");
 
 exports.customers = async (req, res, next) => {
   try {
-
     let { page, order, sort, search } = req.body;
-    console.log(req.body,"aaaaaaaaaaaaaa")
     if (order == "ASC") {
       order = 1;
     } else {
@@ -37,7 +37,7 @@ exports.customers = async (req, res, next) => {
     ]);
     res.send({
       items: customers.length > 0 ? customers : null,
-      count: customersNumbers.length>0 ? customersNumbers[0].totalCount :0,
+      count: customersNumbers.length > 0 ? customersNumbers[0].totalCount : 0,
     });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
@@ -73,19 +73,19 @@ exports.updateCustomerAvatar = async (req, res, next) => {
 
 exports.newCustomer = async (req, res, next) => {
   try {
-    await customerValidation.validateAsync(req.body,{  abortEarly: false })
+    await customerValidation.validateAsync(req.body, { abortEarly: false });
     newCustomer = await createCustomer(req.body);
     res.send(newCustomer);
   } catch (e) {
-    const errorsMessage = []
-    console.log(e)
-    if(e.isJoi){
-      e.details.map((error)=>{
-        errorsMessage.push({field:error.path[0],message:error.message})
-      })
+    const errorsMessage = [];
+    console.log(e);
+    if (e.isJoi) {
+      e.details.map((error) => {
+        errorsMessage.push({ field: error.path[0], message: error.message });
+      });
     }
-    res.status(400).send({ errors: errorsMessage});
- }
+    res.status(400).send({ errors: errorsMessage });
+  }
 };
 
 exports.deleteCustomer = async (req, res, next) => {

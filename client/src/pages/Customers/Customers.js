@@ -19,6 +19,8 @@ export const Customers = () => {
         titleNew={"Ajoutez un nouvau client "}
         columns={columns}
         parser={ParseCustomer}
+        placeholder={"Rechercher par l'email du client"}
+        sizeTab={350}
       />
     </>
   );

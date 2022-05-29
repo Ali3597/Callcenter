@@ -22,6 +22,8 @@ export const WorkersAdmin = () => {
         linkFetch={"/workers"}
         linkNew={"/admin/workers/new"}
         titleNew={"Créer un nouveau utilisateur"}
+        placeholder={"Recherchez par email"}
+        sizeTab={400}
       />
     </>
   );

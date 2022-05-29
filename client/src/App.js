@@ -79,7 +79,7 @@ function App() {
                   element={user ? <NewCustomer /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/clients/:id"
+                  path="/requetes/:id"
                   element={user ? <Request /> : <Navigate to="/login" />}
                 />
                 <Route

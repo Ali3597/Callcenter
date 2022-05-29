@@ -12,6 +12,8 @@ export const FetchTab = ({
   parser,
   linkNew = null,
   titleNew = null,
+  placeholder = "rechercher",
+  sizeTab = 475,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [elementParsed, setElementParsed] = useState(null);
@@ -58,21 +60,25 @@ export const FetchTab = ({
           <input
             onChange={(e) => setSearch(e.target.value)}
             value={search}
-            placeholder={"recherche"}
+            placeholder={placeholder}
           ></input>{" "}
           <button>
-            <FcSearch />
+            <FcSearch size={25} />
           </button>{" "}
         </form>{" "}
         {linkNew && (
-          <button>
-            <Link to={linkNew}>{titleNew}</Link>
-          </button>
+          <div>
+            <button>
+              <Link to={linkNew}>{titleNew}</Link>
+            </button>
+          </div>
         )}
       </div>
 
       {elementParsed ? (
-        <Tab columns={columns} rows={elementParsed} />
+        <div style={{ minHeight: `${sizeTab}px` }}>
+          <Tab columns={columns} rows={elementParsed} />
+        </div>
       ) : (
         <p>Aucune element ne correspond</p>
       )}

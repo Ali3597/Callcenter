@@ -22,6 +22,6 @@ export const Calls = () => {
 
     return <>
     <h1>Mon journal d'appel</h1>
-      <FetchTab columns={columns} linkFetch={"/calls/me"} linkNew={null} titleNew={null} parser={ParseCall}/>
+      <FetchTab sizeTab={375} placeholder={"recherchez par email de client"} columns={columns} linkFetch={"/calls/me"} linkNew={null} titleNew={null} parser={ParseCall}/>
     </>
 }

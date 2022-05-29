@@ -11,7 +11,6 @@ const columns = [
   ["typeof", true, "Type"],
   ["author", true, "Auteur"],
   ["customer", true, "Client"],
-  ["message", false, "Message"],
   ["done", true, "Valider"],
   ["deadline", true, "Deadline"],
   ["date", true, "Date"],
@@ -168,6 +167,7 @@ export const Profile = ({ user }) => {
         titleNew={"Ajoutez une nouvelle requete"}
         parser={ParseRequest}
         columns={columns}
+        sizeTab={475}
       />
     </div>
   );

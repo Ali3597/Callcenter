@@ -73,10 +73,10 @@ export const Call = () => {
     socket.emit("closeCall", user._id);
   };
 
-  useEffect(() => {
-    setTimeout(() => CallFunction(5000), 2000);
-    setTimeout(() => AnswerPhone(), 5000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => CallFunction(5000), 2000);
+  //   setTimeout(() => AnswerPhone(), 5000);
+  // }, []);
   const handleHangUp = () => {
     CloseCall();
   };

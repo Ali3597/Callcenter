@@ -26,7 +26,10 @@ export const Paginate = ({ current, nbrPages }) => {
             pages={nbrPages}
           />
         ) : (
-          ""
+          <li>
+            {" "}
+            <FaChevronLeft color={"grey"} />{" "}
+          </li>
         )}
         {pages &&
           pages.map((p, index) =>
@@ -50,7 +53,10 @@ export const Paginate = ({ current, nbrPages }) => {
             pages={nbrPages}
           />
         ) : (
-          ""
+          <li>
+            {" "}
+            <FaChevronRight color={"grey"} />{" "}
+          </li>
         )}
       </ul>
     </div>

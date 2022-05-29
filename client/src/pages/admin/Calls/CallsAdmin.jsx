@@ -18,7 +18,7 @@ export const CallsAdmin = () => {
   return (
     <>
       <h1>Tous les appels</h1>
- <FetchTab columns={columns} linkFetch={"/calls"} linkNew={null} titleNew={null} parser={ParseCall}/>
+ <FetchTab sizeTab={350} placeholder={"Recherchez par email du client"} columns={columns} linkFetch={"/calls"} linkNew={null} titleNew={null} parser={ParseCall}/>
     </>
   );
 };
