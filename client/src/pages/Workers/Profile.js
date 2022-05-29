@@ -113,7 +113,7 @@ export const Profile = ({ user }) => {
       )}
       <div className="form-profile">
         <form onSubmit={handleSubmit}>
-          <h1>upadte informations</h1>
+          <h1>Modifier vos informations</h1>
           <Field
             name={"email"}
             error={errorFor("email")}
@@ -133,10 +133,10 @@ export const Profile = ({ user }) => {
             Username{" "}
           </Field>
           {successInfos && <p>Informations Modifié ! </p>}
-          <button>MOdifier</button>
+          <button>Modifier</button>
         </form>
         <form onSubmit={handleSubmitPassword}>
-          <h1>upadte password</h1>
+          <h1>Modifiez votre mot de passe</h1>
           <Field
             type={"password"}
             name={"password"}
@@ -157,7 +157,7 @@ export const Profile = ({ user }) => {
             Confirmez le mot de passe{" "}
           </Field>
           {successPassword && <p> Mot de passe modifié </p>}
-          <button>MOdifier</button>
+          <button>Modifier</button>
         </form>
       </div>
       <h1>Mes dernieres requetes</h1>
@@ -168,6 +168,7 @@ export const Profile = ({ user }) => {
         parser={ParseRequest}
         columns={columns}
         sizeTab={475}
+        placeholder={"Rechercher par email de client"}
       />
     </div>
   );

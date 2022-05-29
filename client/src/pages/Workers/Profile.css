@@ -1,13 +1,37 @@
-.form-profile{
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-    margin-top: 2%;
+.form-profile {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  margin-top: 2%;
 }
-.form-profile > form{
-   width: 40% ;
-   border: 1px solid black;
-   border-radius: 5px;
-   display: flex;
-   flex-direction: column;
+.form-profile > form {
+  width: 40%;
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  background-color: #00559a;
+  padding: 2%;
+  align-items: center;
+  color: white;
+}
+
+.form-profile > form > input {
+  height: 5vh;
+  width: 50%;
+  border-radius: 5px;
+  margin-bottom: 2%;
+}
+
+.form-profile > form > button {
+  height: 5vh;
+  background-color: red;
+  border-color: white;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  justify-content: end;
+}
+.form-profile > form > button:hover {
+  transform: scale(1.03);
 }

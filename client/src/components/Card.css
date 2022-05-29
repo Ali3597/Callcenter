@@ -3,6 +3,9 @@
   height: 25vh;
   margin-top: 2%;
   border-radius: 5px;
+  position: relative;
+  background-color: #00559a;
+  color: white;
   display: flex;
   margin-left: 1%;
   text-align: left;
@@ -33,4 +36,10 @@
 
 .card p svg {
   width: 25px;
+}
+
+.card > label {
+  position: absolute;
+  top: 10%;
+  left: 30%;
 }

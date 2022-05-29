@@ -20,7 +20,7 @@ export const InputFile= ({link,setFile}) => {
        
     }
     return <label>
-    <FaPlusCircle color={"green"} size={20} cursor={"pointer"}/>
+    <FaPlusCircle color={"red"} size={25} cursor={"pointer"}/>
     <input
       style={{ display: "none" }}
       type="file"
