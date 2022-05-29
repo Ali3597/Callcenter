@@ -33,6 +33,10 @@
   margin-right: 1%;
 }
 
+.request-title svg {
+  margin-left: 1%;
+}
+
 .request-buttons {
   width: 100%;
   display: flex;

@@ -163,7 +163,7 @@ export const Profile = ({ user }) => {
       <h1>Mes dernieres requetes</h1>
       <FetchTab
         linkFetch={"/requests/worker/" + user._id}
-        linkNew={"/requests/new"}
+        linkNew={"/requetes/nouveau"}
         titleNew={"Ajoutez une nouvelle requete"}
         parser={ParseRequest}
         columns={columns}

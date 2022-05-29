@@ -32,7 +32,7 @@ export const Customer = () => {
     if (response) {
       setCustomer(response)
     }else{
-navigate("/customers");
+navigate("/clients");
     }
   },[])
 
@@ -51,7 +51,7 @@ navigate("/customers");
       <h1>Page client</h1>
       {customer && <Card input={<InputFile setFile={setAvatar} link={'/customers/avatar/'+id} />} photoURL={customer.avatar } name={customer.name} email={customer.email} number={customer.number} />}
       <h1>Ses Requetes</h1>
-    <FetchTab sizeTab={475} linkFetch={"/requests/customer/"+id} linkNew={'/requests/new?customer='+id} columns={columns} parser={ParseRequest} titleNew={"Lui rajoutez une nouvelle reuqete"} />
+    <FetchTab sizeTab={475} linkFetch={"/requests/customer/"+id} linkNew={'/requetes/nouveau?customer='+id} columns={columns} parser={ParseRequest} titleNew={"Lui rajoutez une nouvelle reuqete"} />
     </div>
   );
 };

@@ -36,7 +36,7 @@ export const NewCustomer = () => {
                 method: 'POST',
                 body: {name,email,number},
             })
-            navigate("/customers/"+response._id);
+            navigate("/clients/"+response._id);
         } catch (e) {
             if (e instanceof ApiErrors){
                 setErrors(e.errors)

@@ -21,7 +21,7 @@ export const Requests = () => {
         columns={columns}
         parser={ParseRequest}
         linkFetch={"/requests"}
-        linkNew={"/requests/new"}
+        linkNew={"/requetes/nouveau"}
         titleNew={"Ajoutez une nouvelle requete"}
         placeholder={"Recherchez par email de client"}
         sizeTab={475}

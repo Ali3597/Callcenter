@@ -22,7 +22,6 @@ import { WorkersAdmin } from "./pages/admin/Workers/WorkersAdmin";
 import { CallsAdmin } from "./pages/admin/Calls/CallsAdmin";
 import { NewWorker } from "./pages/admin/Workers/NewWorker";
 import { WorkerAdmin } from "./pages/admin/Workers/WorkerAdmin";
-import io from "socket.io-client";
 
 function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -87,7 +86,7 @@ function App() {
                   element={user ? <Requests /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/requetes/new"
+                  path="/requetes/nouveau"
                   element={user ? <NewRequest /> : <Navigate to="/login" />}
                 />
 
@@ -110,7 +109,7 @@ function App() {
                   element={admin ? <NewWorker /> : <Navigate to="/login" />}
                 />
                 <Route
-                  path="/admin/eployes/:id"
+                  path="/admin/employes/:id"
                   element={
                     admin ? (
                       <WorkerAdmin user={user} />

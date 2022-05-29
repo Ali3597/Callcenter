@@ -20,7 +20,7 @@ export const WorkersAdmin = () => {
         columns={columns}
         parser={ParseWorker}
         linkFetch={"/workers"}
-        linkNew={"/admin/workers/new"}
+        linkNew={"/admin/employes/nouveau"}
         titleNew={"Créer un nouveau utilisateur"}
         placeholder={"Recherchez par email"}
         sizeTab={400}

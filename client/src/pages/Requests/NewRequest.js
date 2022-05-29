@@ -59,7 +59,7 @@ export const NewRequest = () => {
         method: "POST",
         body: { message, urgencyLevel, typeof: typeOf, deadline, customer },
       });
-      navigate("/requests/" + response._id);
+      navigate("/requetes/" + response._id);
     } catch (e) {
       if (e instanceof ApiErrors) {
         setErrors(e.errors);

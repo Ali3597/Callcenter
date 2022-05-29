@@ -23,9 +23,10 @@ export const Request = () => {
     if (id) {
       const response = await apiFetch("/requests/" + id);
       if (!response.item) {
-        navigate("/requests");
+        navigate("/requetes");
       }
       setRequest(response.item);
+      console.log(new Date(response.item.date).toLocaleString("FR"));
     }
   }, [id]);
 
@@ -37,22 +38,27 @@ export const Request = () => {
   const handleDelete = async () => {
     try {
       await apiFetch("/requests/delete/" + id, { method: "DELETE" });
-      navigate("/requests");
+      navigate("/requetes");
     } catch (error) {}
   };
+
   return (
     request && (
       <div className="request">
         <div className="request-title">
           <p> Requete numero : {id} </p>{" "}
           <Dot color={urgencyColor(request.urgencyLevel)} />
-          {request.done ? <FaCheck /> : <FaWindowClose />}
+          {request.done ? (
+            <FaCheck color="green" size={25} />
+          ) : (
+            <FaWindowClose color="red" size={25} />
+          )}
         </div>
         <div className="request-high">
           <Card
             photoURL={request.customer.avatar}
             name={
-              <Link to={"/customers/" + request.customer._id}>
+              <Link to={"/clients/" + request.customer._id}>
                 {request.customer.name}{" "}
               </Link>
             }
@@ -70,7 +76,9 @@ export const Request = () => {
         <div className="request-message">
           <p>{request.message}</p>
           <div className="request-date">
-            <p>Date de création : {request.date.toLocaleString()}</p>
+            <p>
+              Date de créations : {new Date(request.date).toLocaleString("FR")}
+            </p>
             <p>
               Deadline :{" "}
               {formatDistanceToNow(parseISO(request.deadline), {

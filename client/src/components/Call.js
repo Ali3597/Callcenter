@@ -86,16 +86,14 @@ export const Call = () => {
       <h1>Appel</h1>
       {customer && (
         <div className="link-call">
-          <Link to={"/customers/" + customer._id}>
-            Consultez la fiche client
-          </Link>
-          <Link to={"/requests/new?customer=" + customer._id}>
+          <Link to={"/clients/" + customer._id}>Consultez la fiche client</Link>
+          <Link to={"/requetes/nouveau?customer=" + customer._id}>
             Lui créer une requette
           </Link>
         </div>
       )}
       {!customer && (
-        <Link to={"/customers/new?number=" + number}>
+        <Link to={"/clients/nouveau?number=" + number}>
           Enregistrez le nouveau client
         </Link>
       )}

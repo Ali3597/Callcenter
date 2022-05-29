@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Dot } from "../components/Dot";
 
 export const urgencyColor = (number) => {
-  switch (number) {
+  switch (parseInt(number)) {
     case 1:
       return "24E34C";
     case 2:
@@ -18,7 +18,7 @@ export const urgencyColor = (number) => {
     case 5:
       return "EF0D0D";
     default:
-      return "black";
+      return "FFFFF";
   }
 };
 
