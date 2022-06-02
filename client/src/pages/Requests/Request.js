@@ -77,7 +77,7 @@ export const Request = () => {
           <p>{request.message}</p>
           <div className="request-date">
             <p>
-              Date de créations : {new Date(request.date).toLocaleString("FR")}
+              Date de création : {new Date(request.date).toLocaleString("FR")}
             </p>
             <p>
               Deadline :{" "}

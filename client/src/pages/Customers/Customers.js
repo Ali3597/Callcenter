@@ -15,7 +15,7 @@ export const Customers = () => {
       <h1>Les Clients</h1>
       <FetchTab
         linkFetch={"/customers"}
-        linkNew={"/clients/new"}
+        linkNew={"/clients/nouveau"}
         titleNew={"Ajoutez un nouvau client "}
         columns={columns}
         parser={ParseCustomer}

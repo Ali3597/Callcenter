@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 export const NewWorker = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState([]);
-  const [number, setNumber] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [number, setNumber] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const errorFor = function (field) {
     const error = errors.find((e) => e.field == field);
     if (error) {
@@ -34,7 +34,7 @@ export const NewWorker = () => {
       ]);
     } else {
       try {
-        console.log("onnn est la mexc");
+        console.log("on try");
         const response = await apiFetch("/workers/signup", {
           method: "POST",
           body: { username, email, number, password },
@@ -43,6 +43,7 @@ export const NewWorker = () => {
       } catch (e) {
         if (e instanceof ApiErrors) {
           setErrors(e.errors);
+          console.log(e.errors);
         } else {
           throw e;
         }

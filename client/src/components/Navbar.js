@@ -5,13 +5,25 @@ import { FaAlignJustify } from "react-icons/fa";
 import { useLogout } from "../hooks/useLogout";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../utils/api";
+import { useLocation } from "react-router-dom";
 
-export const Navbar = ({ isOpened, setIsOpened, user }) => {
+export const Navbar = ({ isOpened, setIsOpened, user, admin }) => {
   const { logout, isPending } = useLogout();
-  const [worker, setWorker] = useState(null);
+  const [isInAdmin, setIsInAdmin] = useState(false);
+  const [worker, setWorker] = useState(false);
+  const location = useLocation();
+  useEffect(() => {
+    const urlWords = location.pathname.split("/");
+    if (urlWords[1] == "admin") {
+      setIsInAdmin(true);
+    } else {
+      setIsInAdmin(false);
+    }
+  }, [location.pathname]);
   useEffect(() => {
     setWorker(user);
-  }, []);
+  }, [user]);
+
   return (
     <div className="navbar">
       {user && (
@@ -33,8 +45,13 @@ export const Navbar = ({ isOpened, setIsOpened, user }) => {
         <>
           {worker && <SwitchAvalaible user={worker} setUser={setWorker} />}
           <div className="end-navbar">
-            {worker && worker.local.role == "admin" ? (
-              <Link to="/admin">Administration</Link>
+            {worker && admin && !isInAdmin ? (
+              <Link to="/admin">Panel administrateur</Link>
+            ) : (
+              ""
+            )}
+            {worker && admin && isInAdmin ? (
+              <Link to="/">Panel utilisateur</Link>
             ) : (
               ""
             )}

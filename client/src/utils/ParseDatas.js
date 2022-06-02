@@ -42,7 +42,7 @@ export const ParseRequest = (requests) => {
       urgencyLevel: (
         <Dot color={urgencyColor(parseInt(request.urgencyLevel))} />
       ),
-      date: request.date.toLocaleString(),
+      date: new Date(request.date).toLocaleString("FR"),
       deadline: formatDistanceToNow(parseISO(request.deadline), {
         addSuffix: true,
         locale: fr,

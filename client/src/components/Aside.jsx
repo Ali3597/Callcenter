@@ -1,5 +1,5 @@
 import './Aside.css'
-import { NavLink,useLocation, } from "react-router-dom";
+import { NavLink,useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 export const Aside = ({ isOpened }) => {
         const [admin,setAdmin]= useState(false)
@@ -23,6 +23,9 @@ export const Aside = ({ isOpened }) => {
 
 const AsideAdmin = ({isOpened}) => {
         return <div className={`${isOpened ? "opened" : ""} aside`}>
+                <div className="tab">
+     <NavLink end to="/admin">Accueil</NavLink>
+        </div>
   
         <div className="tab">
      <NavLink to="/admin/employes">Employes</NavLink>

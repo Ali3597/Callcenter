@@ -26,6 +26,8 @@ const workerPasswordValidation = Joi.object({
 const workerSignupValidation = Joi.object({
   email: Joi.string().email().required().messages({
     "string.base": "Veuillez renseignez un email valide",
+    "string.empty": "Veuillez renseignez un email valide",
+
     "string.email": "Veuillez renseignez un email valide",
   }),
   username: Joi.string().min(1).required().messages({
@@ -48,4 +50,8 @@ const workerSignupValidation = Joi.object({
     }),
 });
 
-module.exports = { workerInfoValidation, workerPasswordValidation };
+module.exports = {
+  workerInfoValidation,
+  workerPasswordValidation,
+  workerSignupValidation,
+};

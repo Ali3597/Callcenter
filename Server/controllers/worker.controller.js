@@ -15,6 +15,7 @@ const {
 const {
   workerInfoValidation,
   workerPasswordValidation,
+  workerSignupValidation,
 } = require("../database/validation/worker.validation");
 
 fs = require("fs");
@@ -22,12 +23,21 @@ fs = require("fs");
 const limit = 5;
 
 exports.signup = async (req, res, next) => {
+  console.log("on est la cousin");
   try {
+    await workerSignupValidation.validateAsync(req.body, { abortEarly: false });
     const body = req.body;
     const user = await createWorker(body);
     res.send(user);
   } catch (e) {
-    res.status(404).send();
+    const errorsMessage = [];
+    console.log(e);
+    if (e.isJoi) {
+      e.details.map((error) => {
+        errorsMessage.push({ field: error.path[0], message: error.message });
+      });
+    }
+    res.status(400).send({ errors: errorsMessage });
   }
 };
 

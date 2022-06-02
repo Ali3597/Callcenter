@@ -24,9 +24,9 @@ export const NewRequest = () => {
   const [errors, setErrors] = useState([]);
   const [customers, SetCustomers] = useState([]);
   const [message, setMessage] = useState("");
-  const [urgencyLevel, setUrgencyLevel] = useState(null);
-  const [customer, setCustomer] = useState(null);
-  const [typeOf, setTypeOf] = useState(null);
+  const [urgencyLevel, setUrgencyLevel] = useState("");
+  const [customer, setCustomer] = useState("");
+  const [typeOf, setTypeOf] = useState("");
   const [deadline, setDeadline] = useState("");
   const navigate = useNavigate();
   useEffect(async () => {

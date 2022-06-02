@@ -8,10 +8,10 @@ import "./NewCustomer.css";
 
 export const NewCustomer = () => {
     const [errors,setErrors] =  useState([])
-    const [email,setEmail] = useState(null)
+    const [email,setEmail] = useState("")
     const [searchParams, setSearchParams] = useSearchParams();
-    const [number,setNumber] = useState(null)
-    const [name,setName] = useState(null)
+    const [number,setNumber] = useState("")
+    const [name,setName] = useState("")
     const navigate = useNavigate()
     useEffect( async()=>{
         const numberEffect = searchParams.get("number");
@@ -40,6 +40,7 @@ export const NewCustomer = () => {
         } catch (e) {
             if (e instanceof ApiErrors){
                 setErrors(e.errors)
+                console.log(e.errors,"les erruers cousin")
             }else{
             throw e
             }

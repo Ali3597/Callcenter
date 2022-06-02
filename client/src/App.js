@@ -26,17 +26,7 @@ import { WorkerAdmin } from "./pages/admin/Workers/WorkerAdmin";
 function App() {
   const [isOpened, setIsOpened] = useState(false);
   const [socket, setSocket] = useState(null);
-  const { user, authIsReady } = useAuthContext();
-  const [admin, setAdmin] = useState(false);
-  useEffect(() => {
-    if (user) {
-      if (user.local) {
-        if (user.local.role) {
-          setAdmin(true);
-        }
-      }
-    }
-  }, [user]);
+  const { user, authIsReady, admin } = useAuthContext();
 
   // useEffect(() => {
   //   const newSocket = io(`http://localhost:4000`, {
@@ -52,61 +42,74 @@ function App() {
     <div className="App">
       {authIsReady && (
         <BrowserRouter>
-          <Navbar isOpened={isOpened} setIsOpened={setIsOpened} user={user} />
+          <Navbar
+            isOpened={isOpened}
+            setIsOpened={setIsOpened}
+            user={user}
+            admin={admin}
+          />
           <div className="container">
             {user && <Aside isOpened={isOpened} />}
             <div className="main">
               <Routes>
                 <Route
                   path="/"
-                  element={user ? <Home /> : <Navigate to="/login" />}
+                  element={user ? <Home /> : <Navigate to="/connexion" />}
                 />
                 <Route
                   path="/mes-appels"
-                  element={user ? <Calls /> : <Navigate to="/login" />}
+                  element={user ? <Calls /> : <Navigate to="/connexion" />}
                 />
                 <Route
                   path="/clients/:id"
-                  element={user ? <Customer /> : <Navigate to="/login" />}
+                  element={user ? <Customer /> : <Navigate to="/connexion" />}
                 />
                 <Route
                   path="/clients"
-                  element={user ? <Customers /> : <Navigate to="/login" />}
+                  element={user ? <Customers /> : <Navigate to="/connexion" />}
                 />
                 <Route
                   path="/clients/nouveau"
-                  element={user ? <NewCustomer /> : <Navigate to="/login" />}
+                  element={
+                    user ? <NewCustomer /> : <Navigate to="/connexion" />
+                  }
                 />
                 <Route
                   path="/requetes/:id"
-                  element={user ? <Request /> : <Navigate to="/login" />}
+                  element={user ? <Request /> : <Navigate to="/connexion" />}
                 />
                 <Route
                   path="/requetes"
-                  element={user ? <Requests /> : <Navigate to="/login" />}
+                  element={user ? <Requests /> : <Navigate to="/connexion" />}
                 />
                 <Route
                   path="/requetes/nouveau"
-                  element={user ? <NewRequest /> : <Navigate to="/login" />}
+                  element={user ? <NewRequest /> : <Navigate to="/connexion" />}
                 />
 
                 <Route
                   path="/profil"
                   element={
-                    user ? <Profile user={user} /> : <Navigate to="/login" />
+                    user ? (
+                      <Profile user={user} />
+                    ) : (
+                      <Navigate to="/connexion" />
+                    )
                   }
                 />
                 <Route
                   path="/admin"
-                  element={admin ? <Admin /> : <Navigate to="/login" />}
+                  element={admin ? <Admin /> : <Navigate to="/connexion" />}
                 />
                 <Route
                   path="/admin/employes"
-                  element={admin ? <WorkersAdmin /> : <Navigate to="/login" />}
+                  element={
+                    admin ? <WorkersAdmin /> : <Navigate to="/connexion" />
+                  }
                 />
                 <Route
                   path="/admin/employes/nouveau"
-                  element={admin ? <NewWorker /> : <Navigate to="/login" />}
+                  element={admin ? <NewWorker /> : <Navigate to="/connexion" />}
                 />
                 <Route
                   path="/admin/employes/:id"
@@ -114,13 +117,15 @@ function App() {
                     admin ? (
                       <WorkerAdmin user={user} />
                     ) : (
-                      <Navigate to="/login" />
+                      <Navigate to="/connexion" />
                     )
                   }
                 />
                 <Route
                   path="/admin/appels"
-                  element={admin ? <CallsAdmin /> : <Navigate to="/login" />}
+                  element={
+                    admin ? <CallsAdmin /> : <Navigate to="/connexion" />
+                  }
                 />
 
                 <Route
