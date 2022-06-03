@@ -13,10 +13,10 @@ exports.login = async (req, res, next) => {
         req.login(worker);
         res.send({ user: worker });
       } else {
-        res.status(404).send({ errors: "Wrong Credentials" });
+        res.status(404).send({ message: "Mauvais identifiants" });
       }
     } else {
-      res.status(404).send({ errors: "Wrong Credentials" });
+      res.status(404).send({ message: "Mauvais identifiants" });
     }
   } catch (e) {
     res.status(404).send({ message: "error" });

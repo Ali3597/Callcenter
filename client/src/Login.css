@@ -1,8 +1,51 @@
 .auth-form {
-  max-width: 360px;
-  margin: 60px auto;
-  padding: 40px;
+  width: 360px;
+
+  padding: 2%;
   border: 1px solid #ddd;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.05);
   background: #fff;
+  display: flex;
+  border-radius: 5px;
+  flex-direction: column;
+}
+
+.auth-form > h2 {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 5%;
+}
+
+.auth-form > label {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.auth-form > label > span {
+  margin-bottom: 3%;
+}
+.auth-form > button {
+  margin-top: 8%;
+  background-color: #00559a;
+  cursor: pointer;
+  color: white;
+  height: 5vh;
+}
+.auth-form > button:hover {
+  transform: scale(1.02);
+}
+
+.log {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.error {
+  color: red;
 }

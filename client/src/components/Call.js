@@ -47,7 +47,6 @@ export const Call = ({
       });
 
       socket.on("respond", () => {
-        console.log("papa");
         AnswerPhone();
       });
     }

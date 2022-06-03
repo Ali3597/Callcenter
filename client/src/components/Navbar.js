@@ -36,11 +36,6 @@ export const Navbar = ({ isOpened, setIsOpened, user, admin, inCall }) => {
         </div>
       )}
 
-      {!user && (
-        <>
-          <Link to="/connexion">Connexion</Link>
-        </>
-      )}
       {user && (
         <>
           {worker && (

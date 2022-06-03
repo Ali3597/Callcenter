@@ -44,6 +44,7 @@
   overflow-x: hidden;
 }
 .main {
+  margin: 0%;
   flex: 1;
   background: #f7f5f5;
 }
