@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "../utils/api";
 import { useLocation } from "react-router-dom";
 
-export const Navbar = ({ isOpened, setIsOpened, user, admin }) => {
+export const Navbar = ({ isOpened, setIsOpened, user, admin, inCall }) => {
   const { logout, isPending } = useLogout();
   const [isInAdmin, setIsInAdmin] = useState(false);
   const [worker, setWorker] = useState(false);
@@ -43,7 +43,13 @@ export const Navbar = ({ isOpened, setIsOpened, user, admin }) => {
       )}
       {user && (
         <>
-          {worker && <SwitchAvalaible user={worker} setUser={setWorker} />}
+          {worker && (
+            <SwitchAvalaible
+              user={worker}
+              setUser={setWorker}
+              inCall={inCall}
+            />
+          )}
           <div className="end-navbar">
             {worker && admin && !isInAdmin ? (
               <Link to="/admin">Panel administrateur</Link>
@@ -74,7 +80,7 @@ export const Navbar = ({ isOpened, setIsOpened, user, admin }) => {
   );
 };
 
-const SwitchAvalaible = ({ user, setUser }) => {
+const SwitchAvalaible = ({ user, setUser, inCall }) => {
   const [stateChecked, setStateChecked] = useState(false);
   const handleChange = async (e) => {
     const available = await apiFetch("/workers/toggleState", {
@@ -92,7 +98,11 @@ const SwitchAvalaible = ({ user, setUser }) => {
   return (
     <label className="switch">
       <input type="checkbox" checked={stateChecked} onChange={handleChange} />
-      <span className="slider round"></span>
+      <span
+        className={
+          inCall ? "slider round occupied " : "slider round not-occupied "
+        }
+      ></span>
     </label>
   );
 };

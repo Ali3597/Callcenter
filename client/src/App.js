@@ -56,6 +56,7 @@ function App() {
             setIsOpened={setIsOpened}
             user={user}
             admin={admin}
+            inCall={inCall}
           />
           <div className="container">
             {user && <Aside isOpened={isOpened} />}
