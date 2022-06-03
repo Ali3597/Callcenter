@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { Navbar } from "./components/Navbar";
 import { Login } from "./Login";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  Redirect,
+} from "react-router-dom";
 
 import { Home } from "./pages/Home/Home";
 import { Calls } from "./pages/Calls/Calls";
@@ -26,6 +32,9 @@ import { WorkerAdmin } from "./pages/admin/Workers/WorkerAdmin";
 function App() {
   const [isOpened, setIsOpened] = useState(false);
   const [socket, setSocket] = useState(null);
+  const [inCall, setInCall] = useState(false);
+  const [numberCaller, setNumberCaller] = useState(null);
+  const [customerCaller, setCustomerCaller] = useState(null);
   const { user, authIsReady, admin } = useAuthContext();
 
   // useEffect(() => {
@@ -71,7 +80,15 @@ function App() {
                 <Route
                   path="/clients/nouveau"
                   element={
-                    user ? <NewCustomer /> : <Navigate to="/connexion" />
+                    user ? (
+                      <NewCustomer
+                        numberCaller={numberCaller}
+                        setCustomerCaller={setCustomerCaller}
+                        inCall={inCall}
+                      />
+                    ) : (
+                      <Navigate to="/connexion" />
+                    )
                   }
                 />
                 <Route
@@ -132,9 +149,19 @@ function App() {
                   path="/connexion"
                   element={user ? <Navigate to="/" /> : <Login />}
                 />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </div>
-            {user && <Call />}
+            {user && (
+              <Call
+                numberCaller={numberCaller}
+                setNumberCaller={setNumberCaller}
+                customerCaller={customerCaller}
+                setCustomerCaller={setCustomerCaller}
+                inCall={inCall}
+                setInCall={setInCall}
+              />
+            )}
           </div>
         </BrowserRouter>
       )}

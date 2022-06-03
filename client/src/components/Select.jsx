@@ -1,15 +1,18 @@
-import "./Select.css";
+// import { useEffect, useState } from "react";
+// import Select from 'react-select';
+// import "./Select.css";
 
-export const Select = ({items,name,title,error,value,setValue}) => {
- 
-    return <>
-     <select name={name} onChange={e=>(setValue(e.target.value))}  >
-        <option value={null}>{title}</option>
-        {items.map((item,index) => <option key={index} defaultValue={item.value== value ? true: false} value={item.value}>
-            {item.title}
-        </option>)}
-    </select>
-      {error && <div className="invalid-feedback">{error}</div> }
-      </>
-};
+// export const Select = ({ items, name, title, error, value, setValue }) => {
+//     const [defaultValue, setDefaulValue] = useState(items[2])
+//     const [selectItems,setSelectItems] = useState(items)
+  
+  
+//     return <Select defaultValue={defaultValue} options={items} onChange={e => (setValue(e.target.value))}  />
+//         {/* <select name={name} onChange={e => (setValue(e.target.value))}  >
+//            <option value={defaultValue.value} label={defaultValue.label} />
+//             {items.map((item, index) => <option key={index} value={item.value} label={item.label} />)}
+//         </select>
+//       {error && <div className="invalid-feedback">{error}</div> }
+//       </> */}
+// };
 

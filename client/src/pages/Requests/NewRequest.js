@@ -1,23 +1,26 @@
 import { useEffect, useState } from "react";
 import { Field } from "../../components/Field";
-import { Select } from "../../components/Select";
+
 import { ApiErrors, apiFetch } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 import { useSearchParams } from "react-router-dom";
 import "./NewRequest.css";
 
 const allUrgencyLevel = [
-  { value: 1, title: "1" },
-  { value: 2, title: "2" },
-  { value: 3, title: "3" },
-  { value: 4, title: "4" },
-  { value: 5, title: "5" },
+  { value: null, label: "Choisissez un niveau d'urgence" },
+  { value: 1, label: "1" },
+  { value: 2, label: "2" },
+  { value: 3, label: "3" },
+  { value: 4, label: "4" },
+  { value: 5, label: "5" },
 ];
 
 const allTypeOf = [
-  { value: "Call", title: "Call" },
-  { value: "Email", title: "Email" },
-  { value: "Other", title: "Other" },
+  { value: null, label: "Choissez un type de requête" },
+  { value: "Call", label: "Call" },
+  { value: "Email", label: "Email" },
+  { value: "Other", label: "Other" },
 ];
 export const NewRequest = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,22 +28,28 @@ export const NewRequest = () => {
   const [customers, SetCustomers] = useState([]);
   const [message, setMessage] = useState("");
   const [urgencyLevel, setUrgencyLevel] = useState("");
-  const [customer, setCustomer] = useState("");
+  const [customer, setCustomer] = useState(null);
   const [typeOf, setTypeOf] = useState("");
+
   const [deadline, setDeadline] = useState("");
   const navigate = useNavigate();
   useEffect(async () => {
     const customerEffect = searchParams.get("customer");
 
-    setCustomer(customerEffect);
     const response = await apiFetch("/customers", {
       method: "POST",
     });
-    SetCustomers(
-      response.items.map((item) => {
-        return { value: item._id, title: item.name };
-      })
+    const arrayCustomers = response.items.map((item) => {
+      return { value: item._id, label: item.name };
+    });
+    arrayCustomers.unshift({ value: null, label: "Veuillez chosir un client" });
+
+    const deff = arrayCustomers.find(
+      (option) => option.value === customerEffect
     );
+
+    setCustomer(deff ? deff : arrayCustomers[0]);
+    SetCustomers(arrayCustomers);
   }, []);
   const errorFor = function (field) {
     const error = errors.find((e) => e.field == field);
@@ -68,6 +77,11 @@ export const NewRequest = () => {
       }
     }
   };
+  useEffect(() => {
+    if (customer) {
+      console.log(customer, "mon cusss");
+    }
+  }, [customer]);
   return (
     <div className="form-request">
       <h1>Ma nouvelle requete</h1>
@@ -82,12 +96,10 @@ export const NewRequest = () => {
         />
         {customers && (
           <Select
-            error={errorFor("customer")}
-            name={"customers"}
-            title={"Choisissez un client"}
-            items={customers}
+            options={customers}
             value={customer}
-            setValue={setCustomer}
+            onChange={setCustomer}
+            defaultValue={customer}
           />
         )}
         <Field
@@ -100,21 +112,17 @@ export const NewRequest = () => {
           {" "}
           Deadline :{" "}
         </Field>
+        <label> frrfefr'"</label>
         <Select
-          name={"urgencyLevel"}
-          title={"Choisissez un niveau d'urgence"}
-          items={allUrgencyLevel}
-          error={errorFor("urgencyLevel")}
-          value={urgencyLevel}
-          setValue={setUrgencyLevel}
+          label={"Type de requete"}
+          options={allTypeOf}
+          onChange={setTypeOf}
+          defaultValue={allTypeOf[0]}
         />
         <Select
-          name={"typeOf"}
-          title={"Type de requette"}
-          items={allTypeOf}
-          value={typeOf}
-          setValue={setTypeOf}
-          error={errorFor("typeof")}
+          defaultValue={allUrgencyLevel[0]}
+          options={allUrgencyLevel}
+          onChange={setUrgencyLevel}
         />
         <button>Valider la requette</button>
       </form>

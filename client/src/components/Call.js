@@ -9,12 +9,16 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import io from "socket.io-client";
 
-export const Call = () => {
-  const [inCall, setInCall] = useState(false);
-  const [customer, setCustomer] = useState(null);
+export const Call = ({
+  inCall,
+  setInCall,
+  customerCaller,
+  setCustomerCaller,
+  numberCaller,
+  setNumberCaller,
+}) => {
   const [time, setTime] = useState(null);
   const [answered, setAnswered] = useState(false);
-  const [number, setNumber] = useState(null);
   const [socket, setSocket] = useState(null);
 
   const { user } = useAuthContext();
@@ -49,15 +53,14 @@ export const Call = () => {
     }
   }, [socket]);
 
-  const CallFunction = async (numberCaller) => {
-    console.log("on call al vreume");
-    setNumber(numberCaller);
+  const CallFunction = async (newNumber) => {
+    setNumberCaller(newNumber);
     const caller = await apiFetch("/calls/getcaller", {
       method: "POST",
-      body: { number: numberCaller },
+      body: { number: newNumber },
     });
-    console.log(caller, "mama mia la cosa   la");
-    setCustomer(caller.customer);
+
+    setCustomerCaller(caller.customer);
 
     setInCall(true);
   };
@@ -68,48 +71,49 @@ export const Call = () => {
 
   const CloseCall = async () => {
     setInCall(false);
-    console.log("on evoi ça ", customer, number, time, answered);
-    console.log("coila l'user id", user);
+
     socket.emit("closeCall", user._id);
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => CallFunction(5000), 2000);
-  //   setTimeout(() => AnswerPhone(), 5000);
-  // }, []);
+  useEffect(() => {
+    // setTimeout(() => CallFunction(7000), 2000);
+    // setTimeout(() => AnswerPhone(), 5000);
+  }, []);
   const handleHangUp = () => {
     CloseCall();
   };
 
   return (
     <div className={`${inCall ? "opened-call" : ""} call-right`}>
-      <h1>Appel</h1>
-      {customer && (
+      <h1>Vous avez un appel !</h1>
+      {customerCaller && (
         <div className="link-call">
-          <Link to={"/clients/" + customer._id}>Consultez la fiche client</Link>
-          <Link to={"/requetes/nouveau?customer=" + customer._id}>
+          <Link to={"/clients/" + customerCaller._id}>
+            Consultez la fiche client
+          </Link>
+          <Link to={"/requetes/nouveau?customer=" + customerCaller._id}>
             Lui créer une requette
           </Link>
         </div>
       )}
-      {!customer && (
-        <Link to={"/clients/nouveau?number=" + number}>
+      {!customerCaller && (
+        <Link to={"/clients/nouveau?number=" + numberCaller}>
           Enregistrez le nouveau client
         </Link>
       )}
-      {customer && (
+      {customerCaller && (
         <img
           src={
-            customer.avatar
-              ? "http://localhost:4000\\" + customer.avatar
+            customerCaller.avatar
+              ? "http://localhost:4000\\" + customerCaller.avatar
               : Avatar
           }
           alt=""
         />
       )}
-      {!customer && <img src={Avatar} alt="" />}
-      <h3>{customer ? customer.name : "Inconnu"} </h3>
-      {number && <h5>{number}</h5>}
+      {!customerCaller && <img src={Avatar} alt="" />}
+      <h3>{customerCaller ? customerCaller.name : "Inconnu"} </h3>
+      {numberCaller && <h5>{numberCaller}</h5>}
       {answered && <Timer time={time} setTime={setTime} />}
       <FcEndCall onClick={handleHangUp} cursor={"pointer"} size={55} />
     </div>

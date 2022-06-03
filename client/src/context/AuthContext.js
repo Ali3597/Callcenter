@@ -6,10 +6,11 @@ export const AuthContext = createContext();
 export const authReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
+      console.log(action.payload, "mon payload");
       return {
         ...state,
-        user: action.payload,
-        admin: action.payload.loacl.role,
+        user: action.payload.user,
+        admin: action.payload.user.local.role,
       };
     case "AUTH_IS_READY":
       return {
@@ -33,7 +34,7 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(async () => {
     const res = await apiFetch("/auth/me");
-    console.log(res.user.local, "voila le res");
+
     dispatch({ type: "AUTH_IS_READY", payload: res.user });
   }, []);
 

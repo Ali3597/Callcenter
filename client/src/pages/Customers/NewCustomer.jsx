@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import "./NewCustomer.css";
 
-export const NewCustomer = () => {
+export const NewCustomer = ({numberCaller ,setCustomerCaller ,inCall }) => {
     const [errors,setErrors] =  useState([])
     const [email,setEmail] = useState("")
     const [searchParams, setSearchParams] = useSearchParams();
@@ -36,6 +36,9 @@ export const NewCustomer = () => {
                 method: 'POST',
                 body: {name,email,number},
             })
+            if (inCall) {
+                setCustomerCaller(response)
+            }
             navigate("/clients/"+response._id);
         } catch (e) {
             if (e instanceof ApiErrors){
