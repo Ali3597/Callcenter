@@ -3,7 +3,7 @@ import Avatar from "../assets/avatar.png";
 import { FcEndCall } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../utils/api";
-import { useAutoIncrement } from "../hooks/useAutoIncrement";
+
 import { ParseTime } from "../utils/ParseDatas";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -17,11 +17,22 @@ export const Call = ({
   numberCaller,
   setNumberCaller,
 }) => {
-  const [time, setTime] = useState(null);
+  const [seconds, setSeconds] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [socket, setSocket] = useState(null);
 
   const { user } = useAuthContext();
+
+  useEffect(() => {
+    let interval = null;
+    if (answered) {
+      interval = setInterval(() => {
+        setSeconds((seconds) => seconds + 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [answered, seconds]);
 
   useEffect(() => {
     if (user) {
@@ -70,7 +81,8 @@ export const Call = ({
 
   const CloseCall = async () => {
     setInCall(false);
-
+    setAnswered(false);
+    setSeconds(0);
     socket.emit("closeCall", user._id);
   };
 
@@ -113,13 +125,8 @@ export const Call = ({
       {!customerCaller && <img src={Avatar} alt="" />}
       <h3>{customerCaller ? customerCaller.name : "Inconnu"} </h3>
       {numberCaller && <h5>{numberCaller}</h5>}
-      {answered && <Timer time={time} setTime={setTime} />}
+      {answered && <p>{ParseTime(seconds)}</p>}
       <FcEndCall onClick={handleHangUp} cursor={"pointer"} size={55} />
     </div>
   );
-};
-
-const Timer = ({ time, setTime }) => {
-  setTime(useAutoIncrement(0, 1));
-  return <p>{ParseTime(time)}</p>;
 };
