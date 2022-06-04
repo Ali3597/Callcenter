@@ -1,10 +1,10 @@
 var ari = require("ari-client");
 const System = require("../asterisk/system");
 ///// all the variables of asterisk
-ipAsterisk = "192.168.1.17";
-PortAsterisk = "8088";
-userAsterisk = "asterisk";
-mdpAsterisk = "asterisk";
+ipAsterisk = process.env.ASTERISKIP;
+PortAsterisk = process.env.ASTERISKPORT;
+userAsterisk = process.env.ASTERISKUSER;
+mdpAsterisk = process.env.ASTERISKPASSWORD;
 
 ari
   .connect(

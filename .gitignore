@@ -4,6 +4,7 @@ Server/package-lock.json
 Server/database/seed.json
 Server/database/seedreport.json
 Server/public/profil
+Server/.env
 
 # client Side///////////////////////////////////////
 /client/node_modules

@@ -1,11 +1,13 @@
 const path = require("path");
+require("dotenv").config();
 const express = require("express");
 require("./database");
+
 const router = require("./routes");
 const cookieParser = require("cookie-parser");
 const app = express();
 
-const server = app.listen(4000);
+const server = app.listen(process.env.PORTAPP);
 
 module.exports = {
   server,
@@ -15,7 +17,7 @@ module.exports = {
 app.use(cookieParser());
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWFRONT);
 
   // Request methods you wish to allow
   res.setHeader(
