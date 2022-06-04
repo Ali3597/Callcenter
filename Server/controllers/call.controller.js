@@ -156,10 +156,9 @@ exports.getCaller = async (req, res, next) => {
   try {
     console.group("sisisilafamile");
     customerNumber = req.body.number;
-    console.log(customerNumber, "customer number");
-    console.log(typeof customerNumber, "que l type la faille");
+
     customer = await doWeKnowThisNumber(customerNumber);
-    console.log(customer, "on la la");
+
     res.send({ customer });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });

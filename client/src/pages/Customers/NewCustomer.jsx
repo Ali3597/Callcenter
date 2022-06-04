@@ -13,13 +13,13 @@ export const NewCustomer = ({numberCaller ,setCustomerCaller ,inCall }) => {
     const [number,setNumber] = useState("")
     const [name,setName] = useState("")
     const navigate = useNavigate()
-    useEffect( async()=>{
+    useEffect( ()=>{
         const numberEffect = searchParams.get("number");
         setNumber(numberEffect)
     },[])
 
     const errorFor = function(field){
-        const error =  errors.find(e => e.field == field)
+        const error =  errors.find(e => e.field === field)
         if (error){
             return error.message
         }else{
@@ -43,7 +43,7 @@ export const NewCustomer = ({numberCaller ,setCustomerCaller ,inCall }) => {
         } catch (e) {
             if (e instanceof ApiErrors){
                 setErrors(e.errors)
-                console.log(e.errors,"les erruers cousin")
+        
             }else{
             throw e
             }

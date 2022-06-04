@@ -33,26 +33,32 @@ export const NewRequest = () => {
 
   const [deadline, setDeadline] = useState("");
   const navigate = useNavigate();
-  useEffect(async () => {
-    const customerEffect = searchParams.get("customer");
+  useEffect(() => {
+    const fetchData = async () => {
+      const customerEffect = searchParams.get("customer");
 
-    const response = await apiFetch("/customers", {
-      method: "POST",
-    });
-    const arrayCustomers = response.items.map((item) => {
-      return { value: item._id, label: item.name };
-    });
-    arrayCustomers.unshift({ value: null, label: "Veuillez chosir un client" });
+      const response = await apiFetch("/customers", {
+        method: "POST",
+      });
+      const arrayCustomers = response.items.map((item) => {
+        return { value: item._id, label: item.name };
+      });
+      arrayCustomers.unshift({
+        value: null,
+        label: "Veuillez chosir un client",
+      });
 
-    const deff = arrayCustomers.find(
-      (option) => option.value === customerEffect
-    );
+      const deff = arrayCustomers.find(
+        (option) => option.value === customerEffect
+      );
 
-    setCustomer(deff ? deff : arrayCustomers[0]);
-    SetCustomers(arrayCustomers);
-  }, []);
+      setCustomer(deff ? deff : arrayCustomers[0]);
+      SetCustomers(arrayCustomers);
+    };
+    fetchData();
+  }, [searchParams]);
   const errorFor = function (field) {
-    const error = errors.find((e) => e.field == field);
+    const error = errors.find((e) => e.field === field);
 
     if (error) {
       return error.message;
@@ -66,7 +72,13 @@ export const NewRequest = () => {
     try {
       const response = await apiFetch("/requests/new", {
         method: "POST",
-        body: { message, urgencyLevel, typeof: typeOf, deadline, customer },
+        body: {
+          message,
+          urgencyLevel: urgencyLevel.value,
+          typeof: typeOf.value,
+          deadline,
+          customer: customer.value,
+        },
       });
       navigate("/requetes/" + response._id);
     } catch (e) {
@@ -77,11 +89,7 @@ export const NewRequest = () => {
       }
     }
   };
-  useEffect(() => {
-    if (customer) {
-      console.log(customer, "mon cusss");
-    }
-  }, [customer]);
+
   return (
     <div className="form-request">
       <h1>Ma nouvelle requete</h1>

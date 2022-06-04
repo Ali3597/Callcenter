@@ -17,9 +17,8 @@ exports.createCustomer = async (newCUstomer) => {
 
 exports.findLimitedCustomers = (limit, skip, order, sort = "email", search) => {
   aggregateArray = [{ $sort: { [sort]: order } }];
-  console.log(search,"voillllllllllllla")
+
   if (search) {
-    console.log("pk t la")
     aggregateArray.push({
       $match: { email: { $regex: search } },
     });

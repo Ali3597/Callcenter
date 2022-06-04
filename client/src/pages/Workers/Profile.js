@@ -29,7 +29,7 @@ export const Profile = ({ user }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const errorFor = function (field) {
-    const error = errors.find((e) => e.field == field);
+    const error = errors.find((e) => e.field === field);
     if (error) {
       return error.message;
     } else {
@@ -49,7 +49,6 @@ export const Profile = ({ user }) => {
     }
   }, [avatar]);
   const handleSubmit = async (e) => {
-    console.log(worker);
     setErrors([]);
     setSuccessInfo(false);
     setSuccessPassword(false);
@@ -68,7 +67,6 @@ export const Profile = ({ user }) => {
         throw e;
       }
     }
-    console.log(email, username);
   };
   const handleSubmitPassword = async (e) => {
     setErrors([]);

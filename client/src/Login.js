@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loader } from "./components/Loader";
 import "./Login.css";
 import { useLogin } from "./hooks/useLogin";

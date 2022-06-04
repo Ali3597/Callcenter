@@ -19,8 +19,4 @@ ios.on("connect", (socket) => {
   socket.join(`${workerId}`);
 });
 
-ios.on("closeCall", (socket) => {
-  console.log("hello");
-});
-
 module.exports = ios;

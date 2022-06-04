@@ -19,11 +19,10 @@ var System = function (client) {
   this.onStasisStart = function (event, channel) {
     // ensure the channel is not a dialed channel
     var dialed = event.args[0] === "dialed";
-    console.log("allo");
+
     if (!dialed) {
       channel.answer(
         async function (err) {
-          console.log("Channel %s has entered our application", channel.name);
           newBridge = await this.CreateHoldingBridge();
           this.queue.push(new Call(channel, newBridge));
           // if the customer close the call remove it form the queue
@@ -40,15 +39,11 @@ var System = function (client) {
   };
 
   this.CreateHoldingBridge = async function () {
-    return await client.bridges.create(
-      { type: "holding" },
-      function (err, holdingBridge) {
-        if (err) {
-          console.log(err);
-        }
-        console.log("Created new holding bridge %s", holdingBridge.id);
+    return await client.bridges.create({ type: "holding" }, function (err) {
+      if (err) {
+        console.log(err);
       }
-    );
+    });
   };
 
   this.removeCallofQueue = function (channel) {
@@ -56,7 +51,6 @@ var System = function (client) {
   };
 
   this.safeHangup = function (channel) {
-    console.log("Hanging up channel %s", channel.name);
     channel.hangup(function (err) {
       // ignore error
     });
@@ -120,7 +114,6 @@ var System = function (client) {
     call.channelWorker.on(
       "StasisStart",
       async function (event, dialed) {
-        console.log("ouioruhfeirhfpraeiozqhfâoeij");
         // socket to tell on the client side that the worker have respons
         this.socket.in(call.worker._id.toHexString()).emit("respond");
         call.startTimer();
@@ -138,7 +131,6 @@ var System = function (client) {
       },
       async function (err, dialed) {
         if (err) {
-          console.log("la kiffance");
           this.socket
             .in(call.worker._id.toHexString())
             .emit("unavailable", "ok");
@@ -175,7 +167,6 @@ var System = function (client) {
           console.log(err);
         }
 
-        console.log("Created mixing bridge %s", mixingBridge.id);
         // move the ttwo channels ont the mixing bridge
         this.moveToMixingBridge(call);
       }.bind(this)
@@ -187,7 +178,7 @@ var System = function (client) {
     this.socket
       .in(call.worker._id.toHexString())
       .emit("call", call.caller.caller.number);
-    // console.log(this.socket.sockets.sockets.fo);
+
     this.socket.sockets.sockets.forEach((element) => {
       element.on("closeCall", (data) => {
         if (data === call.worker.id) {

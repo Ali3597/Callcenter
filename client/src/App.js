@@ -1,14 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import { Navbar } from "./components/Navbar";
 import { Login } from "./Login";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Navigate,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 import { Home } from "./pages/Home/Home";
 import { Calls } from "./pages/Calls/Calls";

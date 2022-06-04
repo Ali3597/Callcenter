@@ -19,51 +19,6 @@ const months = [
 ];
 
 export const Admin = () => {
-  const [year, setYear] = useState(new Date(Date.now()).getFullYear());
-  const [month, setMonth] = useState(new Date(Date.now()).getMonth());
-  const [byYear, setByYear] = useState(true);
-  const [numbers, setNumbers] = useState(null);
-  const testArray = ["Jour", "Appels"];
-  const testArrayp = ["Mois", "Appels"];
-  useEffect(async () => {
-    console.log("ok mec ");
-    setNumbers(null);
-    let arrayUse = [];
-
-    if (byYear) {
-      arrayUse.push(testArrayp);
-      for (let i = 0; i < 12; i++) {
-        let nbrDate = new Date(year, i, 0).getDate();
-        const response = await apiFetch("/calls/callstimes", {
-          method: "POST",
-          body: {
-            start: new Date(year, i, 1),
-            end: new Date(year, i, nbrDate),
-          },
-        });
-        let MonthName = months[i];
-        arrayUse.push([MonthName, response.itemsNumber]);
-      }
-    } else {
-      const nbrDate = new Date(year, month, 0).getDate();
-      arrayUse.push(testArray);
-      for (let i = 1; i <= nbrDate; i++) {
-        const response = await apiFetch("/calls/callstimes", {
-          method: "POST",
-          body: {
-            start: new Date(year, month - 1, i),
-            end: new Date(year, month - 1, i),
-          },
-        });
-        let dateOfMonth = `${addNecessaryZero(i)}/${addNecessaryZero(
-          month
-        )}/${year}`;
-        arrayUse.push([dateOfMonth, response.itemsNumber]);
-      }
-    }
-    setNumbers(arrayUse);
-    console.log(arrayUse);
-  }, [month, year]);
   return (
     <>
       <h1>Admin</h1>
@@ -82,44 +37,45 @@ const GraphFetch = ({ title, linkFetch }) => {
   const [numbers, setNumbers] = useState(null);
   const testArray = ["Jour", title];
   const testArrayp = ["Mois", title];
-  useEffect(async () => {
-    console.log("ok mec ");
-    setNumbers(null);
-    let arrayUse = [];
+  useEffect(() => {
+    const fetchData = async () => {
+      setNumbers(null);
+      let arrayUse = [];
 
-    if (byYear) {
-      arrayUse.push(testArrayp);
-      for (let i = 0; i < 12; i++) {
-        let nbrDate = new Date(year, i, 0).getDate();
-        const response = await apiFetch(linkFetch, {
-          method: "POST",
-          body: {
-            start: new Date(year, i, 1),
-            end: new Date(year, i, nbrDate),
-          },
-        });
-        let MonthName = months[i];
-        arrayUse.push([MonthName, response.itemsNumber]);
+      if (byYear) {
+        arrayUse.push(testArrayp);
+        for (let i = 0; i < 12; i++) {
+          let nbrDate = new Date(year, i, 0).getDate();
+          const response = await apiFetch(linkFetch, {
+            method: "POST",
+            body: {
+              start: new Date(year, i, 1),
+              end: new Date(year, i, nbrDate),
+            },
+          });
+          let MonthName = months[i];
+          arrayUse.push([MonthName, response.itemsNumber]);
+        }
+      } else {
+        const nbrDate = new Date(year, month, 0).getDate();
+        arrayUse.push(testArray);
+        for (let i = 1; i <= nbrDate; i++) {
+          const response = await apiFetch(linkFetch, {
+            method: "POST",
+            body: {
+              start: new Date(year, month - 1, i),
+              end: new Date(year, month - 1, i),
+            },
+          });
+          let dateOfMonth = `${addNecessaryZero(i)}/${addNecessaryZero(
+            month
+          )}/${year}`;
+          arrayUse.push([dateOfMonth, response.itemsNumber]);
+        }
       }
-    } else {
-      const nbrDate = new Date(year, month, 0).getDate();
-      arrayUse.push(testArray);
-      for (let i = 1; i <= nbrDate; i++) {
-        const response = await apiFetch(linkFetch, {
-          method: "POST",
-          body: {
-            start: new Date(year, month - 1, i),
-            end: new Date(year, month - 1, i),
-          },
-        });
-        let dateOfMonth = `${addNecessaryZero(i)}/${addNecessaryZero(
-          month
-        )}/${year}`;
-        arrayUse.push([dateOfMonth, response.itemsNumber]);
-      }
-    }
-    setNumbers(arrayUse);
-    console.log(arrayUse);
+      setNumbers(arrayUse);
+    };
+    fetchData();
   }, [month, year, byYear]);
   return (
     <>

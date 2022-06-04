@@ -58,7 +58,7 @@ exports.updateCustomerAvatar = async (req, res, next) => {
     if (!req.file) {
       res.status(404).send("No Avatar updated");
     }
-    console.log(req.file);
+
     const customerId = req.params.customerId;
     const cutPath = req.file.path.substring(7);
     const customer = await UpdateCustomerAvatar(cutPath, customerId);
@@ -78,7 +78,7 @@ exports.newCustomer = async (req, res, next) => {
     res.send(newCustomer);
   } catch (e) {
     const errorsMessage = [];
-    console.log(e);
+
     if (e.isJoi) {
       e.details.map((error) => {
         errorsMessage.push({ field: error.path[0], message: error.message });

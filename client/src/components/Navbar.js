@@ -14,7 +14,7 @@ export const Navbar = ({ isOpened, setIsOpened, user, admin, inCall }) => {
   const location = useLocation();
   useEffect(() => {
     const urlWords = location.pathname.split("/");
-    if (urlWords[1] == "admin") {
+    if (urlWords[1] === "admin") {
       setIsInAdmin(true);
     } else {
       setIsInAdmin(false);
@@ -84,9 +84,9 @@ const SwitchAvalaible = ({ user, setUser, inCall }) => {
     setUser({ ...user, state: available.state });
   };
   useEffect(() => {
-    if (user.state == "available") {
+    if (user.state === "available") {
       setStateChecked(true);
-    } else if (user.state == "unavailable") {
+    } else if (user.state === "unavailable") {
       setStateChecked(false);
     }
   }, [user]);

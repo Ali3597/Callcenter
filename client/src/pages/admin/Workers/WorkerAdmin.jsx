@@ -29,27 +29,31 @@ export const WorkerAdmin = ({ user }) => {
   const navigate = useNavigate()
   const [worker, setWorker] = useState(null)
   const [deleting, toggleDeleting] = useToggle(false);
-  useEffect(async () => {
-    if (id) {
-      const response = await apiFetch("/workers/" + id);
-      if (!response) {
-        navigate("/admin/workers");
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+      
+        const response = await apiFetch("/workers/" + id);
+        if (!response) {
+          navigate("/admin/employes");
+        }
+        setWorker(response);
       }
-      setWorker(response);
     }
+    fetchData().catch(); 
   }, [id]);
   
   
   const handleDelete = async() => {
     try {
       await apiFetch("/workers/delete/" + id, { method: "DELETE" });
-      navigate("/admin/workers");
+      navigate("/admin/employes");
     } catch (error) {}
   }
   
   const handleClick =async() => {
     try {
-      if (worker.local.role == "admin") {
+      if (worker.local.role === "admin") {
         await apiFetch("/workers/passbasic/" + id, { method: "Post" });
         setWorker({ ...worker, local: { ...worker.local, role:"basic" } })
       } else {
@@ -70,7 +74,7 @@ export const WorkerAdmin = ({ user }) => {
       <button onClick={toggleDeleting}>Supprimer</button>
 
       <button onClick={handleClick}>
-        {worker.local.role == "admin" ? "Enlevez les droits d'adminitrateur" : "Donnez les droits d'administrateur"} 
+        {worker.local.role === "admin" ? "Enlevez les droits d'adminitrateur" : "Donnez les droits d'administrateur"} 
       </button>
     </div>:""}
       <h1>Ses dernieres requetes</h1>
@@ -78,7 +82,7 @@ export const WorkerAdmin = ({ user }) => {
       {deleting && (
         <Modal
           onClose={toggleDeleting}
-          title={"aaaaaaaaaa"}
+          title={"Supprimer"}
           message={
             "Etes vous sure de votre choix , cet utilisateur sera supprimé a jamais ?"
           }

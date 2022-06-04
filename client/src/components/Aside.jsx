@@ -6,7 +6,7 @@ export const Aside = ({ isOpened }) => {
         const location = useLocation();
         useEffect(() => {
                 const urlWords = location.pathname.split('/')
-                if (urlWords[1] == "admin") {
+                if (urlWords[1] === "admin") {
                         setAdmin(true)
                 } else {
                         setAdmin(false)

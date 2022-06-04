@@ -1,5 +1,4 @@
 exports.requireAuth = (req, res, next) => {
-  console.log(req.user);
   if (req.isAuthenticated()) {
     next();
   } else {

@@ -20,35 +20,37 @@ export const FetchTab = ({
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(null);
   const [nbrPages, setNbrPages] = useState(null);
-  useEffect(async () => {
-    if (searchParams) {
-      const orderEffect = searchParams.get("order");
-      const sortEffect = searchParams.get("sort");
-      const pageEffect = searchParams.get("page")
-        ? searchParams.get("page")
-        : 1;
-      const searchEffect = searchParams.get("search");
-      setPage(pageEffect);
-      setSearch(searchEffect ? searchEffect : "");
-      const response = await apiFetch(linkFetch, {
-        method: "POST",
-        body: {
-          page: pageEffect,
-          order: orderEffect,
-          sort: sortEffect,
-          search: searchEffect,
-        },
-      });
+  useEffect(() => {
+    const fetchDataz = async () => {
+      if (searchParams) {
+        const orderEffect = searchParams.get("order");
+        const sortEffect = searchParams.get("sort");
+        const pageEffect = searchParams.get("page")
+          ? searchParams.get("page")
+          : 1;
+        const searchEffect = searchParams.get("search");
+        setPage(pageEffect);
+        setSearch(searchEffect ? searchEffect : "");
+        const response = await apiFetch(linkFetch, {
+          method: "POST",
+          body: {
+            page: pageEffect,
+            order: orderEffect,
+            sort: sortEffect,
+            search: searchEffect,
+          },
+        });
 
-      if (response.items) {
-        console.log(response.items, "les voilaaaaaaa");
-        setElementParsed(parser(response.items));
-        setNbrPages(Math.ceil(response.count / 5));
-      } else {
-        setElementParsed(null);
-        setNbrPages(0);
+        if (response.items) {
+          setElementParsed(parser(response.items));
+          setNbrPages(Math.ceil(response.count / 5));
+        } else {
+          setElementParsed(null);
+          setNbrPages(0);
+        }
       }
-    }
+    };
+    fetchDataz();
   }, [searchParams]);
 
   const handleSearch = (e) => {

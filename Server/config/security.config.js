@@ -15,7 +15,6 @@ exports.ensureAuthenticated = (req, res, next) => {
 };
 
 exports.ensureAuthenticatedOnSocketHandshake = async (request, success) => {
-  console.log("handshake la ");
   try {
     // Nous récupérons le cookie depuis les headers de la requête et nous
     // le parsons pour l’avoir sur un object JavaScript :

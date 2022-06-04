@@ -6,7 +6,6 @@ export const AuthContext = createContext();
 export const authReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
-      console.log(action.payload, "mon payload");
       return {
         ...state,
         user: action.payload.user,
@@ -32,13 +31,14 @@ export const AuthContextProvider = ({ children }) => {
     admin: false,
   });
 
-  useEffect(async () => {
-    const res = await apiFetch("/auth/me");
+  useEffect(() => {
+    const dispatchData = async () => {
+      const res = await apiFetch("/auth/me");
 
-    dispatch({ type: "AUTH_IS_READY", payload: res.user });
+      dispatch({ type: "AUTH_IS_READY", payload: res.user });
+    };
+    dispatchData();
   }, []);
-
-  console.log("AuthContext state:", state);
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>

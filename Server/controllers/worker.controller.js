@@ -23,7 +23,6 @@ fs = require("fs");
 const limit = 5;
 
 exports.signup = async (req, res, next) => {
-  console.log("on est la cousin");
   try {
     await workerSignupValidation.validateAsync(req.body, { abortEarly: false });
     const body = req.body;
@@ -31,7 +30,7 @@ exports.signup = async (req, res, next) => {
     res.send(user);
   } catch (e) {
     const errorsMessage = [];
-    console.log(e);
+
     if (e.isJoi) {
       e.details.map((error) => {
         errorsMessage.push({ field: error.path[0], message: error.message });

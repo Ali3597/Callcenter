@@ -54,7 +54,6 @@ export const Call = ({
 
       // Wait for the close call event to play the animation when a call is closed
       socket.on("closeCall", (data) => {
-        console.log("on close le callll");
         CloseCall();
       });
 
@@ -62,7 +61,6 @@ export const Call = ({
         AnswerPhone();
       });
       socket.on("unavailable", () => {
-        console.log("on modaaaaaaaaaaal la");
         setModaling(true);
       });
     }

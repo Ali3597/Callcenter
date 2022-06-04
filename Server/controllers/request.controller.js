@@ -125,11 +125,11 @@ exports.requestsCustomer = async (req, res, next) => {
 exports.request = async (req, res, next) => {
   try {
     const requestId = req.params.requestId;
-    console.log(requestId);
+
     const request = await findRequestByIdWithCustomersAndWorkerAssociate(
       requestId
     );
-    console.log(response, "oui baba");
+
     res.send({ item: request });
   } catch (error) {
     res.send({ item: null });
@@ -145,7 +145,7 @@ exports.alertRequests = async (req, res, next) => {
       order = -1;
     }
     skip = limit * page - limit;
-    console.log("papapapappapa");
+
     const [requests, requestsNumbers] = await Promise.all([
       getLimitedAlertRequestsWhithCustomers(limit, skip, order, sort, search),
       countAlertedRequest(search),

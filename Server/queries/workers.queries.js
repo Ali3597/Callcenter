@@ -108,7 +108,6 @@ exports.countWorkers = (search) => {
   aggregateArray.push({
     $count: "totalCount",
   });
-  console.log(aggregateArray);
   return Worker.aggregate(aggregateArray);
 };
 

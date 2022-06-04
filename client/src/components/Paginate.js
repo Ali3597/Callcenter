@@ -7,7 +7,6 @@ export const Paginate = ({ current, nbrPages }) => {
   const [pages, setPages] = useState(null);
 
   useEffect(() => {
-    console.log(nbrPages, "maitre simona");
     if (nbrPages > 0) {
       setPages(getPages(current, nbrPages));
     }

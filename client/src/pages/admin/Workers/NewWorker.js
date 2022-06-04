@@ -13,7 +13,7 @@ export const NewWorker = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const errorFor = function (field) {
-    const error = errors.find((e) => e.field == field);
+    const error = errors.find((e) => e.field === field);
     if (error) {
       return error.message;
     } else {
@@ -24,7 +24,7 @@ export const NewWorker = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setErrors([
         ...errors,
         {
@@ -34,16 +34,14 @@ export const NewWorker = () => {
       ]);
     } else {
       try {
-        console.log("on try");
         const response = await apiFetch("/workers/signup", {
           method: "POST",
           body: { username, email, number, password },
         });
-        navigate("/admin/workers/" + response._id);
+        navigate("/admin/employes/" + response._id);
       } catch (e) {
         if (e instanceof ApiErrors) {
           setErrors(e.errors);
-          console.log(e.errors);
         } else {
           throw e;
         }

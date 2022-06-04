@@ -8,7 +8,7 @@ import { Card } from "../../components/Card";
 import { useToggle } from "../../hooks/index";
 import { Modal } from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
-import { Loader } from "../../components/Loader";
+
 import { FaCheck } from "react-icons/fa";
 import { FaWindowClose } from "react-icons/fa";
 import { useState, useEffect } from "react";
@@ -19,15 +19,17 @@ export const Request = () => {
   const { id } = useParams();
   const [request, setRequest] = useState(null);
   const navigate = useNavigate();
-  useEffect(async () => {
-    if (id) {
-      const response = await apiFetch("/requests/" + id);
-      if (!response.item) {
-        navigate("/requetes");
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        const response = await apiFetch("/requests/" + id);
+        if (!response.item) {
+          navigate("/requetes");
+        }
+        setRequest(response.item);
       }
-      setRequest(response.item);
-      console.log(new Date(response.item.date).toLocaleString("FR"));
-    }
+    };
+    fetchData();
   }, [id]);
 
   const [deleting, toggleDeleting] = useToggle(false);
@@ -97,9 +99,9 @@ export const Request = () => {
         {deleting && (
           <Modal
             onClose={toggleDeleting}
-            title={"aaaaaaaaaa"}
+            title={"Supprimer"}
             message={
-              "Etes vous sure de votre choix , cette requete sera supprimé a mais ?"
+              "Etes vous sure de votre choix , cette requete sera supprimé a jamais?"
             }
             onClick={handleDelete}
             buttonMessage={"Supprimer"}
