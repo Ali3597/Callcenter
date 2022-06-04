@@ -201,15 +201,10 @@ exports.createCallq = async (number, time, workerId) => {
   return newCall.save();
 };
 
-// exports.updateCallToAnsweredANdTimeById = async (callId, timeCall) => {
-//   console.log("on a update le callllll");
-//   return Call.findByIdAndUpdate(
-//     callId,
-//     {
-//       $set: {
-//         time: timeCall,
-//       },
-//     },
-//     { runValidators: true }
-//   ).exec();
-// };
+exports.countCallsByDate = (start, end) => {
+  return Call.find({
+    date: { $gte: start, $lte: end },
+  })
+    .count()
+    .exec();
+};

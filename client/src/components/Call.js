@@ -75,7 +75,7 @@ export const Call = ({
   };
 
   useEffect(() => {
-    setTimeout(() => CallFunction(7000), 2000);
+    // setTimeout(() => CallFunction(7000), 2000);
     // setTimeout(() => AnswerPhone(), 5000);
   }, []);
   const handleHangUp = () => {

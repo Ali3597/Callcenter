@@ -318,3 +318,11 @@ exports.getToggleRequest = async (requestId) => {
   request.done = !request.done;
   return await request.save();
 };
+
+exports.countRequestsByDate = (start, end) => {
+  return Request.find({
+    date: { $gte: start, $lte: end },
+  })
+    .count()
+    .exec();
+};

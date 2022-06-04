@@ -39,6 +39,7 @@ export const FetchTab = ({
           search: searchEffect,
         },
       });
+
       if (response.items) {
         setElementParsed(parser(response.items));
         setNbrPages(Math.ceil(response.count / 5));

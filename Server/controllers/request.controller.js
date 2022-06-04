@@ -13,6 +13,7 @@ const {
   countRequestsByWorkerId,
   findLimitedRequestsByCustomerId,
   countRequestsByCustomerId,
+  countRequestsByDate,
 } = require("../queries/requests.queries");
 
 const {
@@ -67,6 +68,26 @@ exports.requestsWorker = async (req, res, next) => {
     res.send({
       items: requests.length > 0 ? requests : null,
       count: requestsNumbers.length > 0 ? requestsNumbers[0].totalCount : 0,
+    });
+  } catch (error) {
+    res.status(404).send({ message: "Wrong Request" });
+  }
+};
+
+exports.requestsTimes = async (req, res, next) => {
+  try {
+    const start = new Date(req.body.start);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(req.body.end);
+    end.setHours(23, 59, 59, 999);
+
+    const [requestNumbers] = await Promise.all([
+      countRequestsByDate(start, end),
+    ]);
+
+    res.send({
+      itemsNumber: requestNumbers,
     });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });

@@ -7,6 +7,7 @@ const {
   callsWorker,
   createCall,
   myCalls,
+  callsTimes,
 } = require("../controllers/call.controller");
 const {
   requireAuth,
@@ -20,6 +21,7 @@ router.post("/create", requireAuth, createCall);
 ////////////
 router.post("/me", requireAuth, myCalls);
 router.post("/", requireAuthAdmin, calls);
+router.post("/callstimes", requireAuthAdmin, callsTimes);
 router.get("/worker/:workerId", requireAuthAdmin, callsWorker);
 router.get("/customer/:customerId", requireAuth, callsCustomer);
 

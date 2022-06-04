@@ -13,12 +13,13 @@ const {
   alertRequests,
   requestsWorker,
   requestsCustomer,
+  requestsTimes,
 } = require("../controllers/request.controller");
 router.post("/", requireAuth, requests);
 router.post("/worker/:workerId", requireAuth, requestsWorker);
 router.post("/customer/:customerId", requireAuth, requestsCustomer);
 router.post("/alert", alertRequests);
-
+router.post("/requeststimes", requireAuthAdmin, requestsTimes);
 router.get("/:requestId", requireAuth, request);
 router.delete("/delete/:requestId", requireAuthAdmin, deleteRequest);
 router.get("/toggle/:requestId", requireAuth, toggleRequest);

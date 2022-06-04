@@ -5,6 +5,7 @@ const {
   findLimitedCalls,
   countCalls,
   countCallsByCustomerId,
+  countCallsByDate,
   findLimitedCallsByCustomerId,
 } = require("../queries/calls.queries");
 
@@ -33,6 +34,24 @@ exports.calls = async (req, res, next) => {
     res.send({
       items: calls.length > 0 ? calls : null,
       count: callsNumbers.length > 0 ? callsNumbers[0].totalCount : 0,
+    });
+  } catch (error) {
+    res.status(404).send({ message: "Wrong Request" });
+  }
+};
+
+exports.callsTimes = async (req, res, next) => {
+  try {
+    const start = new Date(req.body.start);
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(req.body.end);
+    end.setHours(23, 59, 59, 999);
+
+    const [callsNumbers] = await Promise.all([countCallsByDate(start, end)]);
+
+    res.send({
+      itemsNumber: callsNumbers,
     });
   } catch (error) {
     res.status(404).send({ message: "Wrong Request" });
