@@ -112,7 +112,7 @@ export const NewRequest = () => {
           {" "}
           Deadline :{" "}
         </Field>
-        <label> frrfefr'"</label>
+
         <Select
           label={"Type de requete"}
           options={allTypeOf}

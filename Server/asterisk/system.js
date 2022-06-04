@@ -120,6 +120,7 @@ var System = function (client) {
     call.channelWorker.on(
       "StasisStart",
       async function (event, dialed) {
+        console.log("ouioruhfeirhfpraeiozqhfâoeij");
         // socket to tell on the client side that the worker have respons
         this.socket.in(call.worker._id.toHexString()).emit("respond");
         call.startTimer();
@@ -130,9 +131,17 @@ var System = function (client) {
     this.socketWebCall(call);
     // call the worker
     call.channelWorker.originate(
-      { endpoint: call.worker.number, app: "Callcenter", appArgs: "dialed" },
+      {
+        endpoint: `PJSIP/${call.worker.number}`,
+        app: "Callcenter",
+        appArgs: "dialed",
+      },
       async function (err, dialed) {
         if (err) {
+          console.log("la kiffance");
+          this.socket
+            .in(call.worker._id.toHexString())
+            .emit("unavailable", "ok");
           await updateUnavailable(call.worker._id);
           this.queue.unshift(call);
           this.nextOnQueue();

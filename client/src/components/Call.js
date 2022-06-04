@@ -7,6 +7,7 @@ import { apiFetch } from "../utils/api";
 import { ParseTime } from "../utils/ParseDatas";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Modal } from "./Modal";
 import io from "socket.io-client";
 
 export const Call = ({
@@ -20,6 +21,7 @@ export const Call = ({
   const [seconds, setSeconds] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [socket, setSocket] = useState(null);
+  const [modaling, setModaling] = useState(false);
 
   const { user } = useAuthContext();
 
@@ -46,7 +48,6 @@ export const Call = ({
   }, [user]);
   useEffect(() => {
     if (socket) {
-      console.log("on est  la", socket);
       socket.on("call", (data) => {
         CallFunction(data);
       });
@@ -59,6 +60,10 @@ export const Call = ({
 
       socket.on("respond", () => {
         AnswerPhone();
+      });
+      socket.on("unavailable", () => {
+        console.log("on modaaaaaaaaaaal la");
+        setModaling(true);
       });
     }
   }, [socket]);
@@ -86,10 +91,9 @@ export const Call = ({
     socket.emit("closeCall", user._id);
   };
 
-  useEffect(() => {
-    // setTimeout(() => CallFunction(7000), 2000);
-    // setTimeout(() => AnswerPhone(), 5000);
-  }, []);
+  const handleDelete = () => {
+    setModaling(false);
+  };
   const handleHangUp = () => {
     CloseCall();
   };
@@ -127,6 +131,17 @@ export const Call = ({
       {numberCaller && <h5>{numberCaller}</h5>}
       {answered && <p>{ParseTime(seconds)}</p>}
       <FcEndCall onClick={handleHangUp} cursor={"pointer"} size={55} />
+      {modaling && (
+        <Modal
+          onClose={handleDelete}
+          title={"Attention !!!"}
+          message={
+            "Vous venez de recevoir un message mais votre téléphone n'est pas connecté , vous avez été passé en injoignable"
+          }
+          buttonMessage={"OK"}
+          onClick={handleDelete}
+        />
+      )}
     </div>
   );
 };

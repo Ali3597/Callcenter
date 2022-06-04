@@ -11,7 +11,7 @@ import { FetchTab } from "../../components/FetchTab";
 const columns = [
   ["typeof", true,"Type"],
   ["author", true,"Auteur"],
-  ["customer", true,"Client"],
+  
   ["done", true,"Valider"],
   ["deadline", true,"Deadline"],
   ["date", true,"Date"],
@@ -40,8 +40,7 @@ navigate("/clients");
   useEffect(()=>{
     
     if(avatar){
-      console.log("usefecctavatardedans")
-      console.log(avatar)
+
       setCustomer({...customer,avatar:avatar})
     }
   },[avatar])

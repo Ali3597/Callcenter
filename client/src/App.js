@@ -31,21 +31,10 @@ import { WorkerAdmin } from "./pages/admin/Workers/WorkerAdmin";
 
 function App() {
   const [isOpened, setIsOpened] = useState(false);
-  const [socket, setSocket] = useState(null);
   const [inCall, setInCall] = useState(false);
   const [numberCaller, setNumberCaller] = useState(null);
   const [customerCaller, setCustomerCaller] = useState(null);
   const { user, authIsReady, admin } = useAuthContext();
-
-  // useEffect(() => {
-  //   const newSocket = io(`http://localhost:4000`, {
-  //     withCredentials: true,
-  //     reconnection: false,
-  //   });
-  //   console.log("papapa");
-  //   setSocket(newSocket);
-  //   return () => newSocket.close();
-  // }, [setSocket]);
 
   return (
     <div className="App">

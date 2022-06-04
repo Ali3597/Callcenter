@@ -41,6 +41,7 @@ export const FetchTab = ({
       });
 
       if (response.items) {
+        console.log(response.items, "les voilaaaaaaa");
         setElementParsed(parser(response.items));
         setNbrPages(Math.ceil(response.count / 5));
       } else {

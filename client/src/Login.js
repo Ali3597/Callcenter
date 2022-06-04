@@ -12,9 +12,6 @@ export function Login() {
     e.preventDefault();
     login(email, password);
   };
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
 
   return (
     <div className="log" style={{ backgroundImage: `url(${homepage})` }}>
