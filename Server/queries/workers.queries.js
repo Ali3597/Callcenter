@@ -156,6 +156,14 @@ exports.updateAvailableToTrueAndLastHangUp = async (userId) => {
   }).exec();
 };
 
+exports.updateUnavailable = async (userId) => {
+  return Worker.findByIdAndUpdate(userId, {
+    $set: {
+      state: "unavailable",
+    },
+  }).exec();
+};
+
 exports.passBasicToAdmin = async (userId) => {
   return Worker.findByIdAndUpdate(userId, {
     $set: {

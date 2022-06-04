@@ -5,6 +5,7 @@ const {
 
 const {
   updateAvailableToTrueAndLastHangUp,
+  updateUnavailable,
 } = require("../queries/workers.queries");
 
 const { createCallq } = require("../queries/calls.queries");
@@ -22,9 +23,6 @@ var System = function (client) {
     if (!dialed) {
       channel.answer(
         async function (err) {
-          if (err) {
-            throw err;
-          }
           console.log("Channel %s has entered our application", channel.name);
           newBridge = await this.CreateHoldingBridge();
           this.queue.push(new Call(channel, newBridge));
@@ -46,7 +44,7 @@ var System = function (client) {
       { type: "holding" },
       function (err, holdingBridge) {
         if (err) {
-          throw err;
+          console.log(err);
         }
         console.log("Created new holding bridge %s", holdingBridge.id);
       }
@@ -133,11 +131,13 @@ var System = function (client) {
     // call the worker
     call.channelWorker.originate(
       { endpoint: call.worker.number, app: "Callcenter", appArgs: "dialed" },
-      function (err, dialed) {
+      async function (err, dialed) {
         if (err) {
-          throw err;
+          await updateUnavailable(call.worker._id);
+          this.queue.unshift(call);
+          this.nextOnQueue();
         }
-      }
+      }.bind(this)
     );
   };
 
@@ -155,7 +155,7 @@ var System = function (client) {
 
     call.channelWorker.answer(function (err) {
       if (err) {
-        throw err;
+        console.log(err);
       }
     });
 
@@ -163,7 +163,7 @@ var System = function (client) {
       { type: "mixing" },
       function (err, mixingBridge) {
         if (err) {
-          throw err;
+          console.log(err);
         }
 
         console.log("Created mixing bridge %s", mixingBridge.id);
@@ -198,7 +198,7 @@ var System = function (client) {
 
     call.mixingBridge.destroy(function (err) {
       if (err) {
-        throw err;
+        console.log(err);
       }
     });
   };
@@ -216,14 +216,14 @@ var System = function (client) {
       { channel: call.caller.id },
       function (err) {
         if (err) {
-          throw err;
+          console.log(err);
         }
 
         call.mixingBridge.addChannel(
           { channel: [call.caller.id, call.channelWorker.id] },
           function (err) {
             if (err) {
-              throw err;
+              console.log(err);
             }
           }
         );

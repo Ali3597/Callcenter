@@ -37,9 +37,9 @@ app.use(function (req, res, next) {
   next();
 });
 require("./config/jwt.config");
-// // require("./config/socket.config");
+require("./config/socket.config");
 
-// require("./config/asterisk.config");
+require("./config/asterisk.config");
 
 app.set("views", path.join(__dirname, "views"));
 
