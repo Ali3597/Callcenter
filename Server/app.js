@@ -7,9 +7,13 @@ const router = require("./routes");
 const cookieParser = require("cookie-parser");
 const app = express();
 
-// const server = app.listen(process.env.PORTAPP);
+const server = app.listen(process.env.PORTAPP);
 
-module.exports = app;
+module.exports = {
+  server,
+  app,
+};
+
 app.use(cookieParser());
 app.use(function (req, res, next) {
   // Website you wish to allow to connect

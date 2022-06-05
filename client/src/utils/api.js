@@ -35,7 +35,7 @@ export async function apiFetch(endpoint, options = {}) {
     options.headers["Content-type"] = "application/json";
   }
   const response = await fetch(
-    "http://ali-saleh-ppe-api.site" + endpoint,
+    "ali-saleh-ppe-callcenter.site/api" + endpoint,
     options
   );
   if (response.status === 204) {
