@@ -21,11 +21,16 @@ export const useLogin = () => {
         method: "POST",
         body: data,
       });
-      dispatch({ type: "LOGIN", payload: user });
+      if (user) {
+        dispatch({ type: "LOGIN", payload: user });
 
-      if (!isCancelled) {
+        if (!isCancelled) {
+          setIsPending(false);
+          setError(null);
+        }
+      } else {
+        setError("Identifiants invalides");
         setIsPending(false);
-        setError(null);
       }
     } catch (err) {
       if (!isCancelled) {

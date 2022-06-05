@@ -34,7 +34,10 @@ export async function apiFetch(endpoint, options = {}) {
     options.body = JSON.stringify(options.body);
     options.headers["Content-type"] = "application/json";
   }
-  const response = await fetch("http://localhost:4000" + endpoint, options);
+  const response = await fetch(
+    "http://ali-saleh-ppe-api.site" + endpoint,
+    options
+  );
   if (response.status === 204) {
     return null;
   }

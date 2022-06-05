@@ -10,7 +10,7 @@ Server/.env
 /client/node_modules
 client/.pnp
 .pnp.js
-
+client/.env
 # testing
 client/coverage
 

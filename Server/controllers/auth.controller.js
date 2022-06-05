@@ -6,7 +6,9 @@ const {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log(email);
     const worker = await findWorkerPerEmail(email);
+    console.log(worker);
     if (worker) {
       const match = await worker.comparePassword(password);
       if (match) {

@@ -2,7 +2,6 @@ const socketio = require("socket.io");
 const { server } = require("../app");
 const { ensureAuthenticatedOnSocketHandshake } = require("./security.config");
 let ios;
-const { updateAvailableToFalseById } = require("../queries/workers.queries");
 
 ios = socketio(server, {
   //authentication
