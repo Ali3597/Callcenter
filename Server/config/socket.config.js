@@ -1,12 +1,12 @@
 const socketio = require("socket.io");
-const { server } = require("../app");
+const server = require("../bin/www");
 const { ensureAuthenticatedOnSocketHandshake } = require("./security.config");
 let ios;
 
 ios = socketio(server, {
   //authentication
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.ALLOWFRONT,
     methods: ["GET", "POST"],
     credentials: true,
   },

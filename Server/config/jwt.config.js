@@ -1,7 +1,7 @@
 const secret = process.env.SECRETJWT;
 const jwt = require("jsonwebtoken");
 const { findWorkerPerId } = require("../queries/workers.queries");
-const { app } = require("../app");
+const app = require("../app");
 
 const createJwtToken = ({ user = null, id = null }) => {
   const jwtToken = jwt.sign(
