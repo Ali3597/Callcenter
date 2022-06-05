@@ -5,23 +5,10 @@ const calls = require("./calls.routes");
 const requests = require("./requests.routes");
 const customers = require("./customers.routes");
 
-// const auth = require('./auth.routes');
-
-// router.use('/tweets', ensureAuthenticated, tweets);q
-router.use("/auth", auth);
-router.use("/workers", workers);
-router.use("/calls", calls);
-router.use("/requests", requests);
-router.use("/customers", customers);
-
-// router.get('/',(req,res) => {
-// res.red irect('/dashboard');
-// })
-
-router.get("/", (req, res) => {
-  req.isAuthenticated()
-    ? res.status(404).send({ message: "You are not authenticated" })
-    : "";
-});
+router.use("/api/auth", auth);
+router.use("/api/workers", workers);
+router.use("/api/calls", calls);
+router.use("/api/requests", requests);
+router.use("/api/customers", customers);
 
 module.exports = router;

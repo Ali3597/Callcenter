@@ -2,7 +2,7 @@ const path = require("path");
 require("dotenv").config();
 const express = require("express");
 require("./database");
-
+const cors = require("cors");
 const router = require("./routes");
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -13,7 +13,7 @@ module.exports = {
   server,
   app,
 };
-
+app.use(cors());
 app.use(cookieParser());
 // app.use(function (req, res, next) {
 //   // Website you wish to allow to connect
