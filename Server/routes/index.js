@@ -5,10 +5,10 @@ const calls = require("./calls.routes");
 const requests = require("./requests.routes");
 const customers = require("./customers.routes");
 
-router.use("/api/auth", auth);
-router.use("/api/workers", workers);
-router.use("/api/calls", calls);
-router.use("/api/requests", requests);
-router.use("/api/customers", customers);
+router.use("/auth", auth);
+router.use("/workers", workers);
+router.use("/calls", calls);
+router.use("/requests", requests);
+router.use("/customers", customers);
 
 module.exports = router;
