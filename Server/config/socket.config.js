@@ -6,7 +6,7 @@ let ios;
 ios = socketio(server, {
   //authentication
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.ALLOWFRONT,
     methods: ["GET", "POST"],
     credentials: true,
   },

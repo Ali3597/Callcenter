@@ -1,4 +1,4 @@
-const secret = "a2463421-b798-470a-b4ee-fd23783ec69d";
+const secret = process.env.SECRETJWT;
 const jwt = require("jsonwebtoken");
 const { findWorkerPerId } = require("../queries/workers.queries");
 const { app } = require("../app");
