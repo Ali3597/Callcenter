@@ -94,6 +94,6 @@ exports.deleteCustomer = async (req, res, next) => {
     await deleteCustomerById(customerId);
     res.status(204).send();
   } catch (e) {
-    res.status(404).send();
+    res.status(404).send({ message: "Wrong Request" });
   }
 };

@@ -18,7 +18,7 @@ const limit = 5;
 
 exports.calls = async (req, res, next) => {
   try {
-    let { page, order, sort, searchCustomer, searchWorker } = req.body;
+    let { page, order, sort, search, searchWorker } = req.body;
     skip = limit * page - limit;
     workerId = req.user._id;
     if (order == "ASC") {
@@ -27,8 +27,8 @@ exports.calls = async (req, res, next) => {
       order = -1;
     }
     const [calls, callsNumbers] = await Promise.all([
-      findLimitedCalls(limit, skip, sort, order, searchCustomer, searchWorker),
-      countCalls(searchCustomer, searchWorker),
+      findLimitedCalls(limit, skip, sort, order, search, searchWorker),
+      countCalls(search, searchWorker),
     ]);
 
     res.send({
@@ -154,7 +154,6 @@ exports.callsCustomer = async (req, res, next) => {
 };
 exports.getCaller = async (req, res, next) => {
   try {
-    console.group("sisisilafamile");
     customerNumber = req.body.number;
 
     customer = await doWeKnowThisNumber(customerNumber);

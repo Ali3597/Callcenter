@@ -5,7 +5,6 @@ const {
 
 exports.login = async (req, res, next) => {
   try {
-    console.log("mood");
     const { email, password } = req.body;
     console.log(email);
     const worker = await findWorkerPerEmail(email);
@@ -13,7 +12,6 @@ exports.login = async (req, res, next) => {
     if (worker) {
       const match = await worker.comparePassword(password);
       if (match) {
-        console.log("il ya match");
         req.login(worker);
         res.send({ user: worker });
       } else {
@@ -32,7 +30,7 @@ exports.me = async (req, res) => {
     if (req.user) {
       let user = { ...req.user._doc };
       delete user.local.password;
-      res.send({ user });
+      res.send({ user: user });
     } else {
       res.send({ user: null });
     }
@@ -42,6 +40,10 @@ exports.me = async (req, res) => {
 };
 
 exports.signout = async (req, res, next) => {
-  req.logout();
-  res.status(204).send();
+  try {
+    req.logout();
+    res.status(204).send();
+  } catch (error) {
+    res.status(404).send({ message: "error" });
+  }
 };

@@ -102,7 +102,7 @@ exports.updateWorkerToAdmin = async (req, res, next) => {
     await passBasicToAdmin(workerId);
     res.status(204).send();
   } catch (e) {
-    res.status(404).send();
+    res.status(404).send({ message: "Wrong Request" });
   }
 };
 exports.updateWorkerToBasic = async (req, res, next) => {
@@ -111,7 +111,7 @@ exports.updateWorkerToBasic = async (req, res, next) => {
     await passAdminToBasic(workerId);
     res.status(204).send();
   } catch (e) {
-    res.status(404).send();
+    res.status(404).send({ message: "Wrong Request" });
   }
 };
 
@@ -121,7 +121,7 @@ exports.deleteWorker = async (req, res, next) => {
     await deleteWorkerById(workerId);
     res.status(204).send();
   } catch (e) {
-    res.status(404).send();
+    res.status(404).send({ message: "Wrong Request" });
   }
 };
 
@@ -166,6 +166,6 @@ exports.toggleState = async (req, res, next) => {
     const worker = await updateAvailableWorkerById(userId);
     res.send({ state: worker.state });
   } catch (error) {
-    res.status(404).send({ message: "error" });
+    res.status(404).send({ message: "Wrong Request" });
   }
 };
