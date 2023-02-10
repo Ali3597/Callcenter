@@ -71,6 +71,7 @@ export const ParseWorker = (workers) => {
       lastHangUp: worker.lastHangUp
         ? worker.lastHangUp.toLocaleString()
         : "Aucune donnée",
+      state: worker.state === "available" ? "disponible" : "Indisponible",
       action: <Link to={`/admin/employes/${worker._id}`}>Consultez</Link>,
     };
   });

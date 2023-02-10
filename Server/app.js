@@ -39,9 +39,9 @@ app.use(function (req, res, next) {
   next();
 });
 require("./config/jwt.config");
-require("./config/socket.config");
+// require("./config/socket.config");
 
-require("./config/asterisk.config");
+// require("./config/asterisk.config");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "../client-build")));
